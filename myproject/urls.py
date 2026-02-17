@@ -64,6 +64,7 @@ urlpatterns = [
 # permette de charger le fichier image dans django
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
 
 # *************************************************
 # from django.shortcuts import render

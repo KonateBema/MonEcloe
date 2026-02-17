@@ -399,7 +399,7 @@ Production-ready: Cloudinary + Whitenoise.
 
 from pathlib import Path
 import os
-
+import cloudinary.uploader
 # =========================
 # BASE DIRECTORY
 # =========================
@@ -413,8 +413,8 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-key"
 )
 
-DEBUG = False  # Toujours False en production
-
+# DEBUG = False  # Toujours False en production
+DEBUG = True
 ALLOWED_HOSTS = ['*']  # Remplace '*' par ton domaine réel en production
 
 # =========================
@@ -431,6 +431,8 @@ CONTACT_EMAIL = 'lacinakonate93@gmail.com'
 
 # =========================
 # APPLICATIONS
+
+
 # =========================
 INSTALLED_APPS = [
     'jazzmin',
@@ -522,19 +524,21 @@ USE_TZ = True
 # STATIC FILES
 # =========================
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Pour collectstatic
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Ton dossier local avec CSS/JS/images
+]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # =========================
 # MEDIA FILES (Cloudinary)
 # =========================
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+#     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+#     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+# }
 
 # =========================
 # DEFAULTS
