@@ -20,14 +20,6 @@
 # from django.conf import settings
 # from django.conf.urls.static import static
 
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('', home, name='home'),
-# ]
-
-# if settings.DEBUG: # permette de géré l'url des photos
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 from django.contrib import admin
 from django.urls import path
 from myapp import views
@@ -35,18 +27,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from myapp.views import home , commande, commande_confirmation, generate_pdf
 from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnalisé
+from myapp.views import preinscription_view
 
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     # path('admin/dashboard/', views.dashboard, name='admin_dashboard'),
-#     path('admin/dashboard/', dashboard, name='admin_dashboard'),
-#     # path('admin/', admin.site.urls),
-#     path('', views.home, name='home'),
-#     path('commande/<int:product_id>/', commande, name='commande'),
-#     path('commande-confirmation/<int:commande_id>/', commande_confirmation, name='commande_confirmation'),
-#     path('commande-confirmation-pdf/<int:commande_id>/', generate_pdf, name='generate_pdf'),
-
-# ]
 urlpatterns = [
     # Admin personnalisé
     # path('admin/', admin.site.urls),
@@ -59,7 +41,8 @@ urlpatterns = [
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
     # path('produit/<int:id>/', views.product_detail, name='product_detail')
     path('contact/', views.contact, name='contact'),
-
+    path('preinscription/', preinscription_view, name='preinscription'),
+    path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
 ]
 # permette de charger le fichier image dans django
 if settings.DEBUG:
@@ -67,13 +50,4 @@ if settings.DEBUG:
     
 
 # *************************************************
-# from django.shortcuts import render
-# from .models import Product , HomePage
-
-# creer la views
-# def home(request):
-#     products = Product.objects.all()
-#     home_data = HomePage.objects.first() # recuperer les donners de homePage
-#     return render(request, 'home.html',{'home_data': home_data ,'products':products})
-
 

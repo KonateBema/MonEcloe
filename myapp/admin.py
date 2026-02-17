@@ -6,7 +6,7 @@ from django.db.models.functions import TruncMonth
 from django.urls import path
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect
-from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande
+from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande ,Preinscription
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
@@ -250,6 +250,14 @@ class EcoleAdmin(admin.ModelAdmin):
             "fields": ("image_profs", "description_profs")
         }),
     )
+
+@admin.register(Preinscription)
+class PreinscriptionAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'date_inscription')
+    list_filter = ('formation', 'date_inscription')
+    search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
+    ordering = ('-date_inscription',)
+    readonly_fields = ('date_inscription',)
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
@@ -269,4 +277,4 @@ admin_site.register(HomeSlide)
 admin_site.register(Slide)
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
-
+admin_site.register(Preinscription, PreinscriptionAdmin)

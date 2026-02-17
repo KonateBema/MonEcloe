@@ -1,6 +1,7 @@
 from django import forms
 from .models import Commande
- 
+from .models import Preinscription
+
 class CommandeForm(forms.ModelForm):
     class Meta:
         model = Commande
@@ -65,3 +66,16 @@ payment = forms.ChoiceField(
 #             'customer_address',
 #             'payment',
 #         ]
+class PreinscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Preinscription
+        fields = ['nom', 'prenom', 'email', 'telephone', 'date_naissance', 'formation', 'message']
+        widgets = {
+            'date_naissance': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'formation': forms.TextInput(attrs={'class': 'form-control'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
