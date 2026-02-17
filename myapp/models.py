@@ -287,3 +287,25 @@ class Preinscription(models.Model):
 
     def __str__(self):
         return f"{self.nom} {self.prenom} - {self.formation}"
+
+class Programme(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    details = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.titre
+
+class SiteInfo(models.Model):
+    site_name = models.CharField(max_length=255)
+    logo = models.ImageField(upload_to='logos/')
+    email = models.EmailField()
+    telephone = models.CharField(max_length=20)
+    footer_message = models.TextField()
+
+class HomeData(models.Model):
+    site_name = models.CharField(max_length=255)
+    logo = models.ImageField(upload_to='logos/', blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, null=True)
+    footer_message = models.TextField(blank=True, null=True)

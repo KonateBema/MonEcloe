@@ -43,6 +43,8 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('preinscription/', preinscription_view, name='preinscription'),
     path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
+    path('formations/', views.formations, name='formations'),
+    path('programmes/', views.programmes_view, name='programmes'),  # <-- ici
 ]
 # permette de charger le fichier image dans django
 if settings.DEBUG:

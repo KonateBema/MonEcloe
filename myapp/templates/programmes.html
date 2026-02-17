@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Nos Programmes</h2>
+    <p class="text-muted">Découvrez tous nos programmes disponibles</p>
+  </div>
+
+  <div class="row g-4">
+    {% for programme in programmes %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm p-4">
+          <h5 class="fw-bold">{{ programme.titre }}</h5>
+          <p>{{ programme.description|truncatechars:120 }}</p>
+          <a href="{% url 'preinscription' %}?programme={{ programme.titre|urlencode }}" class="btn btn-success mt-auto">
+            S'inscrire
+          </a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="alert alert-warning text-center">
+        Aucun programme disponible pour le moment.
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

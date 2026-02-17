@@ -158,10 +158,12 @@
             <a class="nav-link" href="/">Ecole</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Formations</a>
+            <a class="nav-link" href="{% url 'formations' %}">Formations</a>
+            <!-- <a class="nav-link" href="#">Formations</a> -->
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Programmes</a>
+            <!-- <a class="nav-link" href="{% url 'programmes' %}">Programmes</a> -->
           </li>
           <li class="nav-item">
             <a class="nav-link text-primary fw-bold" href="{% url 'preinscription' %}">
@@ -230,27 +232,88 @@
 
   <!-- ================= CONTACT ================= -->
   <section class="container py-5">
-    <div class="row align-items-center">
-      <div class="col-md-5">
-        <h3 class="fw-bold">Besoin d'informations ?</h3>
-        <p class="text-muted">
-          Notre équipe est à votre disposition pour répondre à toutes vos questions.
-        </p>
+    <div class="row align-items-stretch">
+      <!-- FAQ -->
+      <div class="col-md-5 d-flex">
+        <div class="accordion flex-fill" id="faqAccordion">
+          
+          <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
+  
+          <!-- Question 1 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeading1">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                Comment puis-je m'inscrire en ligne ?
+              </button>
+            </h2>
+            <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Vous pouvez remplir notre formulaire de préinscription en ligne et suivre les étapes indiquées.
+              </div>
+            </div>
+          </div>
+  
+          <!-- Question 2 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeading2">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                Quels documents sont nécessaires pour l'inscription ?
+              </button>
+            </h2>
+            <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Une copie de votre pièce d'identité, un justificatif de domicile et vos bulletins scolaires récents sont requis.
+              </div>
+            </div>
+          </div>
+  
+          <!-- Question 3 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faqHeading3">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                Comment puis-je contacter votre équipe pour plus d'informations ?
+              </button>
+            </h2>
+            <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Vous pouvez utiliser notre formulaire de contact à droite ou nous appeler directement au numéro indiqué sur le site.
+              </div>
+            </div>
+          </div>
+  
+        </div>
       </div>
-
-      <div class="col-md-7">
-        <div class="card shadow p-4 border-0">
-          <h5 class="fw-bold mb-3">Contactez-nous</h5>
+  
+      <!-- Formulaire Contact -->
+      <div class="col-md-7 d-flex">
+        <div class="card shadow p-4 border-0 flex-fill">
+          <h5 class="fw-bold mb-3">Besoin d'informations ? Contactez-nous</h5>
+          <p class="text-muted">
+            Notre équipe est à votre disposition pour répondre à toutes vos questions.
+          </p>
+  
+          <!-- Messages de confirmation -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+  
           <form method="POST" action="{% url 'contact' %}">
             {% csrf_token %}
             <input type="text" class="form-control mb-3" name="nom" placeholder="Nom" required>
             <input type="text" class="form-control mb-3" name="prenom" placeholder="Prénom" required>
             <input type="email" class="form-control mb-3" name="email" placeholder="E-mail" required>
+            <input type="tel" class="form-control mb-3" name="telephone" placeholder="Téléphone" required>
             <textarea class="form-control mb-3" name="message" rows="4" placeholder="Votre message..." required></textarea>
             <button type="submit" class="btn btn-primary w-100">Envoyer →</button>
           </form>
         </div>
       </div>
+  
     </div>
   </section>
 

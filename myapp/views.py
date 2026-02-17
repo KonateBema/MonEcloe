@@ -10,11 +10,11 @@ from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
 from django.db.models import Q
-
+from .models import HomeData  # remplace HomeData par le nom exact si différent
 from django.contrib.admin.models import LogEntry
 from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
-
+from .models import Programme  # Assure-toi que ton modèle s'appelle Programme
 import os
 from .models import Product, HomePage, HomeSlide, Commande 
 from .forms import CommandeForm
@@ -251,74 +251,62 @@ def contact(request):
 #         form = PreinscriptionForm()
 #     return render(request, 'preinscription.html', {'form': form})
 
+# def preinscription_view(request):
+#     preinscrit = None
+
+#     if request.method == 'POST':
+#         form = PreinscriptionForm(request.POST)
+#         if form.is_valid():
+#             preinscrit = form.save()
+#             form = PreinscriptionForm()  # formulaire vidé après envoi
+#     else:
+#         form = PreinscriptionForm()
+
+#     return render(request, 'preinscription.html', {
+#         'form': form,
+#         'preinscrit': preinscrit
+#     })
+
+# def preinscription_view(request):
+#     initial_data = {}
+#     if 'formation' in request.GET:
+#         initial_data['formation'] = request.GET['formation']
+
+#     if request.method == 'POST':
+#         form = PreinscriptionForm(request.POST)
+#         if form.is_valid():
+#             preinscrit = form.save()
+#             messages.success(request, "Votre demande a été envoyée avec succès !")
+#             return redirect('preinscription')  # ou vers une confirmation
+#     else:
+#         form = PreinscriptionForm(initial=initial_data)
+
+#     return render(request, 'preinscription.html', {'form': form, 'home_data': home_data})
 def preinscription_view(request):
-    preinscrit = None
+    # Définition simple de home_data
+    home_data = {
+        'site_name': 'Ecole GEM',
+        'email': 'contact@ecoleakre.com',
+        'telephone': '+225 01 23 45 67 89'
+    }
+
+    initial_data = {}
+    if 'formation' in request.GET:
+        initial_data['formation'] = request.GET['formation']
 
     if request.method == 'POST':
         form = PreinscriptionForm(request.POST)
         if form.is_valid():
             preinscrit = form.save()
-            form = PreinscriptionForm()  # formulaire vidé après envoi
+            messages.success(request, "Votre demande a été envoyée avec succès !")
+            return redirect('preinscription')
     else:
-        form = PreinscriptionForm()
+        form = PreinscriptionForm(initial=initial_data)
 
     return render(request, 'preinscription.html', {
         'form': form,
-        'preinscrit': preinscrit
+        'home_data': home_data
     })
-# def preinscription_view(request):
-#     if request.method == 'POST':
-#         form = PreinscriptionForm(request.POST)
-#         if form.is_valid():
-#             preinscrit = form.save()  # on sauvegarde l'inscription
-#             messages.success(request, "Votre préinscription a été envoyée avec succès !")
-
-#             # On peut passer l'objet preinscrit au template pour impression
-#             return render(request, 'preinscription.html', {
-#                 'form': PreinscriptionForm(),  # un nouveau formulaire vide
-#                 'preinscrit': preinscrit
-#             })
-#     else:
-#         form = PreinscriptionForm()
-#     return render(request, 'preinscription.html', {'form': form})
-
-# def telecharger_fiche(request, pk):
-#     preinscrit = get_object_or_404(Preinscription, pk=pk)
-
-#     content = f"""
-#     FICHE DE PRÉINSCRIPTION
-
-#     Nom : {preinscrit.nom}
-#     Prénom : {preinscrit.prenom}
-#     Email : {preinscrit.email}
-#     Téléphone : {preinscrit.telephone}
-#     """
-
-#     response = HttpResponse(content, content_type='text/plain')
-#     response['Content-Disposition'] = f'attachment; filename="fiche_{preinscrit.pk}.txt"'
-
-#     return response
-
-# def telecharger_fiche(request, pk):
-#     preinscrit = get_object_or_404(Preinscription, pk=pk)
-
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = f'attachment; filename="fiche_{pk}.pdf"'
-
-#     doc = SimpleDocTemplate(response)
-#     elements = []
-
-#     styles = getSampleStyleSheet()
-#     elements.append(Paragraph("FICHE DE PRÉINSCRIPTION", styles['Heading1']))
-#     elements.append(Spacer(1, 12))
-
-#     elements.append(Paragraph(f"Nom : {preinscrit.nom}", styles['Normal']))
-#     elements.append(Paragraph(f"Prénom : {preinscrit.prenom}", styles['Normal']))
-#     elements.append(Paragraph(f"Email : {preinscrit.email}", styles['Normal']))
-#     elements.append(Paragraph(f"Téléphone : {preinscrit.telephone}", styles['Normal']))
-
-#     doc.build(elements)
-#     return response
 
 def telecharger_fiche(request, pk):
     # Récupérer l'inscription
@@ -482,3 +470,62 @@ def telecharger_fiche(request, pk):
 
     doc.build(elements)
     return response
+
+def contact_view(request):
+    if request.method == "POST":
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        email = request.POST.get('email')
+        telephone = request.POST.get('telephone')
+        message_text = request.POST.get('message')
+
+        # Ici tu peux enregistrer dans la DB ou envoyer un mail
+        # Ex: Contact.objects.create(nom=nom, prenom=prenom, email=email, telephone=telephone, message=message_text)
+
+        messages.success(request, "✅ Votre message a été envoyé avec succès !")
+        return redirect('contact')  # Redirige vers la même page pour vider le formulaire
+
+    return render(request, 'contact.html')
+
+def formations(request):
+    formations_list = [
+        {
+            'titre': 'Informatique',
+            'description': 'Développement web, mobile, et Intelligence Artificielle.',
+            'details': 'Cours complets de HTML, CSS, JavaScript, Angular, Django, et Python.'
+        },
+        {
+            'titre': 'Comptabilité',
+            'description': 'Gestion financière et comptabilité.',
+            'details': 'Apprenez la comptabilité générale, analytique et la gestion des entreprises.'
+        },
+        {
+            'titre': 'Marketing',
+            'description': 'Marketing digital et communication.',
+            'details': 'Inclut SEO, réseaux sociaux, publicité digitale et stratégies marketing.'
+        },
+        {
+            'titre': 'Langues',
+            'description': 'Anglais, Français, Espagnol.',
+            'details': 'Cours interactifs avec pratique orale et écrite pour tous niveaux.'
+        },
+    ]
+    return render(request, 'formations.html', {'formations': formations_list})
+
+# def programmes_view(request):
+#     programmes = Programme.objects.all()
+#     home_data = HomeData.objects.first()  # récupère les infos du site
+#     context = {
+#         'programmes': programmes,
+#         'home_data': home_data
+#     }
+#     return render(request, 'programmes.html', context)
+def programmes_view(request):
+    home_data = HomeData.objects.first()  # récupère la première ligne de ton modèle HomeData
+    programmes = Programme.objects.all()  # récupère tous les programmes
+
+    context = {
+        'home_data': home_data,
+        'programmes': programmes
+    }
+    return render(request, 'programmes.html', context)
