@@ -11,67 +11,28 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <style>
-    body {
-      background-color: #f5f5f5;
-    }
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-    /* NAVBAR STYLE UNIVERSITE */
-    .navbar {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-    }
-
-    .nav-link {
-      font-weight: 500;
-      color: #333 !important;
-      position: relative;
-      margin-left: 15px;
-      transition: 0.3s;
-    }
-
-    .nav-link:hover {
-      color: #0d6efd !important;
-    }
-
-    .active-menu {
-      color: #0d6efd !important;
-    }
-
-    .active-menu::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -8px;
-      width: 100%;
-      height: 3px;
-      background-color: red;
-    }
-
-    /* Carousel caption background */
-    .carousel-caption {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    footer {
-      background: #212529;
-      color: #fff;
-    }
-  </style>
   <style>
     body {
       background-color: #f8f9fa;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Roboto', sans-serif;
+      scroll-behavior: smooth;
     }
 
-    /* ===== NAVBAR PREMIUM ===== */
+    /* ===== NAVBAR GLASS ===== */
     .navbar {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
+      padding: 1rem 2rem;
+    }
+
+    .navbar.scrolled {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .navbar-brand img {
@@ -79,10 +40,9 @@
     }
 
     .navbar-brand:hover img {
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
 
-    /* ===== MENU LINKS ===== */
     .nav-link {
       position: relative;
       font-weight: 500;
@@ -91,50 +51,40 @@
       transition: all 0.3s ease;
     }
 
-    /* Hover effect */
     .nav-link:hover {
       color: #0d6efd !important;
       transform: translateY(-2px);
     }
 
-    /* Animated underline */
     .nav-link::after {
       content: "";
       position: absolute;
       left: 50%;
-      bottom: -6px;
+      bottom: -5px;
       width: 0;
       height: 3px;
-      background: linear-gradient(to right, #0d6efd, red);
+      background: linear-gradient(to right, #0d6efd, #ff4b2b);
       transition: all 0.3s ease;
       transform: translateX(-50%);
       border-radius: 10px;
     }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    /* Active link */
-    .nav-link.active-menu {
-      color: #0d6efd !important;
-    }
-
+    .nav-link:hover::after,
     .nav-link.active-menu::after {
       width: 100%;
     }
 
-    /* Shadow on scroll */
-    .navbar.scrolled {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    /* ===== CAROUSEL PREMIUM ===== */
+    .carousel-item img {
+      height: 500px;
+      object-fit: cover;
     }
 
-    /* Carousel caption premium */
     .carousel-caption {
-      background: rgba(0, 0, 0, 0.65);
-      padding: 25px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 25px 30px;
       border-radius: 15px;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(5px);
       animation: fadeUp 1s ease;
     }
 
@@ -143,25 +93,76 @@
         opacity: 0;
         transform: translateY(20px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* Cards hover effect */
+    /* ===== CARDS ===== */
     .card {
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
       border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
     }
 
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
     }
-  </style>
 
+    .card img {
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    /* ===== CONTACT FORM ===== */
+    .form-control {
+      border-radius: 10px;
+      padding: 12px;
+      transition: all 0.3s ease;
+      box-shadow: none !important;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-primary {
+      border-radius: 10px;
+      padding: 10px 25px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #212529;
+      color: #fff;
+      padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #0d6efd;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
 </head>
 
 <body>
@@ -173,484 +174,121 @@
   </script>
 
   <!-- ================= NAVBAR ================= -->
-  <nav class="navbar navbar-expand-lg fixed-top py-3">
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-
-      <!-- LOGO -->
       <a class="navbar-brand" href="#">
         {% if home_data.logo %}
-        <img src="{{ home_data.logo.url }}" height="45">
+        <img src="{{ home_data.logo.url }}" height="50">
         {% endif %}
       </a>
-
-      <!-- TOGGLE MOBILE -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <!-- MENU -->
       <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
         <ul class="navbar-nav gap-lg-4">
-
-          <li class="nav-item">
-            <a class="nav-link active-menu" href="#">ECOLE</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Formation</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Programmes</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Admission</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Recherche</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">Espace informatique</a>
-          </li>
-
+          <li class="nav-item"><a class="nav-link active-menu" href="#">ECOLE</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Formation</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Programmes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Admission</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Recherche</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Espace informatique</a></li>
         </ul>
       </div>
-
     </div>
   </nav>
 
   <!-- ================= CAROUSEL ================= -->
   {% if slides %}
-  <section class="container-fluid mt-4">
-
+  <section class="container-fluid mt-5 pt-4">
     <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-inner">
-
         {% for slide in slides %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-
           {% if slide.image %}
-          <img src="{{ slide.image.url }}" class="d-block w-100" style="height:450px;object-fit:cover;">
+          <img src="{{ slide.image.url }}" class="d-block w-100">
           {% else %}
           <img src="{% static 'default_slide.jpg' %}" class="d-block w-100">
           {% endif %}
-
           <div class="carousel-caption">
-            <h2>{{ slide.title }}</h2>
+            <h2 class="fw-bold">{{ slide.title }}</h2>
             <p>{{ slide.message|safe }}</p>
           </div>
-
         </div>
         {% endfor %}
-
       </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
     </div>
-
   </section>
   {% endif %}
 
   <!-- ================= ECOLES ================= -->
   <section class="container py-5">
-
     {% if ecoles %}
     <div class="row g-4">
-
       {% for ecole in ecoles %}
       <div class="col-12 col-md-6 col-lg-4">
-        <div class="card shadow border-0 h-100">
-
+        <div class="card shadow-sm h-100">
           {% if ecole.image %}
-          <img src="{{ ecole.image.url }}" class="card-img-top" style="height:250px;object-fit:cover;">
+          <img src="{{ ecole.image.url }}" class="card-img-top">
           {% endif %}
-
           <div class="card-body text-center">
             <h4 class="fw-bold">{{ ecole.nom }}</h4>
             <p class="text-muted">{{ ecole.description }}</p>
           </div>
-
         </div>
       </div>
       {% endfor %}
-
     </div>
-
     {% else %}
     <div class="alert alert-warning text-center">
       Aucune information sur les écoles disponible.
     </div>
     {% endif %}
-
   </section>
 
   <!-- ================= CONTACT ================= -->
   <section class="container py-5">
     <div class="row">
-
       <div class="col-md-5 mb-4">
         <h3 class="fw-bold">Besoin d'aide ?</h3>
-        <p class="text-muted">
-          Nos équipes sont là pour vous guider et répondre à vos questions.
-        </p>
+        <p class="text-muted">Nos équipes sont là pour vous guider et répondre à vos questions.</p>
       </div>
-
       <div class="col-md-7">
         <div class="card shadow-sm p-4 border-0">
           <h5 class="fw-bold mb-3">Contactez-nous</h5>
-
           <form method="POST" action="{% url 'contact' %}">
             {% csrf_token %}
-
             <div class="row g-3">
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="nom" placeholder="Nom" required>
-              </div>
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="prenom" placeholder="Prénom" required>
-              </div>
+              <div class="col-md-6"><input type="text" class="form-control" name="nom" placeholder="Nom" required></div>
+              <div class="col-md-6"><input type="text" class="form-control" name="prenom" placeholder="Prénom" required></div>
             </div>
-
-            <div class="mt-3">
-              <input type="email" class="form-control" name="email" placeholder="E-mail" required>
-            </div>
-
-            <div class="mt-3">
-              <textarea class="form-control" name="message" rows="4" placeholder="Votre message ici..."
-                required></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary mt-3">
-              Envoyer →
-            </button>
-
+            <div class="mt-3"><input type="email" class="form-control" name="email" placeholder="E-mail" required></div>
+            <div class="mt-3"><textarea class="form-control" name="message" rows="4" placeholder="Votre message ici..." required></textarea></div>
+            <button type="submit" class="btn btn-primary mt-3">Envoyer →</button>
           </form>
-
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="text-center py-4">
+  <footer class="text-center">
     <div class="container">
       <p class="mb-2">{{ home_data.footer_message|safe }}</p>
       {% if home_data.logo %}
       <img src="{{ home_data.logo.url }}" height="35">
       {% endif %}
+      <div class="mt-3">
+        <a href="#" class="me-3">Facebook</a>
+        <a href="#" class="me-3">Twitter</a>
+        <a href="#">LinkedIn</a>
+      </div>
     </div>
   </footer>
-
-</body>
-
-</html>{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-  <meta charset="utf-8">
-  <title>{{ home_data.site_name }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- BOOTSTRAP -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <style>
-    body { background-color: #f5f5f5; }
-    .navbar-brand img { height: 32px; object-fit: contain; }
-    .carousel-item img { max-height: 400px; object-fit: cover; }
-    .carousel-caption { background: rgba(0,0,0,0.45); border-radius: 8px; padding: 20px; }
-    .product-card img { height: 200px; object-fit: contain; }
-    .product-card { transition: transform .2s, box-shadow .2s; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,.15); }
-    .flash-bar { background: #e63946; color: white; font-weight: bold; }
-    .sidebar { background: #fff; border-radius: 8px; padding: 10px 0; }
-    .sidebar ul li { font-size: 14px; padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #f1f1f1; }
-    .sidebar ul li:hover { background: #f68b1e; color: #fff; }
-
-    .carousel-item img {
-  height: 420px;
-  object-fit: cover;
-}
-
-.carousel-fade .carousel-item {
-  transition: opacity 1s ease-in-out;
-}
-
-.custom-caption {
-  background: rgba(0, 0, 0, 0.55);
-  padding: 30px;
-  border-radius: 12px;
-  bottom: 20%;
-  max-width: 70%;
-  margin: auto;
-}
-
-.custom-caption h2 {
-  font-size: 28px;
-}
-
-.custom-caption p {
-  font-size: 16px;
-}
-
-@media (max-width: 768px) {
-  .carousel-item img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-  }
-
-  .custom-caption {
-    bottom: 10%;
-    padding: 15px;
-    max-width: 90%;
-  }
-
-  .custom-caption h2 {
-    font-size: 18px;
-  }
-
-  .custom-caption p {
-    font-size: 14px;
-  }
-}
-  </style>
-</head>
-
-<body>
-
-<nav class="navbar navbar-dark bg-dark shadow-sm">
-  <div class="container d-flex align-items-center">
-
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      {% if home_data.logo %}
-      <img src="{{ home_data.logo.url }}" alt="logo">
-      {% endif %}
-      <strong class="ms-2">{{ home_data.site_name }}</strong>
-    </a>
-
-    <!-- 🔍 BARRE DE RECHERCHE -->
-    <form method="GET" action="{% url 'home' %}" class="d-flex ms-3 flex-grow-1">
-      <input
-        class="form-control me-2"
-        type="search"
-        name="q"
-        placeholder="Rechercher un produit..."
-        value="{{ query }}"
-      >
-      <button class="btn btn-warning fw-bold" type="submit">
-        Rechercher
-      </button>
-    </form>
-
-  </div>
-</nav>
-
-<div class="container-fluid px-0 mt-3">
-  <div class="row g-0">
-
-    <!-- ===== CAROUSEL ===== -->
-    <!-- <section class="col-md-7">
-      <div id="homeCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
-        <div class="carousel-inner">
-
-          {% for slide in slides %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-
-            {% if slide.image %}
-            <img src="{{ slide.image.url }}" class="d-block w-100" {% if not forloop.first %}loading="lazy"{% endif %}>
-            {% else %}
-            <img src="{% static 'default_slide.jpg' %}" class="d-block w-100">
-            {% endif %}
-
-            <div class="carousel-caption d-none d-md-block">
-              <h3>{{ slide.title }}</h3>
-              <p>{{ slide.message|safe }}</p>
-              {% if slide.action_text %}
-              <a href="{{ slide.action_link }}" class="btn btn-warning fw-bold">
-                {{ slide.action_text }}
-              </a>
-              {% endif %}
-            </div>
-
-          </div>
-          {% endfor %}
-
-        </div>
-      </div>
-    </section> -->
-    <section class="col-12 px-0">
-
-      <div id="homeCarousel"
-           class="carousel slide carousel-fade shadow-sm"
-           data-bs-ride="carousel"
-           data-bs-interval="4000">
-    
-        <!-- INDICATEURS -->
-        <div class="carousel-indicators">
-          {% for slide in slides %}
-          <button type="button"
-                  data-bs-target="#homeCarousel"
-                  data-bs-slide-to="{{ forloop.counter0 }}"
-                  class="{% if forloop.first %}active{% endif %}">
-          </button>
-          {% endfor %}
-        </div>
-    
-        <div class="carousel-inner">
-    
-          {% for slide in slides %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-    
-            {% if slide.image %}
-            <img src="{{ slide.image.url }}"
-                 class="d-block w-100"
-                 alt="{{ slide.title }}"
-                 {% if not forloop.first %}loading="lazy"{% endif %}>
-            {% else %}
-            <img src="{% static 'default_slide.jpg' %}"
-                 class="d-block w-100">
-            {% endif %}
-    
-            <!-- CAPTION AMÉLIORÉ -->
-            <div class="carousel-caption custom-caption">
-              <h2 class="fw-bold">{{ slide.title }}</h2>
-              <p class="lead">{{ slide.message|safe }}</p>
-    
-              {% if slide.action_text %}
-              <a href="{{ slide.action_link }}"
-                 class="btn btn-warning btn-lg fw-bold mt-2">
-                {{ slide.action_text }}
-              </a>
-              {% endif %}
-            </div>
-    
-          </div>
-          {% endfor %}
-    
-        </div>
-    
-        <!-- BOUTONS NAVIGATION -->
-        <button class="carousel-control-prev"
-                type="button"
-                data-bs-target="#homeCarousel"
-                data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-    
-        <button class="carousel-control-next"
-                type="button"
-                data-bs-target="#homeCarousel"
-                data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
-    
-      </div>
-    
-    </section>
-    <!-- ===== ASSISTANCE ===== -->
-    <!-- <aside class="col-md-3 d-none d-md-block">
-      <div class="bg-white shadow-sm rounded p-3">
-        <h6>📞 Centre d’assistance</h6>
-        <p class="small">Service client 24/7</p>
-        <strong class="text-danger">2520 006 161</strong>
-        <div class="bg-white shadow-sm rounded p-3 text-ceanter mt-3">
-          <h6>📱 Scanner pour accéder</h6>
-          <img src="data:image/png;base64,{{ qr_code }}"
-               alt="QR Code"
-               class="img-fluid"
-               style="max-width:150px;">
-          <p class="small mt-2">Scannez pour ouvrir la boutique</p>
-        </div>
-        
-      
-      </div>
-    </aside> -->
-
-  </div>
-</div>
-
-<!-- ================= FLASH SALES ================= -->
-<div class="container mt-4">
-  <div class="flash-bar p-2 rounded d-flex justify-content-between">
-    <span>⚡ Ventes Flash | Chaque jour</span>
-    <span>⏱️ Offre limitée</span>
-  </div>
-</div>
-
-<!-- ================= PRODUCTS ================= -->
-<div class="container py-4">
-  <div class="row g-3">
-
-    {% for product in products %}
-    <div class="col-6 col-md-3">
-      <div class="card product-card h-100">
-
-        {% if product.image %}
-        <img src="{{ product.image.url }}" class="card-img-top" loading="lazy">
-        {% endif %}
-
-        <div class="card-body d-flex flex-column">
-          <h6>{{ product.name }}</h6>
-          <strong class="text-danger mb-2">{{ product.price }} FCFA</strong>
-
-          <!-- <div class="mt-auto">
-          <!-- <div class="mt-auto">
-            {% if product.quantity > 0 %}
-            <span class="badge bg-success">En stock</span>
-            <a href="{% url 'commande' product.id %}" class="btn btn-sm btn-warning w-100 mt-2">
-              Commander
-            </a>
-            {% else %}
-            <span class="badge bg-danger">Rupture de stock</span>
-            <button class="btn btn-sm btn-secondary w-100 mt-2" disabled>
-              Rupture de stock
-            </button>
-            {% endif %}
-          </div> -->
-<div class="mt-auto">
-
-  <!-- 🔍 Bouton DÉTAILS -->
-  <a href="{% url 'product_detail' product.id %}"
-     class="btn btn-sm btn-outline-primary w-100 mb-2">
-    👁️ Voir détails
-  </a>
-
-  {% if product.quantity > 0 %}
-  <span class="badge bg-success">En stock</span>
-  <a href="{% url 'commande' product.id %}"
-     class="btn btn-sm btn-warning w-100 mt-2">
-    Commander
-  </a>
-  {% else %}
-  <span class="badge bg-danger">Rupture de stock</span>
-  <button class="btn btn-sm btn-secondary w-100 mt-2" disabled>
-    Rupture de stock
-  </button>
-  {% endif %}
-
-</div>
-
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-
-  </div>
-</div>
-<!-- ================= FOOTER ================= -->
-<footer class="bg-dark text-white py-4">
-  <div class="container text-center">
-    <p>{{ home_data.footer_message|safe }}</p>
-    {% if home_data.logo %}
-    <img src="{{ home_data.logo.url }}" height="32">
-    {% endif %}
-  </div>
-</footer>
-
 </body>
 </html>

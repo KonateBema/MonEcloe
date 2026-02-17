@@ -256,8 +256,6 @@ class Slide(models.Model):
             img = Image.open(self.image.path)
             img.thumbnail((1200, 400))
             img.save(self.image.path, optimize=True, quality=85)
-<<<<<<< HEAD
-=======
 
 class Ecole(models.Model):
     nom = models.CharField(max_length=200)
@@ -276,4 +274,3 @@ class Ecole(models.Model):
 
     def __str__(self):
         return self.nom
->>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24

@@ -9,12 +9,9 @@ from django.shortcuts import redirect
 from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-<<<<<<< HEAD
 
-=======
 from .models import Slide, HomeSlide
 from .models import Ecole
->>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 # ==============================
 #      PRODUCT ADMIN
 # ==============================
@@ -222,9 +219,7 @@ class MyAdminSite(admin.AdminSite):
         )
         return TemplateResponse(request, "admin/dashboard.html", context)
 
-<<<<<<< HEAD
 
-=======
 @admin.register(HomeSlide)
 class HomeSlideAdmin(admin.ModelAdmin):
     list_display = ("title", "image")
@@ -255,7 +250,6 @@ class EcoleAdmin(admin.ModelAdmin):
             "fields": ("image_profs", "description_profs")
         }),
     )
->>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
@@ -271,11 +265,8 @@ admin_site.register(Supplier, SupplierAdmin)
 admin_site.register(SupplierDetail, SupplierDetailAdmin)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Commande, CommandeAdmin)
-<<<<<<< HEAD
-=======
 admin_site.register(HomeSlide)
 admin_site.register(Slide)
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
 
->>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
