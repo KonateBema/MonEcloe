@@ -413,8 +413,8 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-key"
 )
 
-# DEBUG = False  # Toujours False en production
-DEBUG = True
+DEBUG = False  # Toujours False en production
+# DEBUG = True
 ALLOWED_HOSTS = ['*']  # Remplace '*' par ton domaine réel en production
 
 # =========================
