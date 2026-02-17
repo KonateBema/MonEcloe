@@ -17,10 +17,18 @@ from django.db.models.functions import TruncMonth
 
 import os
 
+<<<<<<< HEAD
 from .models import Product, HomePage, HomeSlide, Commande 
 from .forms import CommandeForm
 
 
+=======
+from .models import Product, HomePage, HomeSlide, Commande ,Ecole
+from .forms import CommandeForm
+
+from django.core.mail import send_mail
+from django.contrib import messages
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 
 # =================== HOME ===================
 
@@ -44,27 +52,67 @@ from .forms import CommandeForm
 #     })
 
 
+<<<<<<< HEAD
+=======
+# def home(request):
+#     home_data = HomePage.objects.first()
+#     slides = HomeSlide.objects.all()
+
+#     query = request.GET.get('q')
+
+#     products = Product.objects.filter(quantity__gt=0)
+
+#     if query:
+#         products = products.filter(
+#             Q(name__icontains=query) |
+#             Q(description__icontains=query)
+#         )
+
+#     return render(request, 'home.html', {
+#         'home_data': home_data,
+#         'products': products,
+#         'slides': slides,
+#         'query': query,
+#     })
+
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 def home(request):
     home_data = HomePage.objects.first()
     slides = HomeSlide.objects.all()
 
     query = request.GET.get('q')
 
+<<<<<<< HEAD
     products = Product.objects.filter(quantity__gt=0)
 
+=======
+    # Produits en stock
+    products = Product.objects.filter(quantity__gt=0)
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
     if query:
         products = products.filter(
             Q(name__icontains=query) |
             Q(description__icontains=query)
         )
 
+<<<<<<< HEAD
+=======
+    # Toutes les écoles
+    ecoles = Ecole.objects.all()
+
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
     return render(request, 'home.html', {
         'home_data': home_data,
         'products': products,
         'slides': slides,
         'query': query,
+<<<<<<< HEAD
     })
 
+=======
+        'ecoles': ecoles,  # ✅ passe la liste des écoles
+    })
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 # =================== COMMANDE ===================
 def commande(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -224,4 +272,53 @@ def product_detail(request, id):
         'product': product,
        
         'similar_products': similar_products,
+<<<<<<< HEAD
     })
+=======
+    })
+
+def presentation_ecole(request):
+    ecole = Ecole.objects.first()
+    return render(request, "ecole.html", {"ecole": ecole})
+
+
+def contact(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        email = request.POST.get('email')
+        telephone = request.POST.get('telephone')
+        objet = request.POST.get('objet')
+        message = request.POST.get('message')
+        consent = request.POST.get('consent')
+
+        if not consent:
+            messages.error(request, "Vous devez accepter le traitement des données.")
+            return redirect('home')
+
+        full_message = f"""
+        Nom : {nom}
+        Prénom : {prenom}
+        Email : {email}
+        Téléphone : {telephone}
+
+        Message :
+        {message}
+        """
+
+        # Envoi de l'email
+        try:
+            send_mail(
+                subject=objet,
+                message=full_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.CONTACT_EMAIL],  # définir l'email de réception
+            )
+            messages.success(request, "Votre message a été envoyé avec succès !")
+        except Exception as e:
+            messages.error(request, f"Erreur lors de l'envoi du message : {e}")
+
+        return redirect('home')
+    else:
+        return redirect('home')
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24

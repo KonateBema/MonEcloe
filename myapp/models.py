@@ -256,3 +256,24 @@ class Slide(models.Model):
             img = Image.open(self.image.path)
             img.thumbnail((1200, 400))
             img.save(self.image.path, optimize=True, quality=85)
+<<<<<<< HEAD
+=======
+
+class Ecole(models.Model):
+    nom = models.CharField(max_length=200)
+    description = models.TextField()
+
+    image = models.ImageField(upload_to="ecole/")
+
+    image_classes = models.ImageField(upload_to="ecole/", blank=True, null=True)
+    description_classes = models.TextField(blank=True, null=True)
+
+    image_cour = models.ImageField(upload_to="ecole/", blank=True, null=True)
+    description_cour = models.TextField(blank=True, null=True)
+
+    image_profs = models.ImageField(upload_to="ecole/", blank=True, null=True)
+    description_profs = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nom
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24

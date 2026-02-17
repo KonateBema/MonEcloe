@@ -58,11 +58,19 @@ urlpatterns = [
     path('commande-confirmation-pdf/<int:commande_id>/', views.generate_pdf, name='generate_pdf'),
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
     # path('produit/<int:id>/', views.product_detail, name='product_detail')
+<<<<<<< HEAD
+=======
+    path('contact/', views.contact, name='contact'),
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 
 ]
 # permette de charger le fichier image dans django
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
 
 # *************************************************
 # from django.shortcuts import render
