@@ -173,14 +173,6 @@ def dashboard_view(self, request):
 
     return TemplateResponse(request, "admin/dashboard.html", context)
 
-# def product_detail(request, id):
-#     product = get_object_or_404(Product, id=id)
-   
-
-#     return render(request, 'product_detail.html', {
-#         'product': product,
-        
-#     })
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
   
