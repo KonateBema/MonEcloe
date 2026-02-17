@@ -309,3 +309,13 @@ class HomeData(models.Model):
     email = models.EmailField(blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True)
     footer_message = models.TextField(blank=True, null=True)
+
+class Association(models.Model):
+    nom = models.CharField(max_length=200)
+    description = models.TextField()
+    details = models.TextField()
+    responsable = models.CharField(max_length=150)
+    contact = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.nom

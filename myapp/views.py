@@ -16,6 +16,7 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
 from .models import Programme  # Assure-toi que ton modèle s'appelle Programme
 import os
+from .models import Association
 from .models import Product, HomePage, HomeSlide, Commande 
 from .forms import CommandeForm
 from reportlab.lib.pagesizes import A4
@@ -240,46 +241,6 @@ def contact(request):
     else:
         return redirect('home')
 
-# def preinscription_view(request):
-#     if request.method == 'POST':
-#         form = PreinscriptionForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Votre préinscription a été envoyée avec succès !")
-#             return redirect('preinscription')
-#     else:
-#         form = PreinscriptionForm()
-#     return render(request, 'preinscription.html', {'form': form})
-
-# def preinscription_view(request):
-#     preinscrit = None
-
-#     if request.method == 'POST':
-#         form = PreinscriptionForm(request.POST)
-#         if form.is_valid():
-#             preinscrit = form.save()
-#             form = PreinscriptionForm()  # formulaire vidé après envoi
-#     else:
-#         form = PreinscriptionForm()
-
-#     return render(request, 'preinscription.html', {
-#         'form': form,
-#         'preinscrit': preinscrit
-#     })
-
-# def preinscription_view(request):
-#     initial_data = {}
-#     if 'formation' in request.GET:
-#         initial_data['formation'] = request.GET['formation']
-
-#     if request.method == 'POST':
-#         form = PreinscriptionForm(request.POST)
-#         if form.is_valid():
-#             preinscrit = form.save()
-#             messages.success(request, "Votre demande a été envoyée avec succès !")
-#             return redirect('preinscription')  # ou vers une confirmation
-#     else:
-#         form = PreinscriptionForm(initial=initial_data)
 
 #     return render(request, 'preinscription.html', {'form': form, 'home_data': home_data})
 def preinscription_view(request):
@@ -512,13 +473,6 @@ def formations(request):
     ]
     return render(request, 'formations.html', {'formations': formations_list})
 
-# def programmes_view(request):
-#     programmes = Programme.objects.all()
-#     home_data = HomeData.objects.first()  # récupère les infos du site
-#     context = {
-#         'programmes': programmes,
-#         'home_data': home_data
-#     }
 #     return render(request, 'programmes.html', context)
 def programmes_view(request):
     home_data = HomeData.objects.first()  # récupère la première ligne de ton modèle HomeData
@@ -529,3 +483,12 @@ def programmes_view(request):
         'programmes': programmes
     }
     return render(request, 'programmes.html', context)
+
+def vie_associative(request):
+    associations = Association.objects.all()
+    home_data = HomeData.objects.first()
+
+    return render(request, 'vie_associative.html', {
+        'associations': associations,
+        'home_data': home_data
+    })
