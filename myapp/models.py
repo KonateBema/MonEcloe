@@ -284,6 +284,9 @@ class Preinscription(models.Model):
     formation = models.CharField(max_length=150)
     message = models.TextField(blank=True)
     date_inscription = models.DateTimeField(auto_now_add=True)
+    commune = models.CharField(max_length=100, null=True, blank=True)
+    quartier = models.CharField(max_length=100, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.nom} {self.prenom} - {self.formation}"

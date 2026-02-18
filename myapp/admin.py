@@ -254,7 +254,7 @@ class EcoleAdmin(admin.ModelAdmin):
 
 @admin.register(Preinscription)
 class PreinscriptionAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'date_inscription')
+    list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'commune', 'quartier','date_inscription')
     list_filter = ('formation', 'date_inscription')
     search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
     ordering = ('-date_inscription',)
