@@ -6,7 +6,7 @@ from django.db.models.functions import TruncMonth
 from django.urls import path
 from django.template.response import TemplateResponse
 from django.shortcuts import redirect
-from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande ,Preinscription
+from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande ,Preinscription,Contact
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
@@ -287,7 +287,11 @@ class InscriptionAssociationAdmin(admin.ModelAdmin):
     list_filter = ('association',)
     search_fields = ('nom', 'email')
 
-
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'prenom', 'email', 'telephone', 'date_envoi')
+    search_fields = ('nom', 'prenom', 'email')
+    list_filter = ('date_envoi',)
 
 
 # ==============================
@@ -297,10 +301,9 @@ admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
 # Enregistrer les modèles sur l'admin personnalisé
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
-admin_site.register(Category, CategoryAdmin)
+# admin_site.register(Category, CategoryAdmin)
 admin_site.register(HomePage, HomePageAdmin)
-# admin_site.register(Commande, CommandeAdmin)
-admin_site.register(HomeSlide)
+admin_site.register(Contact, ContactAdmin)
 admin_site.register(Slide)
 admin_site.register(Certificat)
 admin_site.register(Question)

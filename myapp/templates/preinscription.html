@@ -7,113 +7,132 @@ Préinscription - {{ home_data.site_name }}
 
 {% block content %}
 
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
+  body {
+    background: #f4f6f9;
+  }
+
   .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 40px;
   }
 
   .header img {
-    max-height: 80px;
-    margin-right: 15px;
+    max-height: 90px;
+    margin-bottom: 15px;
   }
 
   .header h1 {
-    font-size: 1.8rem;
     font-weight: 700;
-    color: #333;
+    color: #0d6efd;
   }
 
   .card-form {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    padding: 30px;
-    margin-bottom: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    padding: 40px;
   }
 
-  .btn-primary, .btn-success, .btn-secondary {
+  .form-control {
+    border-radius: 10px;
+  }
+
+  .btn {
     border-radius: 8px;
-    padding: 10px 20px;
     font-weight: 600;
   }
 
-  .back-home {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .alert-success {
-    margin-top: 20px;
-    display: none;
+  .modal-content {
+    border-radius: 15px;
   }
 </style>
 
 <div class="container py-5">
 
-  <!-- Header -->
+  <!-- HEADER -->
   <div class="header">
     <img src="{% static 'images/logo.png' %}" alt="Logo">
-    <h1>Préinscription en ligne - {{ home_data.site_name }}</h1>
+    <h1>Préinscription en ligne</h1>
+    <p class="text-muted">{{ home_data.site_name }}</p>
   </div>
 
-  <!-- Retour -->
-  <div class="back-home">
-    <a href="{% url 'home' %}" class="btn btn-secondary">← Retour à l’accueil</a>
+  <!-- RETOUR -->
+  <div class="text-center mb-4">
+    <a href="{% url 'home' %}" class="btn btn-secondary">
+      ← Retour à l’accueil
+    </a>
   </div>
 
-  <!-- Message succès -->
-  <div id="successAlert" class="alert alert-success">
-    ✅ Votre demande a été envoyée avec succès !
-  </div>
-
-  <!-- Formulaire -->
-  <div class="card card-form">
+  <!-- FORM CARD -->
+  <div class="card-form">
     <form id="preinscriptionForm" method="POST" onsubmit="showRecapModal(event)">
       {% csrf_token %}
 
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">{{ form.nom.label_tag }}{{ form.nom }}</div>
-        <div class="col-md-6">{{ form.prenom.label_tag }}{{ form.prenom }}</div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.nom.label_tag }}
+          {{ form.nom }}
+        </div>
+        <div class="col-md-6">
+          {{ form.prenom.label_tag }}
+          {{ form.prenom }}
+        </div>
       </div>
 
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}</div>
-        <div class="col-md-6">{{ form.telephone.label_tag }}{{ form.telephone }}</div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
+        <div class="col-md-6">
+          {{ form.telephone.label_tag }}
+          {{ form.telephone }}
+        </div>
       </div>
 
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">{{ form.date_naissance.label_tag }}{{ form.date_naissance }}</div>
-        <div class="col-md-6">{{ form.formation.label_tag }}{{ form.formation }}</div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.date_naissance.label_tag }}
+          {{ form.date_naissance }}
+        </div>
+        <div class="col-md-6">
+          {{ form.formation.label_tag }}
+          {{ form.formation }}
+        </div>
       </div>
 
-      <div class="mb-3">
-        {{ form.message.label_tag }}{{ form.message }}
+      <div class="mb-4">
+        {{ form.message.label_tag }}
+        {{ form.message }}
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary px-4">
           Voir le récapitulatif
         </button>
       </div>
+
     </form>
   </div>
 
 </div>
 
-<!-- MODAL -->
+<!-- MODAL RECAP -->
 <div class="modal fade" id="recapModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">Récapitulatif Préinscription</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Récapitulatif de Préinscription</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <div class="modal-body" id="recapContent">
+      <div class="modal-body">
+
         <p><strong>Nom :</strong> <span id="recapNom"></span></p>
         <p><strong>Prénom :</strong> <span id="recapPrenom"></span></p>
         <p><strong>Email :</strong> <span id="recapEmail"></span></p>
@@ -121,47 +140,42 @@ Préinscription - {{ home_data.site_name }}
         <p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p>
         <p><strong>Formation :</strong> <span id="recapFormation"></span></p>
         <p><strong>Message :</strong> <span id="recapMessage"></span></p>
+
       </div>
 
       <div class="modal-footer">
+
         <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">
           ✅ Confirmer l’envoi
+        </button>
+
+        <button type="button" class="btn btn-primary" onclick="telechargerRecap()">
+          📄 Télécharger PDF
         </button>
 
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
+
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- JS -->
+<!-- JAVASCRIPT -->
 <script>
+
 function showRecapModal(event) {
   event.preventDefault();
 
-  document.getElementById("recapNom").textContent =
-    document.getElementById("id_nom").value;
-
-  document.getElementById("recapPrenom").textContent =
-    document.getElementById("id_prenom").value;
-
-  document.getElementById("recapEmail").textContent =
-    document.getElementById("id_email").value;
-
-  document.getElementById("recapTelephone").textContent =
-    document.getElementById("id_telephone").value;
-
-  document.getElementById("recapDateNaissance").textContent =
-    document.getElementById("id_date_naissance").value;
-
-  document.getElementById("recapFormation").textContent =
-    document.getElementById("id_formation").value;
-
-  document.getElementById("recapMessage").textContent =
-    document.getElementById("id_message").value;
+  document.getElementById("recapNom").textContent = document.getElementById("id_nom").value;
+  document.getElementById("recapPrenom").textContent = document.getElementById("id_prenom").value;
+  document.getElementById("recapEmail").textContent = document.getElementById("id_email").value;
+  document.getElementById("recapTelephone").textContent = document.getElementById("id_telephone").value;
+  document.getElementById("recapDateNaissance").textContent = document.getElementById("id_date_naissance").value;
+  document.getElementById("recapFormation").textContent = document.getElementById("id_formation").value;
+  document.getElementById("recapMessage").textContent = document.getElementById("id_message").value;
 
   new bootstrap.Modal(document.getElementById('recapModal')).show();
 }
@@ -169,6 +183,26 @@ function showRecapModal(event) {
 function envoyerFormulaire() {
   document.getElementById("preinscriptionForm").submit();
 }
+
+function telechargerRecap() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text("Fiche de Préinscription en ligne", 20, 20);
+
+  doc.setFontSize(12);
+  doc.text("Nom :   " + document.getElementById("recapNom").textContent, 20, 40);
+  doc.text("Prénom :   " + document.getElementById("recapPrenom").textContent, 20, 50);
+  doc.text("Email :  " + document.getElementById("recapEmail").textContent, 20, 60);
+  doc.text("Téléphone : " + document.getElementById("recapTelephone").textContent, 20, 70);
+  doc.text("Date de naissance : " + document.getElementById("recapDateNaissance").textContent, 20, 80);
+  doc.text("Formation : " + document.getElementById("recapFormation").textContent, 20, 90);
+  doc.text("Message : " + document.getElementById("recapMessage").textContent, 20, 100);
+
+  doc.save("recap_preinscription.pdf");
+}
+
 </script>
 
 {% endblock %}

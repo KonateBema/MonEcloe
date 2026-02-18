@@ -28,6 +28,7 @@ from django.conf.urls.static import static
 from myapp.views import home , commande, commande_confirmation, generate_pdf
 from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnalisé
 from myapp.views import preinscription_view
+from myapp.views import contact_view
 
 urlpatterns = [
     # Admin personnalisé
@@ -49,6 +50,7 @@ urlpatterns = [
     path('certificats/', views.certificats, name='certificats'),
     path('certificat/<int:id>/', views.passer_certificat, name="passer_certificat"),
     path('inscription/<int:association_id>/', views.inscription_association,name='inscription_association'),
+    path('contact/', contact_view, name='contact'),
 
 
 ]

@@ -425,19 +425,36 @@ def telecharger_fiche(request, pk):
     doc.build(elements)
     return response
 
+# def contact_view(request):
+#     if request.method == "POST":
+#         nom = request.POST.get('nom')
+#         prenom = request.POST.get('prenom')
+#         email = request.POST.get('email')
+#         telephone = request.POST.get('telephone')
+#         message_text = request.POST.get('message')
+#         messages.success(request, "✅ Votre message a été envoyé avec succès !")
+#         return redirect('contact')  # Redirige vers la même page pour vider le formulaire
+
+#     return render(request, 'contact.html')
+
 def contact_view(request):
     if request.method == "POST":
-        nom = request.POST.get('nom')
-        prenom = request.POST.get('prenom')
-        email = request.POST.get('email')
-        telephone = request.POST.get('telephone')
-        message_text = request.POST.get('message')
+        nom = request.POST.get("nom")
+        prenom = request.POST.get("prenom")
+        email = request.POST.get("email")
+        telephone = request.POST.get("telephone")
+        message_text = request.POST.get("message")
 
-        # Ici tu peux enregistrer dans la DB ou envoyer un mail
-        # Ex: Contact.objects.create(nom=nom, prenom=prenom, email=email, telephone=telephone, message=message_text)
+        Contact.objects.create(
+            nom=nom,
+            prenom=prenom,
+            email=email,
+            telephone=telephone,
+            message=message_text
+        )
 
-        messages.success(request, "✅ Votre message a été envoyé avec succès !")
-        return redirect('contact')  # Redirige vers la même page pour vider le formulaire
+        messages.success(request, "Votre message a été envoyé avec succès !")
+        return redirect('contact')
 
     return render(request, 'contact.html')
 
