@@ -48,6 +48,8 @@ urlpatterns = [
     path("vie-associative/", views.vie_associative, name="vie_associative"),
     path('certificats/', views.certificats, name='certificats'),
     path('certificat/<int:id>/', views.passer_certificat, name="passer_certificat"),
+    path('inscription/<int:association_id>/', views.inscription_association,name='inscription_association'),
+
 
 ]
 # permette de charger le fichier image dans django

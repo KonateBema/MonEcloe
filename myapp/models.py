@@ -313,26 +313,21 @@ class HomeData(models.Model):
 class Association(models.Model):
     nom = models.CharField(max_length=200)
     description = models.TextField()
-    details = models.TextField()
+    details = models.TextField(blank=True, null=True)
     responsable = models.CharField(max_length=150)
     contact = models.CharField(max_length=150)
+    image = models.ImageField(upload_to="associations/", blank=True, null=True)
 
     def __str__(self):
         return self.nom
 
+
 class Certificat(models.Model):
     titre = models.CharField(max_length=200)
     description = models.TextField()
-    details = models.TextField()
+    details = models.TextField(blank=True, null=True)
     lien_passage = models.URLField(blank=True, null=True)  # URL vers la plateforme de passage en ligne
     image = models.ImageField(upload_to='certificats/', blank=True, null=True)
-
-    def __str__(self):
-        return self.titre
-
-class Certificat(models.Model):
-    titre = models.CharField(max_length=200)
-    description = models.TextField()
 
     def __str__(self):
         return self.titre
@@ -360,3 +355,31 @@ class Resultat(models.Model):
     nom_etudiant = models.CharField(max_length=200)
     score = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
+
+class Evenement(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    date_event = models.DateField()
+    image = models.ImageField(upload_to="evenements/", blank=True, null=True)
+    association = models.ForeignKey(
+        Association,
+        on_delete=models.CASCADE,
+        related_name="evenements"
+    )
+
+    def __str__(self):
+        return f"{self.titre} - {self.date_event}"
+
+class InscriptionAssociation(models.Model):
+    association = models.ForeignKey(
+        Association,
+        on_delete=models.CASCADE,
+        related_name="inscriptions"
+    )
+    nom = models.CharField(max_length=150)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=150)
+    date_inscription = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nom} - {self.association.nom}"

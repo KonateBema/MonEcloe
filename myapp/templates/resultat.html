@@ -1,15 +1,52 @@
-<div class="container text-center py-5">
+{% extends 'base.html' %}
 
-<h1>Résultat 🎉</h1>
+{% block title %}
+Résultat - {{ home_data.site_name }}
+{% endblock %}
 
-<h2>{{ score }} / {{ total }}</h2>
+{% block content %}
 
-{% if score >= total|divisibleby:2 %}
-<div class="alert alert-success">Félicitations vous êtes certifié ✅</div>
-{% else %}
-<div class="alert alert-danger">Échec ❌</div>
-{% endif %}
+<div class="container py-5 text-center">
 
-<a href="/" class="btn btn-primary mt-3">Retour à l’accueil</a>
+    <div class="card shadow-lg border-0 rounded-4 p-5">
+
+        <h1 class="mb-4">Résultat 🎉</h1>
+
+        <h2 class="fw-bold display-5 mb-4">
+            {{ score }} / {{ total }}
+        </h2>
+
+        {% if reussite %}
+            <div class="alert alert-success fs-5">
+                Félicitations 🎓<br>
+                Vous êtes certifié ✅
+            </div>
+
+            <a href="#" class="btn btn-success btn-lg mt-3">
+                Télécharger votre certificat
+            </a>
+
+        {% else %}
+            <div class="alert alert-danger fs-5">
+                Échec ❌<br>
+                Vous pouvez retenter le test.
+            </div>
+
+            <a href="javascript:history.back()"
+               class="btn btn-warning btn-lg mt-3">
+               Repasser le test
+            </a>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'home' %}"
+               class="btn btn-outline-primary">
+               ← Retour à l’accueil
+            </a>
+        </div>
+
+    </div>
 
 </div>
+
+{% endblock %}

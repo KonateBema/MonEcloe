@@ -1,96 +1,135 @@
-
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<title>Vie Associative - {{ home_data.site_name }}</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+{% block title %}
+Vie Associative - {{ home_data.site_name }}
+{% endblock %}
 
-<!-- AOS animation -->
+{% block content %}
+
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <style>
+  /* ================= HERO ================= */
 
-.hero {
-  background: url("{% static 'images/club.jpg' %}") center/cover;
-  height: 70vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("{% static 'images/club.jpg' %}") center/cover no-repeat;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    animation: heroZoom 20s ease-in-out infinite;
+  }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-}
+  @keyframes heroZoom {
+    0% {
+      background-size: 100%;
+    }
 
-.hero-content {
-  position: relative;
-  color: white;
-  text-align: center;
-}
+    50% {
+      background-size: 110%;
+    }
 
-.association-card {
-  border-radius: 18px;
-  overflow: hidden;
-  transition: 0.4s;
-}
+    100% {
+      background-size: 100%;
+    }
+  }
 
-.association-card:hover {
-  transform: translateY(-10px);
-}
+  /* ================= CARDS ================= */
 
-.association-card img {
-  height: 200px;
-  object-fit: cover;
-}
+  .association-card {
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+    transition: all 0.4s ease;
+  }
 
-.stats {
-  background: linear-gradient(90deg,#0d6efd,#6610f2);
-  color: white;
-}
+  .association-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
 
+  .association-card img {
+    height: 230px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .association-card:hover img {
+    transform: scale(1.1);
+  }
+
+  /* ================= STATS ================= */
+
+  .stats {
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    color: white;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  /* ================= CTA ================= */
+
+  .cta-section {
+    background: linear-gradient(90deg, #6610f2, #0d6efd);
+    color: white;
+  }
 </style>
-</head>
 
-<body>
 
-<!-- HERO -->
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-  <div class="hero-content">
-    <h1 class="fw-bold display-4">Vie Associative</h1>
-    <p class="lead">Développez vos talents et vivez votre passion</p>
+  <div>
+    <h1 class="display-3 fw-bold" data-aos="fade-up">
+      Vie Associative
+    </h1>
+    <p class="lead" data-aos="fade-up" data-aos-delay="200">
+      Développez vos talents • Exprimez votre passion • Rejoignez une communauté
+    </p>
   </div>
 </section>
-<!-- BOUTON RETOUR ACCUEIL -->
+
+
+<!-- ================= RETOUR ================= -->
+
 <div class="container text-center my-4">
-  <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">
+  <a href="{% url 'home' %}" class="btn btn-outline-dark btn-lg rounded-pill px-4">
     ← Retour à l’accueil
   </a>
 </div>
 
-<!-- STATS -->
+
+<!-- ================= STATS ================= -->
+
 <section class="stats text-center py-5">
   <div class="container">
     <div class="row">
 
       <div class="col-md-4">
-        <h2 class="fw-bold">+{{ associations|length }}</h2>
+        <div class="stat-number" id="countAssociations">
+          {{ associations|length }}
+        </div>
         <p>Associations</p>
       </div>
 
       <div class="col-md-4">
-        <h2 class="fw-bold">+500</h2>
+        <div class="stat-number" id="countStudents">
+          500
+        </div>
         <p>Étudiants actifs</p>
       </div>
 
       <div class="col-md-4">
-        <h2 class="fw-bold">+20</h2>
+        <div class="stat-number" id="countEvents">
+          20
+        </div>
         <p>Événements/an</p>
       </div>
 
@@ -98,61 +137,79 @@
   </div>
 </section>
 
-<!-- ASSOCIATIONS -->
+
+<!-- ================= ASSOCIATIONS ================= -->
+
 <section class="container py-5">
 
   <div class="text-center mb-5">
     <h2 class="fw-bold">Nos Clubs & Associations</h2>
-    <p class="text-muted">Rejoignez une communauté dynamique</p>
+    <p class="text-muted">Découvrez des communautés dynamiques et engagées</p>
   </div>
 
   <div class="row g-4">
 
     {% for association in associations %}
     <div class="col-md-4" data-aos="zoom-in">
-
       <div class="card association-card shadow">
 
+        {% if association.image %}
+        <img src="{{ association.image.url }}" class="w-100">
+        {% else %}
         <img src="{% static 'images/club.jpg' %}" class="w-100">
+        {% endif %}
 
         <div class="card-body text-center d-flex flex-column">
-
-          <h5 class="fw-bold text-primary">{{ association.nom }}</h5>
+          <h5 class="fw-bold text-primary">
+            {{ association.nom }}
+          </h5>
 
           <p class="text-muted">
-            {{ association.description|truncatechars:100 }}
+            {{ association.description|truncatechars:120 }}
           </p>
 
-          <button class="btn btn-outline-primary mt-auto"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal{{ forloop.counter }}">
+          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
+            data-bs-target="#modal{{ forloop.counter }}">
             Découvrir
           </button>
-
         </div>
       </div>
-
     </div>
 
-    <!-- MODAL -->
+
+    <!-- ================= MODAL ================= -->
+
     <div class="modal fade" id="modal{{ forloop.counter }}">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
 
           <div class="modal-header bg-primary text-white">
-            <h5>{{ association.nom }}</h5>
+            <h5 class="fw-bold">{{ association.nom }}</h5>
             <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
 
           <div class="modal-body">
             <p>{{ association.details }}</p>
+
+            <hr>
+
             <p><strong>Responsable :</strong> {{ association.responsable }}</p>
             <p><strong>Contact :</strong> {{ association.contact }}</p>
           </div>
 
           <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="#" class="btn btn-success">Rejoindre</a>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Fermer
+            </button>
+
+            <!-- <a href="{% url 'preinscription' %}?association={{ association.id }}"
+               class="btn btn-success rounded-pill">
+               Rejoindre
+            </a> -->
+            <a href="{% url 'inscription_association' association.id %}" class="btn btn-success rounded-pill">
+              Rejoindre
+            </a>
+
           </div>
 
         </div>
@@ -162,9 +219,12 @@
     {% endfor %}
 
   </div>
+
 </section>
 
-<!-- EVENEMENTS -->
+
+<!-- ================= EVENEMENTS ================= -->
+
 <section class="bg-light py-5">
   <div class="container text-center">
 
@@ -172,44 +232,79 @@
 
     <div class="row g-4">
 
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card shadow border-0 p-3">
-          <h5>Hackathon</h5>
-          <small class="text-primary">15 Mars</small>
-        </div>
-      </div>
+      {% for event in evenements %}
+      <div class="col-md-4">
+        <div class="card shadow border-0">
 
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card shadow border-0 p-3">
-          <h5>Journée d'intégration</h5>
-          <small class="text-primary">05 Avril</small>
-        </div>
-      </div>
+          {% if event.image %}
+          <img src="{{ event.image.url }}" class="card-img-top" style="height:200px;object-fit:cover;">
+          {% endif %}
 
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="card shadow border-0 p-3">
-          <h5>Tournoi sportif</h5>
-          <small class="text-primary">20 Avril</small>
+          <div class="card-body">
+            <h5>{{ event.titre }}</h5>
+            <small class="text-primary">
+              {{ event.date_event }}
+            </small>
+            <p class="mt-2 text-muted">
+              {{ event.description|truncatechars:80 }}
+            </p>
+          </div>
+
         </div>
       </div>
+      {% empty %}
+      <p>Aucun événement disponible</p>
+      {% endfor %}
 
     </div>
 
   </div>
 </section>
 
-<!-- CTA -->
-<section class="text-center py-5">
-  <h2 class="fw-bold">Envie de rejoindre une association ?</h2>
-  <a href="#" class="btn btn-primary btn-lg mt-3">S'inscrire maintenant</a>
+
+<!-- ================= CTA ================= -->
+
+<section class="cta-section text-center py-5" style="background: transparent;">
+  <h2 class="fw-bold" style="color: #0d6efd;">
+    Envie de rejoindre une association ?
+  </h2>
+  <a href="{% url 'preinscription' %}" 
+     class="btn btn-lg rounded-pill mt-3 px-4" 
+     style="background-color: #0d6efd; color: #f0f0f0; border: none;">
+    S'inscrire maintenant
+  </a>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ================= SCRIPTS ================= -->
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
 <script>
-AOS.init();
+  AOS.init();
+
+  /* Animation compteur */
+  function animateValue(id, start, end, duration) {
+    let range = end - start;
+    let current = start;
+    let increment = end > start ? 1 : -1;
+    let stepTime = Math.abs(Math.floor(duration / range));
+    let obj = document.getElementById(id);
+
+    let timer = setInterval(function () {
+      current += increment;
+      obj.innerHTML = current;
+      if (current == end) {
+        clearInterval(timer);
+      }
+    }, stepTime);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    animateValue("countAssociations", 0, {{ associations| length }}, 1000);
+  animateValue("countStudents", 0, 500, 1200);
+  animateValue("countEvents", 0, 20, 1000);
+});
 </script>
 
-</body>
-</html>
+{% endblock %}

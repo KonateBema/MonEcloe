@@ -1,29 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Passer le certificat - {{ certificat.titre }}
+{% endblock %}
+
+{% block content %}
+
 <div class="container py-5">
 
-<h2 class="text-center mb-4">{{ certificat.titre }}</h2>
+    <!-- Titre -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">{{ certificat.titre }}</h2>
+        <p class="text-muted">Répondez aux questions ci-dessous pour obtenir votre certificat</p>
+    </div>
 
-<form method="post">
-{% csrf_token %}
+    <!-- Formulaire -->
+    <div class="card shadow-lg p-4 border-0 rounded-4">
+        <form method="post">
+            {% csrf_token %}
 
-<input type="text" name="nom" class="form-control mb-4" placeholder="Votre nom" required>
+            <!-- Nom candidat -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Votre nom complet</label>
+                <input type="text"
+                       name="nom"
+                       class="form-control form-control-lg"
+                       placeholder="Entrez votre nom"
+                       required>
+            </div>
 
-{% for question in questions %}
-<div class="mb-4">
-  <h5>{{ question.texte }}</h5>
+            <hr class="mb-4">
 
-  {% for choix in question.choix_set.all %}
-  <div class="form-check">
-    <input class="form-check-input" type="radio"
-           name="{{ question.id }}"
-           value="{{ choix.id }}">
-    <label class="form-check-label">{{ choix.texte }}</label>
-  </div>
-  {% endfor %}
+            <!-- Questions -->
+            {% for question in questions %}
+            <div class="mb-4">
+
+                <h5 class="fw-semibold mb-3">
+                    Question {{ forloop.counter }} :
+                    {{ question.texte }}
+                </h5>
+
+                {% for choix in question.choix_set.all %}
+                <div class="form-check mb-2">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="question_{{ question.id }}"
+                           value="{{ choix.id }}"
+                           id="choix{{ choix.id }}"
+                           required>
+
+                    <label class="form-check-label"
+                           for="choix{{ choix.id }}">
+                        {{ choix.texte }}
+                    </label>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+
+            <!-- Bouton -->
+            <div class="text-center mt-4">
+                <button type="submit"
+                        class="btn btn-primary btn-lg w-100 rounded-pill">
+                    Soumettre le test
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Retour -->
+    <div class="text-center mt-4">
+        <a href="{% url 'certificats' %}"
+           class="btn btn-outline-secondary">
+           ← Retour aux certificats
+        </a>
+    </div>
 
 </div>
-{% endfor %}
 
-<button class="btn btn-primary w-100">Soumettre</button>
-
-</form>
-</div>
+{% endblock %}

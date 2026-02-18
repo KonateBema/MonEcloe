@@ -11,7 +11,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
 from .models import Slide, HomeSlide
-from .models import Ecole, Certificat, Question, Choix, Resultat
+from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
 
 # ==============================
 #      PRODUCT ADMIN
@@ -259,28 +259,56 @@ class PreinscriptionAdmin(admin.ModelAdmin):
     search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
     ordering = ('-date_inscription',)
     readonly_fields = ('date_inscription',)
+
+@admin.register(Association)
+class AssociationAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'responsable', 'contact', 'image_preview')
+    search_fields = ('nom', 'responsable')
+    list_per_page = 10
+    readonly_fields = ('image_preview',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="70" style="border-radius:8px;" />',
+                obj.image.url
+            )
+        return "Pas d’image"
+
+    image_preview.short_description = "Aperçu"
+
+class EvenementAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'association', 'date_event')
+    list_filter = ('association', 'date_event')
+    search_fields = ('titre',)
+
+class InscriptionAssociationAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'association', 'email', 'date_inscription')
+    list_filter = ('association',)
+    search_fields = ('nom', 'email')
+
+
+
+
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
 admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
-
 # Enregistrer les modèles sur l'admin personnalisé
-# Auth Django (OBLIGATOIRE)
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
-admin_site.register(Product, ProductAdmin)
 admin_site.register(Category, CategoryAdmin)
-admin_site.register(Supplier, SupplierAdmin)
-admin_site.register(SupplierDetail, SupplierDetailAdmin)
 admin_site.register(HomePage, HomePageAdmin)
-admin_site.register(Commande, CommandeAdmin)
+# admin_site.register(Commande, CommandeAdmin)
 admin_site.register(HomeSlide)
 admin_site.register(Slide)
-admin.site.register(Certificat)
-admin.site.register(Question)
-admin.site.register(Choix)
-admin.site.register(Resultat)
-
+admin_site.register(Certificat)
+admin_site.register(Question)
+admin_site.register(Choix)
+admin_site.register(Resultat)
+admin_site.register(Association, AssociationAdmin)
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)
+admin_site.register(Evenement, EvenementAdmin)
+admin_site.register(InscriptionAssociation, InscriptionAssociationAdmin)

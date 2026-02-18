@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  <h2 class="text-center mb-4">
+    Inscription - {{ association.nom }}
+  </h2>
+
+  <form method="post" class="shadow p-4 rounded">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label>Nom</label>
+      <input type="text" name="nom" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Téléphone</label>
+      <input type="text" name="telephone" class="form-control" required>
+    </div>
+
+    <button class="btn btn-primary w-100">
+      S'inscrire
+    </button>
+
+  </form>
+
+</div>
+
+{% endblock %}

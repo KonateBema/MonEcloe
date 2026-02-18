@@ -16,14 +16,14 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
 from .models import Programme  # Assure-toi que ton modèle s'appelle Programme
 import os
-from .models import Association
+from .models import Association , Evenement
 from .models import Product, HomePage, HomeSlide, Commande 
 from .forms import CommandeForm
 from reportlab.lib.pagesizes import A4
 from .models import Product, HomePage, HomeSlide, Commande ,Ecole 
 from .forms import CommandeForm
 from .forms import PreinscriptionForm
-from .models import Preinscription
+from .models import Preinscription , InscriptionAssociation
 from django.core.mail import send_mail
 from django.contrib import messages
 from reportlab.platypus import SimpleDocTemplate, Paragraph,Table,TableStyle
@@ -477,14 +477,24 @@ def programmes_view(request):
     }
     return render(request, 'programmes.html', context)
 
+# def vie_associative(request):
+#     associations = Association.objects.all()
+#     home_data = HomeData.objects.first()
+
+#     return render(request, 'vie_associative.html', {
+#         'associations': associations,
+#         'home_data': home_data
+#     })
 def vie_associative(request):
     associations = Association.objects.all()
-    home_data = HomeData.objects.first()
+    evenements = Evenement.objects.order_by('date_event')[:6]
 
-    return render(request, 'vie_associative.html', {
+    context = {
         'associations': associations,
-        'home_data': home_data
-    })
+        'evenements': evenements,
+    }
+
+    return render(request, 'vie_associative.html', context)
 
 def certificats(request):
     certificats = Certificat.objects.all()
@@ -521,4 +531,25 @@ def passer_certificat(request, id):
     return render(request, "passer_certificat.html", {
         "certificat": certificat,
         "questions": questions
+    })
+
+def inscription_association(request, association_id):
+    association = Association.objects.get(id=association_id)
+
+    if request.method == "POST":
+        nom = request.POST.get("nom")
+        email = request.POST.get("email")
+        telephone = request.POST.get("telephone")
+
+        InscriptionAssociation.objects.create(
+            association=association,
+            nom=nom,
+            email=email,
+            telephone=telephone
+        )
+
+        return redirect('vie_associative')
+
+    return render(request, "inscription_association.html", {
+        "association": association
     })
