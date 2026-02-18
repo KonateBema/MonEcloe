@@ -1,0 +1,29 @@
+<div class="container py-5">
+
+<h2 class="text-center mb-4">{{ certificat.titre }}</h2>
+
+<form method="post">
+{% csrf_token %}
+
+<input type="text" name="nom" class="form-control mb-4" placeholder="Votre nom" required>
+
+{% for question in questions %}
+<div class="mb-4">
+  <h5>{{ question.texte }}</h5>
+
+  {% for choix in question.choix_set.all %}
+  <div class="form-check">
+    <input class="form-check-input" type="radio"
+           name="{{ question.id }}"
+           value="{{ choix.id }}">
+    <label class="form-check-label">{{ choix.texte }}</label>
+  </div>
+  {% endfor %}
+
+</div>
+{% endfor %}
+
+<button class="btn btn-primary w-100">Soumettre</button>
+
+</form>
+</div>

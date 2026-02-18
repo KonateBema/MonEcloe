@@ -32,7 +32,8 @@ from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Spacer
-
+from .models import Certificat
+from .models import *
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
@@ -173,14 +174,6 @@ def dashboard_view(self, request):
 
     return TemplateResponse(request, "admin/dashboard.html", context)
 
-# def product_detail(request, id):
-#     product = get_object_or_404(Product, id=id)
-   
-
-#     return render(request, 'product_detail.html', {
-#         'product': product,
-        
-#     })
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
   
@@ -491,4 +484,41 @@ def vie_associative(request):
     return render(request, 'vie_associative.html', {
         'associations': associations,
         'home_data': home_data
+    })
+
+def certificats(request):
+    certificats = Certificat.objects.all()
+    home_data = HomeData.objects.first()
+    return render(request, 'certificats.html', {'certificats': certificats, 'home_data': home_data})
+
+def passer_certificat(request, id):
+
+    certificat = get_object_or_404(Certificat, id=id)
+    questions = Question.objects.filter(certificat=certificat)
+
+    if request.method == "POST":
+        score = 0
+        total = questions.count()
+
+        for question in questions:
+            reponse = request.POST.get(str(question.id))
+            if reponse:
+                choix = Choix.objects.get(id=reponse)
+                if choix.est_correct:
+                    score += 1
+
+        Resultat.objects.create(
+            certificat=certificat,
+            nom_etudiant=request.POST.get("nom"),
+            score=score
+        )
+
+        return render(request, "resultat.html", {
+            "score": score,
+            "total": total
+        })
+
+    return render(request, "passer_certificat.html", {
+        "certificat": certificat,
+        "questions": questions
     })

@@ -46,6 +46,8 @@ urlpatterns = [
     path('formations/', views.formations, name='formations'),
     path('programmes/', views.programmes_view, name='programmes'),  # <-- ici
     path("vie-associative/", views.vie_associative, name="vie_associative"),
+    path('certificats/', views.certificats, name='certificats'),
+    path('certificat/<int:id>/', views.passer_certificat, name="passer_certificat"),
 
 ]
 # permette de charger le fichier image dans django

@@ -319,3 +319,44 @@ class Association(models.Model):
 
     def __str__(self):
         return self.nom
+
+class Certificat(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    details = models.TextField()
+    lien_passage = models.URLField(blank=True, null=True)  # URL vers la plateforme de passage en ligne
+    image = models.ImageField(upload_to='certificats/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titre
+
+class Certificat(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.titre
+
+
+class Question(models.Model):
+    certificat = models.ForeignKey(Certificat, on_delete=models.CASCADE)
+    texte = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.texte
+
+
+class Choix(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    texte = models.CharField(max_length=255)
+    est_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.texte
+
+
+class Resultat(models.Model):
+    certificat = models.ForeignKey(Certificat, on_delete=models.CASCADE)
+    nom_etudiant = models.CharField(max_length=200)
+    score = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)

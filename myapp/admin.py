@@ -11,7 +11,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
 from .models import Slide, HomeSlide
-from .models import Ecole
+from .models import Ecole, Certificat, Question, Choix, Resultat
+
 # ==============================
 #      PRODUCT ADMIN
 # ==============================
@@ -275,6 +276,11 @@ admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Commande, CommandeAdmin)
 admin_site.register(HomeSlide)
 admin_site.register(Slide)
+admin.site.register(Certificat)
+admin.site.register(Question)
+admin.site.register(Choix)
+admin.site.register(Resultat)
+
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)

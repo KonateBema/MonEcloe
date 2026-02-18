@@ -1,0 +1,15 @@
+<div class="container text-center py-5">
+
+<h1>Résultat 🎉</h1>
+
+<h2>{{ score }} / {{ total }}</h2>
+
+{% if score >= total|divisibleby:2 %}
+<div class="alert alert-success">Félicitations vous êtes certifié ✅</div>
+{% else %}
+<div class="alert alert-danger">Échec ❌</div>
+{% endif %}
+
+<a href="/" class="btn btn-primary mt-3">Retour à l’accueil</a>
+
+</div>
