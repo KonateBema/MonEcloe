@@ -32,7 +32,7 @@ from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Spacer
-
+from .models import Certificat
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
@@ -484,3 +484,8 @@ def vie_associative(request):
         'associations': associations,
         'home_data': home_data
     })
+
+def certificats(request):
+    certificats = Certificat.objects.all()
+    home_data = HomeData.objects.first()
+    return render(request, 'certificats.html', {'certificats': certificats, 'home_data': home_data})

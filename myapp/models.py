@@ -319,3 +319,13 @@ class Association(models.Model):
 
     def __str__(self):
         return self.nom
+
+class Certificat(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    details = models.TextField()
+    lien_passage = models.URLField(blank=True, null=True)  # URL vers la plateforme de passage en ligne
+    image = models.ImageField(upload_to='certificats/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titre
