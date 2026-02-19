@@ -168,11 +168,11 @@ SILENCED_SYSTEM_CHECKS = [
 JAZZMIN_SETTINGS = {
 
     # 🔷 TITRES & BRANDING
-    "site_title": "MyShop Admin",
-    "site_header": "MyShop Dashboard",
-    "site_brand": "MyShop",
-    "welcome_sign": "Bienvenue sur le tableau de bord MyShop",
-    "copyright": "MyShop © 2026",
+    "site_title": "GEM Administration",
+    "site_header": "GEM Dashboard",
+    "site_brand": "GEM",
+    "welcome_sign": "Bienvenue sur le tableau de bord GEM",
+    "copyright": "GEM © 2026",
 
     # 🔷 LOGO
     "site_logo": "images/logo.png",

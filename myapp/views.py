@@ -34,6 +34,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Spacer
 from .models import Certificat
 from .models import *
+from .models import Formation
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
@@ -458,30 +459,41 @@ def contact_view(request):
 
     return render(request, 'contact.html')
 
-def formations(request):
-    formations_list = [
-        {
-            'titre': 'Informatique',
-            'description': 'Développement web, mobile, et Intelligence Artificielle.',
-            'details': 'Cours complets de HTML, CSS, JavaScript, Angular, Django, et Python.'
-        },
-        {
-            'titre': 'Comptabilité',
-            'description': 'Gestion financière et comptabilité.',
-            'details': 'Apprenez la comptabilité générale, analytique et la gestion des entreprises.'
-        },
-        {
-            'titre': 'Marketing',
-            'description': 'Marketing digital et communication.',
-            'details': 'Inclut SEO, réseaux sociaux, publicité digitale et stratégies marketing.'
-        },
-        {
-            'titre': 'Langues',
-            'description': 'Anglais, Français, Espagnol.',
-            'details': 'Cours interactifs avec pratique orale et écrite pour tous niveaux.'
-        },
-    ]
-    return render(request, 'formations.html', {'formations': formations_list})
+# def formations(request):
+#     formations_list = [
+#         {
+#             'titre': 'Informatique',
+#             'description': 'Développement web, mobile, et Intelligence Artificielle.',
+#             'details': 'Cours complets de HTML, CSS, JavaScript, Angular, Django, et Python.',
+#              'type_filiere': 'tertiaire'
+#         },
+#         {
+#             'titre': 'Comptabilité',
+#             'description': 'Gestion financière et comptabilité.',
+#             'details': 'Apprenez la comptabilité générale, analytique et la gestion des entreprises.'
+#         },
+#         {
+#             'titre': 'Marketing',
+#             'description': 'Marketing digital et communication.',
+#             'details': 'Inclut SEO, réseaux sociaux, publicité digitale et stratégies marketing.'
+#         },
+#         {
+#             'titre': 'Langues',
+#             'description': 'Anglais, Français, Espagnol.',
+#             'details': 'Cours interactifs avec pratique orale et écrite pour tous niveaux.'
+#         },
+#     ]
+#     return render(request, 'formations.html', {'formations': formations_list})
+
+
+# def formations(request):
+#     tertiaires = Formation.objects.filter(type_filiere='tertiaire')
+#     industrielles = Formation.objects.filter(type_filiere='industrielle')
+
+#     return render(request, 'formations.html', {
+#         'tertiaires': tertiaires,
+#         'industrielles': industrielles,
+#     })
 
 #     return render(request, 'programmes.html', context)
 def programmes_view(request):
@@ -569,4 +581,13 @@ def inscription_association(request, association_id):
 
     return render(request, "inscription_association.html", {
         "association": association
+    })
+
+def formations(request):
+    tertiaires = Formation.objects.filter(type_filiere='tertiaire')
+    industrielles = Formation.objects.filter(type_filiere='industrielle')
+
+    return render(request, 'formations.html', {
+        'tertiaires': tertiaires,
+        'industrielles': industrielles,
     })

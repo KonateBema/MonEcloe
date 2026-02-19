@@ -397,3 +397,19 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
+
+# models.py
+class Formation(models.Model):
+    TYPE_FILIERE_CHOICES = [
+        ('tertiaire', 'Tertiaire'),
+        ('industrielle', 'Industrielle'),
+    ]
+
+    titre = models.CharField(max_length=255)
+    description = models.TextField()
+    details = models.TextField(blank=True, null=True)
+    type_filiere = models.CharField(max_length=20, choices=TYPE_FILIERE_CHOICES)
+    image = models.ImageField(upload_to='formations/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titre

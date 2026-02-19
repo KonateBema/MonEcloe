@@ -7,7 +7,7 @@ Formations - {{ home_data.site_name }}
 
 {% block content %}
 
- <style>
+<style>
   .header {
     padding: 60px 20px;
     text-align: center;
@@ -35,65 +35,119 @@ Formations - {{ home_data.site_name }}
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   }
+
+  .header {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
+    color: #fff;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+/* Ticker conteneur */
+.ticker-wrapper {
+    overflow: hidden;
+    width: 100%;
+    border-top: 2px solid rgba(255,255,255,0.5);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
+    padding: 10px 0;
+    position: relative;
+}
+
+/* Ticker texte */
+.ticker {
+    display: flex;
+    width: max-content;
+    animation: tickerAnim 25s linear infinite;
+}
+
+.ticker span {
+    margin-right: 60px; /* espace entre les phrases */
+    font-size: 1.5rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Animation du ticker */
+@keyframes tickerAnim {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
 </style>
 
 
 <!-- HEADER -->
-<div class="container mt-4">
+<!-- <div class="container mt-4">
   <div class="header">
     <h1>Nos Formations - {{ home_data.site_name }}</h1>
+    <h1>Nos Formations - BTS</h1>
     <p>Découvrez nos programmes et inscrivez-vous facilement en ligne</p>
+  </div>
+</div> -->
+
+<!-- <div class="container mt-4">
+  <div class="header">
+    <div class="marquee-container">
+      <div class="marquee">
+        Nos Formations - BTS | Découvrez nos programmes et inscrivez-vous facilement en ligne
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="container mt-4">
+  <div class="header">
+    <div class="ticker-wrapper">
+      <div class="ticker">
+        <span>Nos Formations - BTS</span>
+        <span>Découvrez nos programmes et inscrivez-vous facilement en ligne</span>
+        <span>Formations en Informatique, Marketing, Comptabilité et plus</span>
+        <span>Rejoignez nos clubs et associations dynamiques</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- RETOUR ACCUEIL -->
-<div class="container text-center mb-4">
-  <a href="{% url 'home' %}" class="btn btn-secondary">← Retour à l’accueil</a>
-</div>
-
 <!-- LISTE DES FORMATIONS -->
-<div class="container">
-  <div class="row">
-    {% for formation in formations %}
-    <div class="col-md-6 col-lg-4 d-flex">
-      <div class="formation-card w-100">
-        <h5 class="text-primary">{{ formation.titre }}</h5>
-        <p>{{ formation.description|truncatechars:120 }}</p>
+<section class="container py-5">
 
-        <div class="mt-auto d-flex justify-content-between">
-          <button type="button" class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#modal{{ forloop.counter }}">
-            En savoir plus
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">🎓 Filières Tertiaires</h2>
+    <p class="text-muted">Découvrez nos formations tertiaires</p>
+  </div>
+
+  <div class="row g-4">
+
+    {% for formation in tertiaires %}
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="card formation-card shadow">
+
+        {% if formation.image %}
+        <img src="{{ formation.image.url }}" class="w-100">
+        {% else %}
+        <img src="{% static 'images/formation.jpg' %}" class="w-100">
+        {% endif %}
+
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
+          <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
+
+          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
+            data-bs-target="#modalT{{ forloop.counter }}">
+            Plus de details
           </button>
-
-          <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-            class="btn btn-success">
-            S'inscrire
-          </a>
         </div>
       </div>
     </div>
 
-    <!-- MODAL -->
-    <div class="modal fade"
-         id="modal{{ forloop.counter }}"
-         tabindex="-1"
-         aria-labelledby="modalLabel{{ forloop.counter }}"
-         aria-hidden="true">
-
-      <div class="modal-dialog modal-dialog-centered modal-lg">
+    <!-- Modal -->
+    <div class="modal fade" id="modalT{{ forloop.counter }}">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-
           <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title"
-                id="modalLabel{{ forloop.counter }}">
-              {{ formation.titre }}
-            </h5>
-            <button type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal">
-            </button>
+            <h5 class="fw-bold">{{ formation.titre }}</h5>
+            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
 
           <div class="modal-body">
@@ -101,24 +155,81 @@ Formations - {{ home_data.site_name }}
           </div>
 
           <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-              Fermer
-            </button>
-
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
             <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-               class="btn btn-success">
-              S'inscrire maintenant
+              class="btn btn-success rounded-pill">
+              S'inscrire
             </a>
           </div>
-
         </div>
       </div>
     </div>
 
     {% endfor %}
+
   </div>
-</div>
+</section>
+
+<!-- ================= INDUSTRIEL ================= -->
+<section class="container py-5">
+
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">🏭 Filières Industrielles</h2>
+    <p class="text-muted">Découvrez nos formations industrielles</p>
+  </div>
+
+  <div class="row g-4">
+
+    {% for formation in industrielles %}
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="card formation-card shadow">
+
+        {% if formation.image %}
+        <img src="{{ formation.image.url }}" class="w-100">
+        {% else %}
+        <img src="{% static 'images/formation.jpg' %}" class="w-100">
+        {% endif %}
+
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
+          <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
+
+          <button class="btn btn-outline-success rounded-pill mt-auto" data-bs-toggle="modal"
+            data-bs-target="#modalI{{ forloop.counter }}">
+            Plus de details
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalI{{ forloop.counter }}">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="fw-bold">{{ formation.titre }}</h5>
+            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <p>{{ formation.details }}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+              class="btn btn-success rounded-pill">
+              S'inscrire
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</section>
+
 
 {% endblock %}

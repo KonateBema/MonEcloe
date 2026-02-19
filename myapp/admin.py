@@ -9,9 +9,9 @@ from django.shortcuts import redirect
 from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande ,Preinscription,Contact
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-
 from .models import Slide, HomeSlide
 from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
+from .models import Formation
 
 # ==============================
 #      PRODUCT ADMIN
@@ -293,6 +293,11 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ('nom', 'prenom', 'email')
     list_filter = ('date_envoi',)
 
+@admin.register(Formation)
+class FormationAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'type_filiere')
+    list_filter = ('type_filiere',)
+    search_fields = ('titre',)
 
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
@@ -301,7 +306,7 @@ admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
 # Enregistrer les modèles sur l'admin personnalisé
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
-# admin_site.register(Category, CategoryAdmin)
+admin_site.register(Formation)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Contact, ContactAdmin)
 admin_site.register(Slide)
