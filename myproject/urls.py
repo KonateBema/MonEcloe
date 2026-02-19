@@ -29,11 +29,14 @@ from myapp.views import home , commande, commande_confirmation, generate_pdf
 from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnalisé
 from myapp.views import preinscription_view
 from myapp.views import contact_view
+from django.contrib.admin import AdminSite
 
 urlpatterns = [
     # Admin personnalisé
     # path('admin/', admin.site.urls),
+    # path('admin/', admin_site.urls),
     path('admin/', admin_site.urls),
+    path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
     # Pages du site
     path('', views.home, name='home'),
     path('commande/<int:product_id>/', views.commande, name='commande'),
@@ -50,7 +53,9 @@ urlpatterns = [
     path('certificats/', views.certificats, name='certificats'),
     path('certificat/<int:id>/', views.passer_certificat, name="passer_certificat"),
     path('inscription/<int:association_id>/', views.inscription_association,name='inscription_association'),
-    path('contact/', contact_view, name='contact'),
+    # path('contact/', contact_view, name='contact'),
+    path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
+
 
 
 ]

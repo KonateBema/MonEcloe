@@ -591,3 +591,28 @@ def formations(request):
         'tertiaires': tertiaires,
         'industrielles': industrielles,
     })
+
+
+@staff_member_required
+def admin_dashboard(request):
+
+    total_preinscrits = Preinscription.objects.count()
+
+    stats = (
+        Preinscription.objects
+        .values('formation__nom')
+        .annotate(total=Count('id'))
+        .order_by('formation__nom')
+    )
+
+    labels = [item['formation__nom'] for item in stats]
+    data = [item['total'] for item in stats]
+
+    context = {
+        'total_preinscrits': total_preinscrits,
+        'stats': stats,
+        'labels': labels,
+        'data': data,
+    }
+
+    return render(request, "admin/dashboard.html", context)

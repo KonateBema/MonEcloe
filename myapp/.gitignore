@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 __pycache__/
 *.pyc
 db.sqlite3
@@ -6,28 +5,3 @@ db.sqlite3
 venv/
 media/
 staticfiles/
-=======
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.sqlite3
-
-# Django
-db.sqlite3
-/media
-
-# Virtual environment
-venv/
-env/
-
-# VS Code
-.vscode/
-
-# Static files collected
-/staticfiles/
-
-# Environment variables
-.env
->>>>>>> 0b59f031442f271099bb366a22622afd6aa4dd24
