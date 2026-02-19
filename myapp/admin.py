@@ -12,7 +12,7 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .models import Slide, HomeSlide
 from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
 from .models import Formation
-
+from django.db.models import Count
 # ==============================
 #      PRODUCT ADMIN
 # ==============================
@@ -185,9 +185,10 @@ class CommandeAdmin(admin.ModelAdmin):
 # ==============================
 #      ADMIN PERSONNALISÉ
 # ==============================
-class MyAdminSite(admin.AdminSite):
-    site_header = "MvShop Dashboard"
-
+# class MyAdminSite(admin.AdminSite):
+    site_header = "GEM Dashboard"
+    site_title = "Admin GEM"
+    index_title = "Tableau de bord"
     def get_urls(self):
         urls = super().get_urls()
         # Dashboard à la racine de l'admin
@@ -219,7 +220,83 @@ class MyAdminSite(admin.AdminSite):
             monthly_orders=monthly_orders,
         )
         return TemplateResponse(request, "admin/dashboard.html", context)
+    
+    # def dashboard_view(self, request):
+        # Total préinscriptions
+        total_preinscrits = Preinscription.objects.count()
 
+        # Préinscriptions par formation
+        preinscrits_par_formation = (
+            Preinscription.objects
+            .values('formation__titre')  # On récupère le titre de la formation
+            .annotate(count=Count('id'))
+            .order_by('-count')
+        )
+
+        # Transforme les données pour le template
+        formations_html = []
+        for item in preinscrits_par_formation:
+            titre = item['formation__titre'] or 'Non défini'
+            count = item['count']
+            formations_html.append(f"<tr><td>{titre}</td><td>{count}</td></tr>")
+
+        context = dict(
+            self.each_context(request),
+            total_preinscrits=total_preinscrits,
+            preinscrits_par_formation=formations_html,
+        )
+
+        return TemplateResponse(request, "admin/dashboard.html")
+
+class MyAdminSite(admin.AdminSite):
+
+    def get_urls(self):
+        from django.urls import path
+        urls = super().get_urls()
+        custom_urls = [
+            path('dashboard/', self.admin_view(self.dashboard_view), name='dashboard'),
+        ]
+        return custom_urls + urls
+
+    def dashboard_view(self, request):
+        # --- Total d'étudiants préinscrits ---
+        total_preinscrits = Preinscription.objects.count()
+
+        # --- Nombre d'étudiants par formation ---
+        preinscrits_par_formation_qs = (
+            Preinscription.objects
+            .values('formation__nom')  # suppose que ton modèle Formation a un champ "nom"
+            .annotate(nombre=Count('id'))
+            .order_by('-nombre')
+        )
+
+        # Préparer une liste pour le tableau HTML et graphique
+        preinscrits_par_formation = []
+        formations_labels = []
+        formations_counts = []
+
+        for item in preinscrits_par_formation_qs:
+            formation = item['formation__nom'] or "Non défini"
+            nombre = item['nombre']
+
+            # Tableau HTML
+            preinscrits_par_formation.append(
+                f"<tr><td>{formation}</td><td>{nombre}</td></tr>"
+            )
+
+            # Graphique
+            formations_labels.append(formation)
+            formations_counts.append(nombre)
+
+        context = dict(
+            self.each_context(request),
+            total_preinscrits=total_preinscrits,
+            preinscrits_par_formation=preinscrits_par_formation,
+            formations_labels=formations_labels,
+            formations_counts=formations_counts,
+        )
+
+        return TemplateResponse(request, "/dashboard.html", context)
 
 @admin.register(HomeSlide)
 class HomeSlideAdmin(admin.ModelAdmin):
@@ -302,19 +379,21 @@ class FormationAdmin(admin.ModelAdmin):
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
-admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
+# admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
+admin_site = MyAdminSite(name='admin')
 # Enregistrer les modèles sur l'admin personnalisé
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
 admin_site.register(Formation)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Contact, ContactAdmin)
-admin_site.register(Slide)
+# admin_site.register(Slide)
 admin_site.register(Certificat)
 admin_site.register(Question)
 admin_site.register(Choix)
 admin_site.register(Resultat)
 admin_site.register(Association, AssociationAdmin)
+admin_site.register(HomeSlide, HomeSlideAdmin)  # <-- nouveau modèle
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)
