@@ -11,7 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!-- Lightbox CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
 
+<!-- Lightbox JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -128,6 +132,13 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'evenements' %}active fw-bold text-primary{% endif %}"
+                            href="{% url 'evenements' %}">
+                            Événements institutionnels
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'preinscription' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'preinscription' %}">
                             Préinscription en ligne
@@ -158,7 +169,7 @@
     </footer> -->
     <!-- FOOTER DESIGN MODERNE -->
 
-    
+
     <footer class="footer bg-dark text-white pt-5 pb-3">
         <div class="container">
             <div class="row">
@@ -177,8 +188,8 @@
                     <ul class="list-unstyled">
                         <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Accueil</a></li>
                         <li><a href="{% url 'formations' %}" class="text-white text-decoration-none">Formations</a></li>
-                        <li><a href="{% url 'vie_associative' %}" class="text-white text-decoration-none">Vie
-                                associative</a></li>
+                        <li><a href="{% url 'vie_associative' %}" class="text-white text-decoration-none">Vie associative</a></li>
+                        <li><a href="{% url 'evenements' %}"  class="text-white text-decoration-none">  Événements institutionnels </a></li>
                         <li><a href="{% url 'certificats' %}" class="text-white text-decoration-none">Certificats</a>
                         </li>
                     </ul>
@@ -193,7 +204,7 @@
                     <p class="small mb-2"><i class="bi bi-telephone-fill me-2"></i>groupeexpertmetier@gmail.com</p>
                     <!-- Réseaux sociaux -->
                     <div class="d-flex justify-content-center justify-content-md-end gap-2">
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                        <a href="https://www.facebook.com/share/p/14YeWXSMCHP/" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="bi bi-facebook"></i></a>
                         <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="bi bi-twitter"></i></a>

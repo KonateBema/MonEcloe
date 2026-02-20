@@ -1,7 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from PIL import Image
-
+from django.utils import timezone  # ← IMPORTANT
 # ==============================
 #       FORMATION
 # ==============================
@@ -153,77 +153,6 @@ class HomePage(models.Model):
     def __str__(self):
         return "Page d'accueil"
 
-
-# ================= COMMANDE =================
-# class Commande(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField()
-#     customer_name = models.CharField(max_length=255)
-#     customer_email = models.EmailField()
-#     customer_phone = models.CharField(max_length=20)
-#     customer_address = models.TextField()
-#     payment = models.CharField(
-#         max_length=50,
-#         choices=[
-#             ("LIVRAISON", "Paiement à la livraison"),
-#             ("ORANGE", "Orange Money"),
-#             ("MTN", "MTN Mobile Money"),
-#             ("WAVE", "Wave"),
-#         ],
-#     )
-#     is_delivered = models.BooleanField(default=False)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         verbose_name = "Commande"
-#         verbose_name_plural = "Commandes"
-
-#     def __str__(self):
-#         return f"Commande {self.id} - {self.customer_name}"
-
-#     def save(self, *args, **kwargs):
-#         if not self.pk:
-#             if self.product.quantity >= self.quantity:
-#                 self.product.quantity -= self.quantity
-#                 self.product.save()
-#             else:
-#                 raise ValueError("Stock insuffisant")
-#         super().save(*args, **kwargs)
-# ++++++++++++++++++++++++++++++++++
-# class Commande(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField()
-#     customer_name = models.CharField(max_length=255)
-#     customer_email = models.EmailField()
-#     customer_phone = models.CharField(max_length=20)
-#     customer_address = models.TextField()
-#     payment = models.CharField(
-#         max_length=50,
-#         choices=[
-#             ("LIVRAISON", "Paiement à la livraison"),
-#             ("ORANGE", "Orange Money"),
-#             ("MTN", "MTN Mobile Money"),
-#             ("WAVE", "Wave"),
-#         ],
-#     )
-#     is_delivered = models.BooleanField(default=False)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         verbose_name = "Commande"
-#         verbose_name_plural = "Commandes"
-
-#     def __str__(self):
-#         return f"Commande {self.id} - {self.customer_name}"
-
-#     @property
-#     def status(self):
-#         return "delivered" if self.is_delivered else "pending"
-
-#     @property
-#     def status_display(self):
-#         return "Livrée" if self.is_delivered else "En attente"
-# ================= COMMANDE =================
 class Commande(models.Model):
     PAYMENT_CHOICES = [
         ("LIVRAISON", "Paiement à la livraison"),
@@ -420,5 +349,10 @@ class Contact(models.Model):
     def __str__(self):
         return f"{self.nom} {self.prenom}"
 
+class Evenement_inst(models.Model):
+    titre = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='evenements/', blank=True, null=True)
+    video = models.FileField(upload_to='videos/', blank=True, null=True)
 
-
+    def __str__(self):
+        return self.titre

@@ -426,18 +426,6 @@ def telecharger_fiche(request, pk):
     doc.build(elements)
     return response
 
-# def contact_view(request):
-#     if request.method == "POST":
-#         nom = request.POST.get('nom')
-#         prenom = request.POST.get('prenom')
-#         email = request.POST.get('email')
-#         telephone = request.POST.get('telephone')
-#         message_text = request.POST.get('message')
-#         messages.success(request, "✅ Votre message a été envoyé avec succès !")
-#         return redirect('contact')  # Redirige vers la même page pour vider le formulaire
-
-#     return render(request, 'contact.html')
-
 def contact_view(request):
     if request.method == "POST":
         nom = request.POST.get("nom")
@@ -458,43 +446,9 @@ def contact_view(request):
         return redirect('home')
 
     return render(request, 'home.html')
-# def formations(request):
-#     formations_list = [
-#         {
-#             'titre': 'Informatique',
-#             'description': 'Développement web, mobile, et Intelligence Artificielle.',
-#             'details': 'Cours complets de HTML, CSS, JavaScript, Angular, Django, et Python.',
-#              'type_filiere': 'tertiaire'
-#         },
-#         {
-#             'titre': 'Comptabilité',
-#             'description': 'Gestion financière et comptabilité.',
-#             'details': 'Apprenez la comptabilité générale, analytique et la gestion des entreprises.'
-#         },
-#         {
-#             'titre': 'Marketing',
-#             'description': 'Marketing digital et communication.',
-#             'details': 'Inclut SEO, réseaux sociaux, publicité digitale et stratégies marketing.'
-#         },
-#         {
-#             'titre': 'Langues',
-#             'description': 'Anglais, Français, Espagnol.',
-#             'details': 'Cours interactifs avec pratique orale et écrite pour tous niveaux.'
-#         },
-#     ]
-#     return render(request, 'formations.html', {'formations': formations_list})
 
 
-# def formations(request):
-#     tertiaires = Formation.objects.filter(type_filiere='tertiaire')
-#     industrielles = Formation.objects.filter(type_filiere='industrielle')
 
-#     return render(request, 'formations.html', {
-#         'tertiaires': tertiaires,
-#         'industrielles': industrielles,
-#     })
-
-#     return render(request, 'programmes.html', context)
 def programmes_view(request):
     home_data = HomeData.objects.first()  # récupère la première ligne de ton modèle HomeData
     programmes = Programme.objects.all()  # récupère tous les programmes
@@ -505,14 +459,6 @@ def programmes_view(request):
     }
     return render(request, 'programmes.html', context)
 
-# def vie_associative(request):
-#     associations = Association.objects.all()
-#     home_data = HomeData.objects.first()
-
-#     return render(request, 'vie_associative.html', {
-#         'associations': associations,
-#         'home_data': home_data
-#     })
 def vie_associative(request):
     associations = Association.objects.all()
     evenements = Evenement.objects.order_by('date_event')[:6]
@@ -615,3 +561,12 @@ def admin_dashboard(request):
     }
 
     return render(request, "admin/dashboard.html", context)
+
+# def evenements_view(request):
+#     evenements = Evenement.objects.all().order_by('-id')          # tri par ordre d'ajout
+#     return render(request, 'evenements.html', {'evenements': evenements})
+
+def evenements_view(request):
+    # Trier les événements institutionnels par titre (ordre alphabétique)
+    evenements = Evenement_inst.objects.all().order_by('titre')  
+    return render(request, 'evenements.html', {'evenements': evenements})

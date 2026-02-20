@@ -30,7 +30,7 @@ from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnal
 from myapp.views import preinscription_view
 from myapp.views import contact_view
 from django.contrib.admin import AdminSite
-
+from myapp.views import evenements_view
 urlpatterns = [
     # Admin personnalisé
     # path('admin/', admin.site.urls),
@@ -45,6 +45,7 @@ urlpatterns = [
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
     # path('produit/<int:id>/', views.product_detail, name='product_detail')
     # path('contact/', views.contact, name='contact'),
+    path('evenementse/', evenements_view, name='evenements'),
     path('preinscription/', preinscription_view, name='preinscription'),
     path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
     path('formations/', views.formations, name='formations'),

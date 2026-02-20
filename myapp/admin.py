@@ -14,7 +14,7 @@ from .models import Slide, HomeSlide
 from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
 from django.db.models import Count
 from .models import Formation  # ajoute cette ligne si elle n'existe pas
-
+from .models import Evenement_inst
 
 
 # ==============================
@@ -381,7 +381,27 @@ def dashboard_callback(request, context):
 
     return context
 
+@admin.register(Evenement_inst)
+class Evenement_instAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'image_preview', 'video_preview')
+    fields = ('titre', 'image', 'video')
+    readonly_fields = ('image_preview', 'video_preview')
 
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="height:50px;" />', obj.image.url)
+        return "-"
+    image_preview.short_description = 'Image'
+
+    def video_preview(self, obj):
+        if obj.video:
+            return format_html(
+                '<video width="100" height="50" controls>'
+                '<source src="{}" type="video/mp4">'
+                'Votre navigateur ne supporte pas la vidéo.'
+                '</video>', obj.video.url)
+        return "-"
+    video_preview.short_description = 'Vidéo'
 # ==============================
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
@@ -397,6 +417,7 @@ admin_site.register(Formation)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Contact, ContactAdmin)
 # admin_site.register(Slide)
+admin_site.register(Evenement_inst, Evenement_instAdmin)
 admin_site.register(Certificat)
 admin_site.register(Question)
 admin_site.register(Choix)
