@@ -168,13 +168,10 @@
         </div>
       </div>
     </div>
-    
-
     <!-- FORMULAIRE CONTACT -->
     <div class="col-md-7">
       <div class="card shadow p-4 border-0">
         <h5 class="fw-bold mb-3">Besoin d'informations ? Contactez-nous</h5>
-
         {% if messages %}
           {% for message in messages %}
             <div class="alert alert-success">
@@ -182,25 +179,17 @@
             </div>
           {% endfor %}
         {% endif %}
-
-        <form method="POST" action="{% url 'contact' %}">
+        <form method="POST" action="{% url 'home' %}">
           {% csrf_token %}
-          
           <input type="text" class="form-control mb-3" name="nom" placeholder="Nom" required>
           <input type="text" class="form-control mb-3" name="prenom" placeholder="Prénom" required>
           <input type="email" class="form-control mb-3" name="email" placeholder="E-mail" required>
-          
-          <!-- Nouveau champ téléphone -->
           <input type="tel" class="form-control mb-3" name="telephone" placeholder="Numéro de téléphone" required pattern="[0-9]{10}" title="Entrez un numéro à 10 chiffres">
-        
           <textarea class="form-control mb-3" name="message" rows="4" placeholder="Votre message..." required></textarea>
           <button type="submit" class="btn btn-primary w-100">Envoyer</button>
         </form>
-        
-
       </div>
     </div>
-
   </div>
 </section>
 

@@ -455,10 +455,9 @@ def contact_view(request):
         )
 
         messages.success(request, "Votre message a été envoyé avec succès !")
-        return redirect('contact')
+        return redirect('home')
 
-    return render(request, 'contact.html')
-
+    return render(request, 'home.html')
 # def formations(request):
 #     formations_list = [
 #         {

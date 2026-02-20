@@ -345,7 +345,7 @@ class InscriptionAssociationAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'prenom', 'email', 'telephone', 'date_envoi')
+    list_display = ('nom', 'prenom', 'email', 'telephone','message' ,'date_envoi')
     search_fields = ('nom', 'prenom', 'email')
     list_filter = ('date_envoi',)
 
