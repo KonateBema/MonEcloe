@@ -8,7 +8,8 @@ Formations - {{ home_data.site_name }}
 {% block content %}
 
 <style>
-  .header {
+/* ========== HEADER ========== */
+.header {
     padding: 60px 20px;
     text-align: center;
     background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
@@ -16,37 +17,10 @@ Formations - {{ home_data.site_name }}
     border-radius: 12px;
     margin-bottom: 40px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .formation-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  .formation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  }
-
-  .header {
-    padding: 60px 20px;
-    text-align: center;
-    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
-    color: #fff;
-    border-radius: 12px;
-    margin-bottom: 40px;
     overflow: hidden;
 }
 
-/* Ticker conteneur */
+/* ========== TICKER ========== */
 .ticker-wrapper {
     overflow: hidden;
     width: 100%;
@@ -56,46 +30,64 @@ Formations - {{ home_data.site_name }}
     position: relative;
 }
 
-/* Ticker texte */
 .ticker {
-    display: flex;
-    width: max-content;
+    display: inline-flex;
+    white-space: nowrap;
     animation: tickerAnim 25s linear infinite;
 }
 
 .ticker span {
-    margin-right: 60px; /* espace entre les phrases */
-    font-size: 1.5rem;
+    margin-right: 40px;
+    font-size: 1.2rem;
     font-weight: bold;
     white-space: nowrap;
 }
 
-/* Animation du ticker */
 @keyframes tickerAnim {
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
 }
+
+/* ========== CARTES FORMATIONS ========== */
+.formation-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.formation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.formation-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .header {
+        padding: 40px 10px;
+    }
+    .ticker span {
+        font-size: 1rem;
+        margin-right: 20px;
+    }
+    .formation-card img {
+        height: 150px;
+    }
+}
 </style>
 
-
-<!-- HEADER -->
-<!-- <div class="container mt-4">
-  <div class="header">
-    <h1>Nos Formations - {{ home_data.site_name }}</h1>
-    <h1>Nos Formations - BTS</h1>
-    <p>Découvrez nos programmes et inscrivez-vous facilement en ligne</p>
-  </div>
-</div> -->
-
-<!-- <div class="container mt-4">
-  <div class="header">
-    <div class="marquee-container">
-      <div class="marquee">
-        Nos Formations - BTS | Découvrez nos programmes et inscrivez-vous facilement en ligne
-      </div>
-    </div>
-  </div>
-</div> -->
+<!-- ========== HEADER + TICKER ========== -->
 <div class="container mt-4">
   <div class="header">
     <div class="ticker-wrapper">
@@ -109,33 +101,28 @@ Formations - {{ home_data.site_name }}
   </div>
 </div>
 
-<!-- LISTE DES FORMATIONS -->
+<!-- ========== FILIÈRES TERTIAIRES ========== -->
 <section class="container py-5">
-
   <div class="text-center mb-5">
     <h2 class="fw-bold">🎓 Filières Tertiaires</h2>
     <p class="text-muted">Découvrez nos formations tertiaires</p>
   </div>
 
   <div class="row g-4">
-
     {% for formation in tertiaires %}
     <div class="col-md-4" data-aos="zoom-in">
       <div class="card formation-card shadow">
-
         {% if formation.image %}
-        <img src="{{ formation.image.url }}" class="w-100">
+          <img src="{{ formation.image.url }}" alt="{{ formation.titre }}">
         {% else %}
-        <img src="{% static 'images/formation.jpg' %}" class="w-100">
+          <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}">
         {% endif %}
-
         <div class="card-body text-center d-flex flex-column">
           <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
           <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
-
           <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
             data-bs-target="#modalT{{ forloop.counter }}">
-            Plus de details
+            Plus de détails
           </button>
         </div>
       </div>
@@ -149,54 +136,44 @@ Formations - {{ home_data.site_name }}
             <h5 class="fw-bold">{{ formation.titre }}</h5>
             <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
-
           <div class="modal-body">
             <p>{{ formation.details }}</p>
           </div>
-
           <div class="modal-footer">
             <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-              class="btn btn-success rounded-pill">
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">
               S'inscrire
             </a>
           </div>
         </div>
       </div>
     </div>
-
     {% endfor %}
-
   </div>
 </section>
 
-<!-- ================= INDUSTRIEL ================= -->
+<!-- ========== FILIÈRES INDUSTRIELLES ========== -->
 <section class="container py-5">
-
   <div class="text-center mb-5">
     <h2 class="fw-bold">🏭 Filières Industrielles</h2>
     <p class="text-muted">Découvrez nos formations industrielles</p>
   </div>
 
   <div class="row g-4">
-
     {% for formation in industrielles %}
     <div class="col-md-4" data-aos="zoom-in">
       <div class="card formation-card shadow">
-
         {% if formation.image %}
-        <img src="{{ formation.image.url }}" class="w-100">
+          <img src="{{ formation.image.url }}" alt="{{ formation.titre }}">
         {% else %}
-        <img src="{% static 'images/formation.jpg' %}" class="w-100">
+          <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}">
         {% endif %}
-
         <div class="card-body text-center d-flex flex-column">
           <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
           <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
-
           <button class="btn btn-outline-success rounded-pill mt-auto" data-bs-toggle="modal"
             data-bs-target="#modalI{{ forloop.counter }}">
-            Plus de details
+            Plus de détails
           </button>
         </div>
       </div>
@@ -210,26 +187,20 @@ Formations - {{ home_data.site_name }}
             <h5 class="fw-bold">{{ formation.titre }}</h5>
             <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
-
           <div class="modal-body">
             <p>{{ formation.details }}</p>
           </div>
-
           <div class="modal-footer">
             <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-              class="btn btn-success rounded-pill">
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">
               S'inscrire
             </a>
           </div>
         </div>
       </div>
     </div>
-
     {% endfor %}
-
   </div>
 </section>
-
 
 {% endblock %}

@@ -15,6 +15,8 @@ from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , 
 from django.db.models import Count
 from .models import Formation  # ajoute cette ligne si elle n'existe pas
 
+
+
 # ==============================
 #      PRODUCT ADMIN
 # ==============================
@@ -349,10 +351,20 @@ class ContactAdmin(admin.ModelAdmin):
 
 # @admin.register(Formation)
 class FormationAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'type_filiere')
+    list_display = ('titre', 'type_filiere','description','details' ,'image')
     list_filter = ('type_filiere',)
     search_fields = ('titre',)
-    
+
+# Définition des choix pour le type de filière
+
+
+# class Formation(models.Model):
+#     titre = models.CharField(max_length=200)
+#     description = models.TextField()
+#     details = models.TextField()
+#     type_filiere = models.CharField(max_length=50, choices=TYPE_FILIERE_CHOICES)
+#     image = models.ImageField(upload_to='formations/', blank=True, null=True)
+
 def dashboard_callback(request, context):
     context.update({
 
@@ -380,7 +392,7 @@ admin_site = MyAdminSite(name='myadmin')
 # Enregistrer les modèles sur l'admin personnalisé
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
-# admin_site.register(Formation)
+admin_site.register(Formation)
 # admin_site.register(Formation, FormationAdmin)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Contact, ContactAdmin)

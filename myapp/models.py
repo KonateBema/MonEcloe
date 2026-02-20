@@ -2,6 +2,28 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from PIL import Image
 
+# ==============================
+#       FORMATION
+# ==============================
+TYPE_FILIERE_CHOICES = [
+    ('tertiaire', 'Filière Tertiaire'),
+    ('industrielle', 'Filière Industrielle'),
+]
+
+class Formation(models.Model):
+    # titre = models.CharField(max_length=200)
+    titre = models.CharField(max_length=200, default="Formation par défaut")
+    description = models.TextField()
+    details = models.TextField(blank=True, null=True)
+    type_filiere = models.CharField(
+        max_length=50,
+        choices=TYPE_FILIERE_CHOICES,
+        default='tertiaire'
+    )
+    image = models.ImageField(upload_to='formations/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titre
 
 # ================= CATEGORY =================
 class Category(models.Model):
@@ -398,11 +420,5 @@ class Contact(models.Model):
     def __str__(self):
         return f"{self.nom} {self.prenom}"
 
-class Formation(models.Model):
-    nom = models.CharField(max_length=100 ,default="Moussa")
-    type_filiere = models.CharField(max_length=50 ,default="tertiaire ou industrielle")  # tertiaire ou industrielle
-    description = models.TextField(blank=True, null=True)
-    # ajoute d'autres champs si besoin
 
-    def __str__(self):
-        return self.nom
+
