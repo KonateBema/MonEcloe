@@ -38,34 +38,73 @@ from .models import Formation
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
+# def home(request):
+#     home_data = HomePage.objects.first()
+#     slides = HomeSlide.objects.all()
+
+#     query = request.GET.get('q')
+
+#     products = Product.objects.filter(quantity__gt=0)
+
+#     # Produits en stock
+#     products = Product.objects.filter(quantity__gt=0)
+#     if query:
+#         products = products.filter(
+#             Q(name__icontains=query) |
+#             Q(description__icontains=query)
+#         )
+
+#     # Toutes les écoles
+#     ecoles = Ecole.objects.all()
+
+#     return render(request, 'home.html', {
+#         'home_data': home_data,
+#         'products': products,
+#         'slides': slides,
+#         'query': query,
+#          'ecoles': ecoles,  # ✅ passe la liste des écoles
+#     })
+
 def home(request):
+
+    if request.method == "POST":
+        nom = request.POST.get("nom")
+        prenom = request.POST.get("prenom")
+        email = request.POST.get("email")
+        telephone = request.POST.get("telephone")
+        message_text = request.POST.get("message")
+
+        Contact.objects.create(
+            nom=nom,
+            prenom=prenom,
+            email=email,
+            telephone=telephone,
+            message=message_text
+        )
+
+        messages.success(request, "Votre message a été envoyé avec succès !")
+        return redirect('home')
+
     home_data = HomePage.objects.first()
     slides = HomeSlide.objects.all()
-
     query = request.GET.get('q')
 
     products = Product.objects.filter(quantity__gt=0)
 
-    # Produits en stock
-    products = Product.objects.filter(quantity__gt=0)
     if query:
         products = products.filter(
             Q(name__icontains=query) |
             Q(description__icontains=query)
         )
 
-    # Toutes les écoles
     ecoles = Ecole.objects.all()
-
     return render(request, 'home.html', {
         'home_data': home_data,
         'products': products,
         'slides': slides,
         'query': query,
-         'ecoles': ecoles,  # ✅ passe la liste des écoles
-    })
-
-       
+        'ecoles': ecoles,
+           })
     
 # =================== COMMANDE ===================
 def commande(request, product_id):
@@ -241,8 +280,8 @@ def preinscription_view(request):
     # Définition simple de home_data
     home_data = {
         'site_name': 'Ecole GEM',
-        'email': 'contact@ecoleakre.com',
-        'telephone': '+225 01 23 45 67 89'
+        'email': 'groupeexpertmetier@gmail.com',
+        'telephone': '+225 0150536686 /2722204432 '
     }
 
     initial_data = {}
@@ -442,7 +481,7 @@ def contact_view(request):
             message=message_text
         )
 
-        messages.success(request, "Votre message a été envoyé avec succès !")
+        # messages.success(request, "Votre message a été envoyé avec succès !")
         return redirect('home')
 
     return render(request, 'home.html')
