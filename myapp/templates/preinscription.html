@@ -19,6 +19,100 @@ Préinscription - {{ home_data.site_name }}
     margin-bottom: 40px;
   }
 
+  .header {
+    background: url("{% static 'images/slide1.jpg' %}") center/cover no-repeat;
+    padding: 80px 20px;
+    border-radius: 15px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* effet sombre sur l’image pour lisibilité */
+  .header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* pour mettre le texte au-dessus */
+  /* .header * {
+  position: relative;
+  z-index: 2;
+} */
+  .hero {
+    background: url("{% static 'images/preinscription.jpg' %}") center center / cover no-repeat;
+    height: 400px;
+    /* hauteur de la bannière */
+    width: 100%;
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    position: relative;
+    color: white;
+    overflow: hidden;
+  }
+
+  /* overlay sombre */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* contenu au-dessus de l’image */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .logo {
+    max-height: 90px;
+  }
+
+  /* .header {
+    background: url("{% static 'images/preinscription.jpg' %}") no-repeat center center;
+    background-size: cover;
+    min-height: 350px;
+   
+    width: 100%;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  } */
+
+  .header h1 {
+    color: #fff;
+  }
+
+  .header p {
+    color: #eee;
+  }
+
+
   .header img {
     max-height: 90px;
     margin-bottom: 15px;
@@ -32,7 +126,7 @@ Préinscription - {{ home_data.site_name }}
   .card-form {
     background: #fff;
     border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     padding: 40px;
   }
 
@@ -52,17 +146,24 @@ Préinscription - {{ home_data.site_name }}
 
 <div class="container py-5">
 
-  <div class="header">
+  <!-- <div class="header">
     <img src="{% static 'images/logo.png' %}" alt="Logo">
     <h1>Préinscription en ligne</h1>
     <p class="text-muted">{{ home_data.site_name }}</p>
+  </div> -->
+  <div class="hero">
+    <div class="hero-content">
+      <!-- <img src="{% static 'images/logo.png' %}" class="logo mb-3"> -->
+      <h1>Inscription et Préinscription en ligne</h1>
+      <p>{{ home_data.site_name }}</p>
+    </div>
   </div>
-
-  <div class="text-center mb-4">
+<br>
+  <!-- <div class="text-center mb-4">
     <a href="{% url 'home' %}" class="btn btn-secondary">
       ← Retour à l’accueil
     </a>
-  </div>
+  </div> -->
 
   <div class="card-form">
     <form id="preinscriptionForm" method="POST" onsubmit="showRecapModal(event)">
@@ -152,47 +253,47 @@ Préinscription - {{ home_data.site_name }}
 
 <script>
 
-function showRecapModal(event) {
-  event.preventDefault();
+  function showRecapModal(event) {
+    event.preventDefault();
 
-  recapNom.textContent = id_nom.value;
-  recapPrenom.textContent = id_prenom.value;
-  recapEmail.textContent = id_email.value;
-  recapTelephone.textContent = id_telephone.value;
-  recapDateNaissance.textContent = id_date_naissance.value;
-  recapFormation.textContent = id_formation.value;
-  recapCommune.textContent = id_commune.value;
-  recapQuartier.textContent = id_quartier.value;
-  recapMessage.textContent = id_message.value;
+    recapNom.textContent = id_nom.value;
+    recapPrenom.textContent = id_prenom.value;
+    recapEmail.textContent = id_email.value;
+    recapTelephone.textContent = id_telephone.value;
+    recapDateNaissance.textContent = id_date_naissance.value;
+    recapFormation.textContent = id_formation.value;
+    recapCommune.textContent = id_commune.value;
+    recapQuartier.textContent = id_quartier.value;
+    recapMessage.textContent = id_message.value;
 
-  new bootstrap.Modal(document.getElementById('recapModal')).show();
-}
+    new bootstrap.Modal(document.getElementById('recapModal')).show();
+  }
 
-function envoyerFormulaire() {
-  document.getElementById("preinscriptionForm").submit();
-}
+  function envoyerFormulaire() {
+    document.getElementById("preinscriptionForm").submit();
+  }
 
-function telechargerRecap() {
+  function telechargerRecap() {
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-  doc.setFontSize(16);
-  doc.text("Fiche de Préinscription", 20, 20);
+    doc.setFontSize(16);
+    doc.text("Fiche de Préinscription", 20, 20);
 
-  doc.setFontSize(12);
-  doc.text("Nom : " + recapNom.textContent, 20, 40);
-  doc.text("Prénom : " + recapPrenom.textContent, 20, 50);
-  doc.text("Email : " + recapEmail.textContent, 20, 60);
-  doc.text("Téléphone : " + recapTelephone.textContent, 20, 70);
-  doc.text("Date de naissance : " + recapDateNaissance.textContent, 20, 80);
-  doc.text("Formation : " + recapFormation.textContent, 20, 90);
-  doc.text("Commune : " + recapCommune.textContent, 20, 100);
-  doc.text("Quartier : " + recapQuartier.textContent, 20, 110);
-  doc.text("Message : " + recapMessage.textContent, 20, 120);
+    doc.setFontSize(12);
+    doc.text("Nom : " + recapNom.textContent, 20, 40);
+    doc.text("Prénom : " + recapPrenom.textContent, 20, 50);
+    doc.text("Email : " + recapEmail.textContent, 20, 60);
+    doc.text("Téléphone : " + recapTelephone.textContent, 20, 70);
+    doc.text("Date de naissance : " + recapDateNaissance.textContent, 20, 80);
+    doc.text("Formation : " + recapFormation.textContent, 20, 90);
+    doc.text("Commune : " + recapCommune.textContent, 20, 100);
+    doc.text("Quartier : " + recapQuartier.textContent, 20, 110);
+    doc.text("Message : " + recapMessage.textContent, 20, 120);
 
-  doc.save("recap_preinscription.pdf");
-}
+    doc.save("recap_preinscription.pdf");
+  }
 
 </script>
 
