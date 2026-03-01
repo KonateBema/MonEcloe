@@ -229,7 +229,7 @@ Préinscription - {{ home_data.site_name }}
         <p><strong>Commune :</strong> <span id="recapCommune"></span></p>
         <p><strong>Quartier :</strong> <span id="recapQuartier"></span></p>
 
-        <p><strong>Message :</strong> <span id="recapMessage"></span></p>
+        <p><strong>Message(1ere année ou 2eme année) :</strong> <span id="recapMessage"></span></p>
 
       </div>
 
@@ -290,7 +290,7 @@ Préinscription - {{ home_data.site_name }}
     doc.text("Formation : " + recapFormation.textContent, 20, 90);
     doc.text("Commune : " + recapCommune.textContent, 20, 100);
     doc.text("Quartier : " + recapQuartier.textContent, 20, 110);
-    doc.text("Message : " + recapMessage.textContent, 20, 120);
+    doc.text("Message  : " + recapMessage.textContent, 20, 120);
 
     doc.save("recap_preinscription.pdf");
   }
