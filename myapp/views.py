@@ -37,7 +37,6 @@ from .models import *
 from .models import Formation
 from reportlab.platypus import Image
 from reportlab.lib.units import mm
-from reportlab.pdfgen import canvas
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
@@ -282,7 +281,7 @@ def contact(request):
 def preinscription_view(request):
     # Définition simple de home_data
     home_data = {
-        'site_name': 'Ecole GEM',
+        'site_name': 'GEM Academy',
         'email': 'groupeexpertmetier@gmail.com',
         'telephone': '+225 0150536686 /2722204432 '
     }
@@ -470,52 +469,38 @@ def preinscription_view(request):
 
 
 def telecharger_fiche(request, pk):
-
+    # Récupérer l'inscription
     preinscrit = get_object_or_404(Preinscription, pk=pk)
 
+    # Création de la réponse HTTP pour un PDF
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.id}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.nom}.pdf"'
 
-    doc = SimpleDocTemplate(response, pagesize=A4,
-                            rightMargin=30, leftMargin=30,
-                            topMargin=100, bottomMargin=40,)
+    doc = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        rightMargin=30,
+        leftMargin=30,
+        topMargin=140,   # marge pour header
+        bottomMargin=60  # marge pour footer
+    )
 
     elements = []
     styles = getSampleStyleSheet()
 
-    logo_ecole = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_gem.png')
-    logo_ministere = os.path.join(settings.BASE_DIR, 'static', 'images', 'ministere.png')
-
-    img_ecole = ""
-    img_ministere = ""
-
-    if os.path.exists(logo_ecole):
-        img_ecole = Image(logo_ecole, width=1.3*inch, height=1.1*inch)
-
-    if os.path.exists(logo_ministere):
-        img_ministere = Image(logo_ministere, width=1.3*inch, height=1.1*inch)
-
-    entete = Paragraph("""
-    <b>RÉPUBLIQUE DE CÔTE D’IVOIRE</b><br/>
-    Union – Discipline – Travail
-    """, styles['Normal'])
-
-    titre = Paragraph("<b>FICHE DE PRÉINSCRIPTION</b>", styles['Title'])
-
-    header = Table([
-        [img_ecole, entete, img_ministere],
-        ["", titre, ""]
-    ], colWidths=[120, 260, 120])
-
-    elements.append(header)
+    # Titre principal
     elements.append(Spacer(1, 20))
+    elements.append(Paragraph("<b>FICHE DE PRÉINSCRIPTION</b>", styles['Title']))
+    elements.append(Spacer(1, 30))
 
+    # Tableau des informations
     data = [
         ["Nom", preinscrit.nom],
         ["Prénom", preinscrit.prenom],
         ["Email", preinscrit.email],
         ["Téléphone", preinscrit.telephone],
-        ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y") if preinscrit.date_naissance else ""],
+        ["Date de naissance",
+         preinscrit.date_naissance.strftime("%d/%m/%Y") if preinscrit.date_naissance else ""],
         ["Formation", preinscrit.formation],
         ["Commune", getattr(preinscrit, "commune", "")],
         ["Quartier", getattr(preinscrit, "quartier", "")],
@@ -523,40 +508,59 @@ def telecharger_fiche(request, pk):
     ]
 
     table = Table(data, colWidths=[150, 330])
+    table.setStyle(TableStyle([
+        ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
+        ('BACKGROUND', (0,0), (0,-1), colors.whitesmoke),
+        ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+        ('FONTSIZE', (0,0), (-1,-1), 10),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('TOPPADDING', (0,0), (-1,-1), 6),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+    ]))
+
     elements.append(table)
 
+    # Génération PDF avec header/footer
     doc.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
+
     return response
 
-
-def header_footer(canvas, doc):
-    canvas.saveState()
-
+def header_footer(c, doc):
+    c.saveState()
     width, height = A4
 
     # ===== HEADER =====
-    logo_ecole = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_gem.png')
-    logo_ministere = os.path.join(settings.BASE_DIR, 'static', 'images', 'ministere.png')
+    logo_ecole = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo.png')
+    logo_ministere = os.path.join(settings.BASE_DIR, 'static', 'images', 'ministere.jpg')
 
+    # Logos
     if os.path.exists(logo_ecole):
-        canvas.drawImage(logo_ecole, 30, height - 70, width=50, height=50, preserveAspectRatio=True)
+        c.drawImage(logo_ecole, 30, height - 100, width=60, height=60)
 
     if os.path.exists(logo_ministere):
-        canvas.drawImage(logo_ministere, width - 80, height - 70, width=50, height=50, preserveAspectRatio=True)
+        c.drawImage(logo_ministere, width - 90, height - 100, width=60, height=60)
 
-    canvas.setFont("Helvetica-Bold", 11)
-    canvas.drawCentredString(width / 2, height - 40, "RÉPUBLIQUE DE CÔTE D’IVOIRE")
-    canvas.setFont("Helvetica", 9)
-    canvas.drawCentredString(width / 2, height - 55, "Union – Discipline – Travail")
+    # Texte central
+    c.setFont("Helvetica-Bold", 12)
+    c.drawCentredString(width / 2, height - 60, "RÉPUBLIQUE DE CÔTE D’IVOIRE")
+
+    c.setFont("Helvetica", 10)
+    c.drawCentredString(width / 2, height - 75, "Union – Discipline – Travail")
+
+    # Ligne séparation
+    c.line(30, height - 110, width - 30, height - 110)
 
     # ===== FOOTER =====
-    canvas.setFont("Helvetica", 8)
-    canvas.drawCentredString(width / 2, 15, "Groupe Expert Métier (GEM) | www.gem.ci | +225 XX XX XX XX")
+    c.line(30, 40, width - 30, 40)
 
-    canvas.drawRightString(width - 30, 15, f"Page {doc.page}")
+    c.setFont("Helvetica", 9)
+    c.drawCentredString(width / 2, 25,
+        "Groupe Expert Métier (GEM) | www.gem.ci | +225 XX XX XX XX"
+    )
+    c.drawRightString(width - 30, 25, f"Page {doc.page}")
 
-    canvas.restoreState()
-
+    c.restoreState()
 
 def contact_view(request):
     if request.method == "POST":
@@ -694,11 +698,15 @@ def admin_dashboard(request):
 
     return render(request, "admin/dashboard.html", context)
 
-# def evenements_view(request):
-#     evenements = Evenement.objects.all().order_by('-id')          # tri par ordre d'ajout
-#     return render(request, 'evenements.html', {'evenements': evenements})
-
 def evenements_view(request):
     # Trier les événements institutionnels par titre (ordre alphabétique)
     evenements = Evenement_inst.objects.all().order_by('titre')  
     return render(request, 'evenements.html', {'evenements': evenements})
+
+# def e3m_school(request):
+#     return render(request, 'e3m_school.html')
+
+def e3m_school(request):
+    slides = Slide.objects.all()
+    filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
+    return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
