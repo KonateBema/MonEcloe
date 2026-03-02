@@ -1,4 +1,4 @@
-from django.contrib.admin import AdminSite   # ✅ AJOUTE ÇA
+from django.contrib.admin import AdminSite
 from django.contrib import admin, messages
 from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
@@ -13,9 +13,9 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .models import Slide, HomeSlide
 from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
 from django.db.models import Count
-from .models import Formation  # ajoute cette ligne si elle n'existe pas
+from .models import Formation 
 from .models import Evenement_inst
-
+from import_export import resources
 
 # ==============================
 #      PRODUCT ADMIN
@@ -80,10 +80,6 @@ class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         return "Pas d'image"
     image_tag.short_description = 'Aperçu'
 
-
-# ==============================
-#      CATEGORY ADMIN
-# ==============================
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'products_count')
@@ -98,9 +94,6 @@ class CategoryAdmin(admin.ModelAdmin):
     products_count.short_description = 'Nombre de produits'
 
 
-# ==============================
-#      SUPPLIER ADMIN
-# ==============================
 @admin.register(Supplier)
 class SupplierAdmin(admin.ModelAdmin):
     fields = ('name', 'phone')
@@ -117,10 +110,6 @@ class SupplierDetailAdmin(admin.ModelAdmin):
               'country', 'payment_terms', 'bank_account', 'region_served')
     list_per_page = 10
 
-
-# ==============================
-#      HOMEPAGE ADMIN
-# ==============================
 @admin.register(HomePage)
 class HomePageAdmin(admin.ModelAdmin):
     list_display = ('site_name', 'logo_tag', 'formatted_welcome_message', 'action1_message', 'action1_lien', 
@@ -187,72 +176,6 @@ class CommandeAdmin(admin.ModelAdmin):
 
 
 # ==============================
-#      ADMIN PERSONNALISÉ
-# ==============================
-
-# class MyAdminSite(admin.AdminSite):
-
-#     def get_urls(self):
-#         from django.urls import path
-#         urls = super().get_urls()
-#         custom_urls = [
-#             path('dashboard/', self.admin_view(self.dashboard_view), name='dashboard'),
-#         ]
-#         return custom_urls + urls
-
-#     def dashboard_view(self, request):
-#         # --- Total d'étudiants préinscrits ---
-#         total_preinscrits = Preinscription.objects.count()
-
-#         # --- Nombre d'étudiants par formation ---
-#         preinscrits_par_formation_qs = (
-#             Preinscription.objects
-#             .values('formation__nom')  # suppose que ton modèle Formation a un champ "nom"
-#             .annotate(nombre=Count('id'))
-#             .order_by('-nombre')
-#         )
-
-#         # Préparer une liste pour le tableau HTML et graphique
-#         preinscrits_par_formation = []
-#         formations_labels = []
-#         formations_counts = []
-
-#         for item in preinscrits_par_formation_qs:
-#             formation = item['formation__nom'] or "Non défini"
-#             nombre = item['nombre']
-
-#             # Tableau HTML
-#             preinscrits_par_formation.append(
-#                 f"<tr><td>{formation}</td><td>{nombre}</td></tr>"
-#             )
-
-#             # Graphique
-#             formations_labels.append(formation)
-#             formations_counts.append(nombre)
-
-#         context = dict(
-#             self.each_context(request),
-#             total_preinscrits=total_preinscrits,
-#             preinscrits_par_formation=preinscrits_par_formation,
-#             formations_labels=formations_labels,
-#             formations_counts=formations_counts,
-#         )
-
-#         return TemplateResponse(request, "/dashboard.html", context)
-# def index(self, request, extra_context=None):
-    # extra_context = extra_context or {}
-
-    # extra_context.update({
-    #     'total_etudiants': Preinscription.objects.count(),
-    #     'total_formations': Formation.objects.count(),
-    #     'total_evenements': Evenement.objects.count(),
-    #     'total_certificats': Certificat.objects.count(),
-    # })
-
-    # context = {
-    #     **self.each_context(request),   # ⭐ OBLIGATOIRE POUR LA SIDEBAR
-    #     **extra_context,
-    # }
 
     # return TemplateResponse(request, "admin/dashboard.html", context)
 class MyAdminSite(AdminSite):
@@ -308,12 +231,53 @@ class EcoleAdmin(admin.ModelAdmin):
         }),
     )
 
+# Resource pour import/export
+class PreinscriptionResource(resources.ModelResource):
+    class Meta:
+        model = Preinscription
+        skip_unchanged = True
+        report_skipped = True
+        import_id_fields = ('id',)
+
+# @admin.register(Preinscription)
+# class PreinscriptionAdmin(admin.ModelAdmin):
+#     list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'commune', 'quartier','date_inscription')
+#     list_filter = ('formation', 'date_inscription')
+#     search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
+#     ordering = ('-date_inscription',)
+#     readonly_fields = ('date_inscription',)
+# Admin avec import/export activé
+
 @admin.register(Preinscription)
-class PreinscriptionAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'commune', 'quartier','date_inscription')
-    list_filter = ('formation', 'date_inscription')
-    search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
+class PreinscriptionAdmin(ImportExportModelAdmin):
+    resource_class = PreinscriptionResource
+
+    list_display = (
+        'nom',
+        'prenom',
+        'email',
+        'telephone',
+        'formation',
+        'commune',
+        'quartier',
+        'date_inscription'
+    )
+
+    list_filter = (
+        'formation',
+        'date_inscription'
+    )
+
+    search_fields = (
+        'nom',
+        'prenom',
+        'email',
+        'telephone',
+        'formation'
+    )
+
     ordering = ('-date_inscription',)
+
     readonly_fields = ('date_inscription',)
 
 @admin.register(Association)
@@ -357,24 +321,13 @@ class FormationAdmin(admin.ModelAdmin):
 
 # Définition des choix pour le type de filière
 
-
-# class Formation(models.Model):
-#     titre = models.CharField(max_length=200)
-#     description = models.TextField()
-#     details = models.TextField()
-#     type_filiere = models.CharField(max_length=50, choices=TYPE_FILIERE_CHOICES)
-#     image = models.ImageField(upload_to='formations/', blank=True, null=True)
-
 def dashboard_callback(request, context):
     context.update({
-
         "total_etudiants": Etudiant.objects.count(),
         "total_formations": Formation.objects.count(),
         "total_evenements": Evenement.objects.count(),
         "total_certificats": Certificat.objects.count(),
-
         "derniers_etudiants": Etudiant.objects.order_by("-id")[:5],
-
         "mois": ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin"],
         "totals": [12, 19, 7, 15, 22, 30],
     })
@@ -395,7 +348,7 @@ class Evenement_instAdmin(admin.ModelAdmin):
 
     def video_preview(self, obj):
         if obj.video:
-            return format_html(
+            return format_html(   
                 '<video width="100" height="50" controls>'
                 '<source src="{}" type="video/mp4">'
                 'Votre navigateur ne supporte pas la vidéo.'

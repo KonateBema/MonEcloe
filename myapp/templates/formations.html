@@ -103,55 +103,36 @@ Formations - {{ home_data.site_name }}
 </div>
 
 <!-- ========== FILIÈRES TERTIAIRES ========== -->
+
 <section class="container py-5">
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">🎓 Filières Tertiaires</h2>
-    <p class="text-muted">Découvrez nos formations tertiaires</p>
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">EMBS</h2>
+  </div>
+
+  <!-- Rectangle Filières proposées -->
+  <div class="bg-light p-3 rounded-3 text-center mb-4 shadow-sm">
+    <h5 class="fw-bold m-0">Filières proposées</h5>
   </div>
 
   <div class="row g-4">
     {% for formation in tertiaires %}
-    <div class="col-md-4" data-aos="zoom-in">
+    <div class="col-md-4">
       <div class="card formation-card shadow">
         {% if formation.image %}
           <img src="{{ formation.image.url }}" alt="{{ formation.titre }}">
         {% else %}
           <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}">
         {% endif %}
-        <div class="card-body text-center d-flex flex-column">
+        <div class="card-body text-center">
           <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
           <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
-          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
-            data-bs-target="#modalT{{ forloop.counter }}">
-            Plus de détails
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalT{{ forloop.counter }}">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="fw-bold">{{ formation.titre }}</h5>
-            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <p>{{ formation.details }}</p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">
-              S'inscrire
-            </a>
-          </div>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
 </section>
+
 
 <!-- ========== FILIÈRES INDUSTRIELLES ========== -->
 <section class="container py-5">
