@@ -43,8 +43,7 @@ Préinscription - {{ home_data.site_name }}
 } */
   .hero {
     background: url("{% static 'images/preinscription.jpg' %}") center center / cover no-repeat;
-    height: 400px;
-    /* hauteur de la bannière */
+    min-height: 400px;
     width: 100%;
     border-radius: 15px;
 
@@ -56,6 +55,19 @@ Préinscription - {{ home_data.site_name }}
     position: relative;
     color: white;
     overflow: hidden;
+    padding: 60px 20px;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
   }
 
   /* overlay sombre */
@@ -158,7 +170,7 @@ Préinscription - {{ home_data.site_name }}
       <p>{{ home_data.site_name }}</p>
     </div>
   </div>
-<br>
+  <br>
   <!-- <div class="text-center mb-4">
     <a href="{% url 'home' %}" class="btn btn-secondary">
       ← Retour à l’accueil
@@ -273,28 +285,93 @@ Préinscription - {{ home_data.site_name }}
     document.getElementById("preinscriptionForm").submit();
   }
 
-  function telechargerRecap() {
-
+function telechargerRecap() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.setFontSize(16);
-    doc.text("Fiche de Préinscription", 20, 20);
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-    doc.setFontSize(12);
-    doc.text("Nom : " + recapNom.textContent, 20, 40);
-    doc.text("Prénom : " + recapPrenom.textContent, 20, 50);
-    doc.text("Email : " + recapEmail.textContent, 20, 60);
-    doc.text("Téléphone : " + recapTelephone.textContent, 20, 70);
-    doc.text("Date de naissance : " + recapDateNaissance.textContent, 20, 80);
-    doc.text("Formation : " + recapFormation.textContent, 20, 90);
-    doc.text("Commune : " + recapCommune.textContent, 20, 100);
-    doc.text("Quartier : " + recapQuartier.textContent, 20, 110);
-    doc.text("Message  : " + recapMessage.textContent, 20, 120);
+    // Logos
+    const logoEcole = new Image();
+    const logoMinistere = new Image();
 
-    doc.save("recap_preinscription.pdf");
-  }
+    logoEcole.src = "{% static 'images/logo.png' %}";
+    logoMinistere.src = "{% static 'images/ministere.jpg' %}";
 
+    let loadedImages = 0;
+    function tryDraw() {
+        loadedImages++;
+        if (loadedImages < 2) return; // attendre les 2 logos
+
+        // ===== HEADER =====
+        // Logo école à gauche
+        doc.addImage(logoEcole, 'PNG', 15, 10, 30, 30);
+
+        // Texte header ligne 1 à droite
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("RÉPUBLIQUE DE CÔTE D’IVOIRE", pageWidth - 15, 20, { align: "right" });
+
+        // Logo ministère à droite sous le texte
+        const logoWidth = 25;
+        const logoHeight = 25;
+        doc.addImage(logoMinistere, 'PNG', pageWidth - 15 - logoWidth, 25, logoWidth, logoHeight);
+
+        // Texte header ligne 2 à droite
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Union – Discipline – Travail", pageWidth - 15, 50, { align: "right" });
+
+        // Ligne séparation
+        doc.setLineWidth(0.5);
+        doc.line(10, 55, pageWidth - 10, 55);
+
+        // ===== CONTENU =====
+        let y = 65;
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text("Fiche de Préinscription", pageWidth / 2, y, { align: "center" });
+        y += 15;
+
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+
+        function addField(label, value) {
+            const splitText = doc.splitTextToSize(value, pageWidth - 80);
+            doc.setFont("helvetica", "bold");
+            doc.text(label + " :", 20, y);
+            doc.setFont("helvetica", "normal");
+            doc.text(splitText, 60, y);
+            y += splitText.length * 7 + 5;
+        }
+
+        addField("Nom", recapNom.textContent);
+        addField("Prénom", recapPrenom.textContent);
+        addField("Email", recapEmail.textContent);
+        addField("Téléphone", recapTelephone.textContent);
+        addField("Date de naissance", recapDateNaissance.textContent);
+        addField("Formation", recapFormation.textContent);
+        addField("Commune", recapCommune.textContent);
+        addField("Quartier", recapQuartier.textContent);
+        addField("Message", recapMessage.textContent);
+        // ===== FOOTER =====
+        doc.setLineWidth(0.5);
+        doc.line(10, pageHeight - 20, pageWidth - 10, pageHeight - 20);
+
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
+        doc.text("Groupe Expert Métier (GEM) | www.gem.ci | +225 0150536686", pageWidth / 2, pageHeight - 10, { align: "center" });
+        doc.text("Page 1", pageWidth - 20, pageHeight - 10, { align: "right" });
+
+        // Sauvegarde PDF
+        doc.save("recap_preinscription.pdf");
+    }
+
+    // Vérifier que les deux logos sont chargés
+    logoEcole.onload = tryDraw;
+    logoMinistere.onload = tryDraw;
+}
 </script>
 
 {% endblock %}

@@ -1,0 +1,491 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Vie Associative - {{ home_data.site_name }}
+{% endblock %}
+
+{% block content %}
+
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+    /* ================= HERO ================= */
+
+    .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("{% static 'images/schoole.jpg' %}") center/cover no-repeat;
+        height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        animation: heroZoom 20s ease-in-out infinite;
+    }
+
+    @keyframes heroZoom {
+        0% {
+            background-size: 100%;
+        }
+
+        50% {
+            background-size: 110%;
+        }
+
+        100% {
+            background-size: 100%;
+        }
+    }
+
+    /* ================= CARDS ================= */
+
+    .association-card {
+        border-radius: 20px;
+        overflow: hidden;
+        border: none;
+        transition: all 0.4s ease;
+    }
+
+    .association-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .association-card img {
+        height: 230px;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .association-card:hover img {
+        transform: scale(1.1);
+    }
+
+    /* ================= STATS ================= */
+
+    .stats {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        color: white;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    /* ================= CTA ================= */
+
+    .cta-section {
+        background: linear-gradient(90deg, #6610f2, #0d6efd);
+        color: white;
+    }
+
+    /* ================= FILIÈRES ================= */
+
+    .filiere-card {
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        border: none;
+    }
+
+    .filiere-card img {
+        height: 230px;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .filiere-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .filiere-card:hover img {
+        transform: scale(1.1);
+    }
+
+    /* ================= FILIÈRES PREMIUM ================= */
+
+    .filiere-premium {
+        border-radius: 20px;
+        overflow: hidden;
+        border: none;
+        transition: all 0.4s ease;
+    }
+
+    .filiere-img-wrapper {
+        position: relative;
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .filiere-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .filiere-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    }
+
+    .badge-premium {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(45deg, #0d6efd, #6610f2);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .filiere-premium:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .filiere-premium:hover img {
+        transform: scale(1.1);
+    }
+
+    /* ================= A PROPOS ================= */
+
+    .about-img-wrapper {
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .about-img-wrapper img {
+        transition: transform 0.6s ease;
+    }
+
+    .about-img-wrapper:hover img {
+        transform: scale(1.08);
+    }
+
+    /* ================= A PROPOS PREMIUM ================= */
+
+    .about-premium {
+        background: #f8f9fa;
+    }
+
+    .about-img-box {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .about-img-box img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .about-img-box:hover img {
+        transform: scale(1.1);
+    }
+
+    .about-overlay {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: linear-gradient(45deg, #0d6efd, #6610f2);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+    }
+
+    .mission-box {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .director-quote {
+        font-style: italic;
+        background: white;
+        padding: 20px;
+        border-left: 5px solid #0d6efd;
+        border-radius: 10px;
+    }
+
+    .director-quote span {
+        display: block;
+        margin-top: 8px;
+        font-weight: bold;
+        color: #0d6efd;
+    }
+</style>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+    <div>
+        <h1 class="display-3 fw-bold" data-aos="fade-up">
+            Établissement privé d’enseignement supérieur agréé
+        </h1>
+        <p class="lead" data-aos="fade-up" data-aos-delay="200">
+            L’ Ecole E3M SCHOOL OF ENGINEERING s’est spécialisée dans des formations, de Post-Bac à Bac+5, <br>
+            en génie civil, environnement durable et IA & Big Data, pour répondre aux défis les plus pressants de notre
+            époque
+        </p>
+    </div>
+</section>
+
+
+<!-- ================= RETOUR ================= -->
+
+<!-- <div class="container text-center my-4">
+  <a href="{% url 'home' %}" class="btn btn-outline-dark btn-lg rounded-pill px-4">
+    ← Retour à l’accueil
+  </a>
+</div>
+ -->
+
+<!-- ================= STATS ================= -->
+
+<section class="stats text-center py-5">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="stat-number" id="countAssociations">
+                    {{ associations|length }}
+                </div>
+                <p>Partenariat</p>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-number" id="countStudents">
+                    500
+                </div>
+                <p>Étudiants actifs</p>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-number" id="countEvents">
+                    20
+                </div>
+                <p>Événements/an</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= ASSOCIATIONS ================= -->
+
+<!-- ================= FILIÈRES CYCLE INGÉNIEUR ================= -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold display-5">Cycle Ingénieur</h2>
+        <p class="text-muted">Des filières d’excellence pour former les leaders de demain</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Génie Civil -->
+        <div class="col-md-4" data-aos="fade-up">
+            <div class="card filiere-premium h-100">
+
+                <div class="filiere-img-wrapper">
+                    <img src="{% static 'images/genie_civil.jpg' %}">
+                    <div class="filiere-overlay"></div>
+                    <span class="badge-premium">Bac+5</span>
+                </div>
+
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Génie Civil</h5>
+                    <p>
+                        Infrastructures modernes, modélisation 3D et gestion de projets
+                        de grande envergure.
+                    </p>
+                    <a href="#" class="btn btn-outline-primary rounded-pill mt-2 px-4">
+                        Découvrir
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Environnement Durable -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
+            <div class="card filiere-premium h-100">
+
+                <div class="filiere-img-wrapper">
+                    <img src="{% static 'images/environnement.jpg' %}">
+                    <div class="filiere-overlay"></div>
+                    <span class="badge-premium">Bac+5</span>
+                </div>
+
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Environnement Durable</h5>
+                    <p>
+                        Solutions écologiques, gestion durable des ressources
+                        et innovation environnementale.
+                    </p>
+                    <a href="#" class="btn btn-outline-primary rounded-pill mt-2 px-4">
+                        Découvrir
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- IA & Big Data -->
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card filiere-premium h-100">
+
+                <div class="filiere-img-wrapper">
+                    <img src="{% static 'images/ia_bigdata.jpg' %}">
+                    <div class="filiere-overlay"></div>
+                    <span class="badge-premium">Bac+5</span>
+                </div>
+
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">IA & Big Data</h5>
+                    <p>
+                        Intelligence artificielle, data science, machine learning
+                        et projets innovants.
+                    </p>
+                    <a href="#" class="btn btn-outline-primary rounded-pill mt-2 px-4">
+                        Découvrir
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ================= EVENEMENTS ================= -->
+
+<!-- ================= A PROPOS ================= -->
+<!-- ================= A PROPOS PREMIUM ================= -->
+
+<section class="about-premium py-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- IMAGE -->
+            <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
+                <div class="about-img-box">
+                    <img src="{% static 'images/schoole.jpg' %}">
+                    <div class="about-overlay">
+                        <h4>+10 ans d'excellence académique</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEXTE -->
+            <div class="col-md-6" data-aos="fade-left">
+                <h2 class="fw-bold display-6 mb-3">
+                    À propos de l’E3M School of Engineering
+                </h2>
+
+                <p class="text-muted">
+                    Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs
+                    compétents et innovants capables de répondre aux défis technologiques,
+                    environnementaux et industriels de demain.
+                </p>
+
+                <div class="mission-box my-4">
+                    <h5 class="fw-bold">Notre Mission</h5>
+                    <p>
+                        Former des leaders techniques dotés d’une expertise solide,
+                        d’un esprit critique et d’une forte capacité d’innovation.
+                    </p>
+                </div>
+
+                <div class="row text-center mt-4">
+
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">500+</h3>
+                        <small>Étudiants</small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">20+</h3>
+                        <small>Événements / an</small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">15+</h3>
+                        <small>Partenaires</small>
+                    </div>
+
+                </div>
+
+                <blockquote class="director-quote mt-4">
+                    “Notre ambition est de bâtir une génération d’ingénieurs
+                    capables d’impacter durablement le monde.”
+                    <br>
+                    <span>— Direction Générale</span>
+                </blockquote>
+
+                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
+                    Découvrir l’école
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA ================= -->
+
+<!-- <section class="cta-section text-center py-5" style="background: transparent;">
+    <h2 class="fw-bold" style="color: #0d6efd;">
+        Envie de rejoindre une association ?
+    </h2>
+    <a href="{% url 'preinscription' %}" class="btn btn-lg rounded-pill mt-3 px-4"
+        style="background-color: #0d6efd; color: #f0f0f0; border: none;">
+        S'inscrire maintenant
+    </a>
+</section> -->
+
+
+<!-- ================= SCRIPTS ================= -->
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+    AOS.init();
+
+    /* Animation compteur */
+    function animateValue(id, start, end, duration) {
+        let range = end - start;
+        let current = start;
+        let increment = end > start ? 1 : -1;
+        let stepTime = Math.abs(Math.floor(duration / range));
+        let obj = document.getElementById(id);
+
+        let timer = setInterval(function () {
+            current += increment;
+            obj.innerHTML = current;
+            if (current == end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        animateValue("countAssociations", 0, {{ associations| length }}, 1000);
+    animateValue("countStudents", 0, 500, 1200);
+    animateValue("countEvents", 0, 20, 1000);
+});
+</script>
+
+{% endblock %}

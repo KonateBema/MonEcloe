@@ -115,7 +115,7 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'home' %}">
-                            Ecole
+                            GEM Academy
                         </a>
                     </li>
 
@@ -125,7 +125,12 @@
                             Formations
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'e3m_school' %}active fw-bold text-primary{% endif %}"
+                           href="{% url 'e3m_school' %}">
+                           E3M School of Engineering
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'vie_associative' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'vie_associative' %}">

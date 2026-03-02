@@ -56,6 +56,7 @@ urlpatterns = [
     path('inscription/<int:association_id>/', views.inscription_association,name='inscription_association'),
     path('contact/', contact_view, name='contact'),
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    path('e3m-school/', views.e3m_school, name='e3m_school')
 
 
 
