@@ -35,6 +35,9 @@ from reportlab.platypus import Spacer
 from .models import Certificat
 from .models import *
 from .models import Formation
+from reportlab.platypus import Image
+from reportlab.lib.units import mm
+from reportlab.pdfgen import canvas
 # import weasyprint  # optionnel si tu veux un PDF
 # =================== HOME ===================
 
@@ -302,168 +305,258 @@ def preinscription_view(request):
         'home_data': home_data
     })
 
+# def telecharger_fiche(request, pk):
+#     # Récupérer l'inscription
+#     preinscrit = get_object_or_404(Preinscription, pk=pk)
+
+#     # Création de la réponse HTTP pour un PDF
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.id}.pdf"'
+
+#     doc = SimpleDocTemplate(response, pagesize=A4,
+#                             rightMargin=30, leftMargin=30,
+#                             topMargin=60, bottomMargin=60)
+
+#     elements = []
+#     styles = getSampleStyleSheet()
+#     styleH = styles['Heading1']
+#     styleN = styles['Normal']
+
+#     # --- LOGO du site ---
+#     logo_path = os.path.join(settings.BASE_DIR, 'myapp', 'static', 'logo.png')  # chemin vers ton logo statique
+#     if os.path.exists(logo_path):
+#         logo = Image(logo_path)
+#         logo.drawHeight = 1*inch
+#         logo.drawWidth = 2*inch
+#         elements.append(logo)
+#         elements.append(Spacer(1, 12))
+
+#     # --- TITRE ---
+#     elements.append(Paragraph("Fiche de Préinscription", styleH))
+#     elements.append(Spacer(1, 20))
+
+#     # --- TABLEAU DES INFORMATIONS ---
+#     data = [
+#         ["Nom", preinscrit.nom],
+#         ["Prénom", preinscrit.prenom],
+#         ["Email", preinscrit.email],
+#         ["Téléphone", preinscrit.telephone],
+#         ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y")],
+#         ["Formation", preinscrit.formation],
+#         ["Message", preinscrit.message],
+#     ]
+
+#     table = Table(data, colWidths=[120, 350])
+#     table.setStyle(TableStyle([
+#         ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
+#         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+#         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+#         ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+#         ('FONTSIZE', (0,0), (-1,-1), 10),
+#         ('BOTTOMPADDING', (0,0), (-1,0), 8),
+#         ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
+#     ]))
+#     elements.append(table)
+#     elements.append(Spacer(1, 50))
+
+#     # --- PIED DE PAGE ---
+#     footer_text = Paragraph("CONSULTATION EN LIGNE DES DOSSIERS 2025-2026 https://inscription.mesrs-ci.net/", styleN)
+#     elements.append(footer_text)
+
+#     # Génération du PDF
+#     doc.build(elements)
+
+#     return response
+#     # Récupérer l'inscription
+#     preinscrit = get_object_or_404(Preinscription, pk=pk)
+
+#     # Création de la réponse HTTP pour un PDF
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.id}.pdf"'
+
+#     doc = SimpleDocTemplate(response, pagesize=A4,
+#                             rightMargin=30, leftMargin=30,
+#                             topMargin=60, bottomMargin=60)
+
+#     elements = []
+#     styles = getSampleStyleSheet()
+#     styleH = styles['Heading1']
+#     styleN = styles['Normal']
+
+#     # --- LOGO en haut ---
+#     if preinscrit.logo:  # si tu as ajouté un champ logo à Preinscription ou sinon tu peux mettre home_data.logo
+#         logo_path = preinscrit.logo.path  # ou mettre chemin statique: "myapp/static/logo.png"
+#         logo = Image(logo_path)
+#         logo.drawHeight = 1*inch
+#         logo.drawWidth = 2*inch
+#         elements.append(logo)
+#         elements.append(Spacer(1, 12))
+
+#     # --- TITRE ---
+#     elements.append(Paragraph("Fiche de Préinscription", styleH))
+#     elements.append(Spacer(1, 20))
+
+#     # --- TABLEAU DES INFORMATIONS ---
+#     data = [
+#         ["Nom", preinscrit.nom],
+#         ["Prénom", preinscrit.prenom],
+#         ["Email", preinscrit.email],
+#         ["Téléphone", preinscrit.telephone],
+#         ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y")],
+#         ["Formation", preinscrit.formation],
+#         ["Message", preinscrit.message],
+#     ]
+
+#     table = Table(data, colWidths=[120, 350])
+#     table.setStyle(TableStyle([
+#         ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
+#         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+#         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+#         ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+#         ('FONTSIZE', (0,0), (-1,-1), 10),
+#         ('BOTTOMPADDING', (0,0), (-1,0), 8),
+#         ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
+#     ]))
+#     elements.append(table)
+#     elements.append(Spacer(1, 50))
+
+#     # --- PIED DE PAGE ---
+#     footer_text = Paragraph("BANQUE DE L’UNION-COTE D’IVOIRE – BDU-CI | www.bdu-ci.ci", styleN)
+#     elements.append(footer_text)
+
+#     # Génération du PDF
+#     doc.build(elements)
+
+#     return response
+#     # preinscrit = Preinscrit.objects.get(pk=pk)
+#     preinscrit = get_object_or_404(Preinscription, pk=pk)
+
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.nom}.pdf"'
+
+#     doc = SimpleDocTemplate(response)
+#     elements = []
+
+#     styles = getSampleStyleSheet()
+#     elements.append(Paragraph("<b>FICHE DE PRÉINSCRIPTION</b>", styles['Title']))
+#     elements.append(Spacer(1, 0.5 * inch))
+
+#     data = [
+#         ["Nom", preinscrit.nom],
+#         ["Prénom", preinscrit.prenom],
+#         ["Email", preinscrit.email],
+#         ["Téléphone", preinscrit.telephone],
+#         ["Date de naissance", str(preinscrit.date_naissance)],
+#         ["Formation", preinscrit.formation],
+#         ["Message", preinscrit.message],
+#     ]
+
+#     table = Table(data, colWidths=[150, 300])
+#     table.setStyle(TableStyle([
+#         ('BACKGROUND', (0,0), (-1,0), colors.white),
+#         ('GRID', (0,0), (-1,-1), 1, colors.grey),
+#         ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+#         ('FONTSIZE', (0,0), (-1,-1), 10),
+#         ('LEFTPADDING', (0,0), (-1,-1), 8),
+#         ('RIGHTPADDING', (0,0), (-1,-1), 8),
+#         ('TOPPADDING', (0,0), (-1,-1), 6),
+#         ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+#     ]))
+
+#     elements.append(table)
+
+#     doc.build(elements)
+#     return response
+
+
 def telecharger_fiche(request, pk):
-    # Récupérer l'inscription
+
     preinscrit = get_object_or_404(Preinscription, pk=pk)
 
-    # Création de la réponse HTTP pour un PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.id}.pdf"'
 
     doc = SimpleDocTemplate(response, pagesize=A4,
                             rightMargin=30, leftMargin=30,
-                            topMargin=60, bottomMargin=60)
+                            topMargin=100, bottomMargin=40,)
 
     elements = []
     styles = getSampleStyleSheet()
-    styleH = styles['Heading1']
-    styleN = styles['Normal']
 
-    # --- LOGO du site ---
-    logo_path = os.path.join(settings.BASE_DIR, 'myapp', 'static', 'logo.png')  # chemin vers ton logo statique
-    if os.path.exists(logo_path):
-        logo = Image(logo_path)
-        logo.drawHeight = 1*inch
-        logo.drawWidth = 2*inch
-        elements.append(logo)
-        elements.append(Spacer(1, 12))
+    logo_ecole = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_gem.png')
+    logo_ministere = os.path.join(settings.BASE_DIR, 'static', 'images', 'ministere.png')
 
-    # --- TITRE ---
-    elements.append(Paragraph("Fiche de Préinscription", styleH))
+    img_ecole = ""
+    img_ministere = ""
+
+    if os.path.exists(logo_ecole):
+        img_ecole = Image(logo_ecole, width=1.3*inch, height=1.1*inch)
+
+    if os.path.exists(logo_ministere):
+        img_ministere = Image(logo_ministere, width=1.3*inch, height=1.1*inch)
+
+    entete = Paragraph("""
+    <b>RÉPUBLIQUE DE CÔTE D’IVOIRE</b><br/>
+    Union – Discipline – Travail
+    """, styles['Normal'])
+
+    titre = Paragraph("<b>FICHE DE PRÉINSCRIPTION</b>", styles['Title'])
+
+    header = Table([
+        [img_ecole, entete, img_ministere],
+        ["", titre, ""]
+    ], colWidths=[120, 260, 120])
+
+    elements.append(header)
     elements.append(Spacer(1, 20))
 
-    # --- TABLEAU DES INFORMATIONS ---
     data = [
         ["Nom", preinscrit.nom],
         ["Prénom", preinscrit.prenom],
         ["Email", preinscrit.email],
         ["Téléphone", preinscrit.telephone],
-        ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y")],
+        ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y") if preinscrit.date_naissance else ""],
         ["Formation", preinscrit.formation],
+        ["Commune", getattr(preinscrit, "commune", "")],
+        ["Quartier", getattr(preinscrit, "quartier", "")],
         ["Message", preinscrit.message],
     ]
 
-    table = Table(data, colWidths=[120, 350])
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
-        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
-        ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,0), 8),
-        ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
-    ]))
-    elements.append(table)
-    elements.append(Spacer(1, 50))
-
-    # --- PIED DE PAGE ---
-    footer_text = Paragraph("CONSULTATION EN LIGNE DES DOSSIERS 2025-2026 https://inscription.mesrs-ci.net/", styleN)
-    elements.append(footer_text)
-
-    # Génération du PDF
-    doc.build(elements)
-
-    return response
-    # Récupérer l'inscription
-    preinscrit = get_object_or_404(Preinscription, pk=pk)
-
-    # Création de la réponse HTTP pour un PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.id}.pdf"'
-
-    doc = SimpleDocTemplate(response, pagesize=A4,
-                            rightMargin=30, leftMargin=30,
-                            topMargin=60, bottomMargin=60)
-
-    elements = []
-    styles = getSampleStyleSheet()
-    styleH = styles['Heading1']
-    styleN = styles['Normal']
-
-    # --- LOGO en haut ---
-    if preinscrit.logo:  # si tu as ajouté un champ logo à Preinscription ou sinon tu peux mettre home_data.logo
-        logo_path = preinscrit.logo.path  # ou mettre chemin statique: "myapp/static/logo.png"
-        logo = Image(logo_path)
-        logo.drawHeight = 1*inch
-        logo.drawWidth = 2*inch
-        elements.append(logo)
-        elements.append(Spacer(1, 12))
-
-    # --- TITRE ---
-    elements.append(Paragraph("Fiche de Préinscription", styleH))
-    elements.append(Spacer(1, 20))
-
-    # --- TABLEAU DES INFORMATIONS ---
-    data = [
-        ["Nom", preinscrit.nom],
-        ["Prénom", preinscrit.prenom],
-        ["Email", preinscrit.email],
-        ["Téléphone", preinscrit.telephone],
-        ["Date de naissance", preinscrit.date_naissance.strftime("%d/%m/%Y")],
-        ["Formation", preinscrit.formation],
-        ["Message", preinscrit.message],
-    ]
-
-    table = Table(data, colWidths=[120, 350])
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
-        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
-        ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,0), 8),
-        ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
-    ]))
-    elements.append(table)
-    elements.append(Spacer(1, 50))
-
-    # --- PIED DE PAGE ---
-    footer_text = Paragraph("BANQUE DE L’UNION-COTE D’IVOIRE – BDU-CI | www.bdu-ci.ci", styleN)
-    elements.append(footer_text)
-
-    # Génération du PDF
-    doc.build(elements)
-
-    return response
-    # preinscrit = Preinscrit.objects.get(pk=pk)
-    preinscrit = get_object_or_404(Preinscription, pk=pk)
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="fiche_preinscription_{preinscrit.nom}.pdf"'
-
-    doc = SimpleDocTemplate(response)
-    elements = []
-
-    styles = getSampleStyleSheet()
-    elements.append(Paragraph("<b>FICHE DE PRÉINSCRIPTION</b>", styles['Title']))
-    elements.append(Spacer(1, 0.5 * inch))
-
-    data = [
-        ["Nom", preinscrit.nom],
-        ["Prénom", preinscrit.prenom],
-        ["Email", preinscrit.email],
-        ["Téléphone", preinscrit.telephone],
-        ["Date de naissance", str(preinscrit.date_naissance)],
-        ["Formation", preinscrit.formation],
-        ["Message", preinscrit.message],
-    ]
-
-    table = Table(data, colWidths=[150, 300])
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.white),
-        ('GRID', (0,0), (-1,-1), 1, colors.grey),
-        ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
-    ]))
-
+    table = Table(data, colWidths=[150, 330])
     elements.append(table)
 
-    doc.build(elements)
+    doc.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
     return response
+
+
+def header_footer(canvas, doc):
+    canvas.saveState()
+
+    width, height = A4
+
+    # ===== HEADER =====
+    logo_ecole = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_gem.png')
+    logo_ministere = os.path.join(settings.BASE_DIR, 'static', 'images', 'ministere.png')
+
+    if os.path.exists(logo_ecole):
+        canvas.drawImage(logo_ecole, 30, height - 70, width=50, height=50, preserveAspectRatio=True)
+
+    if os.path.exists(logo_ministere):
+        canvas.drawImage(logo_ministere, width - 80, height - 70, width=50, height=50, preserveAspectRatio=True)
+
+    canvas.setFont("Helvetica-Bold", 11)
+    canvas.drawCentredString(width / 2, height - 40, "RÉPUBLIQUE DE CÔTE D’IVOIRE")
+    canvas.setFont("Helvetica", 9)
+    canvas.drawCentredString(width / 2, height - 55, "Union – Discipline – Travail")
+
+    # ===== FOOTER =====
+    canvas.setFont("Helvetica", 8)
+    canvas.drawCentredString(width / 2, 15, "Groupe Expert Métier (GEM) | www.gem.ci | +225 XX XX XX XX")
+
+    canvas.drawRightString(width - 30, 15, f"Page {doc.page}")
+
+    canvas.restoreState()
+
 
 def contact_view(request):
     if request.method == "POST":
