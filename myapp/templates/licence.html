@@ -29,15 +29,15 @@ Licence - {{ home_data.site_name }}
 
 <section class="hero">
   <div>
-    <h1 class="display-3 fw-bold" data-aos="fade-up">Licence</h1>
-    <p class="lead" data-aos="fade-up" data-aos-delay="200">Explorez nos formations de Licence pour un cursus supérieur solide</p>
+    <h1 class="display-3 fw-bold" data-aos="fade-up">Licence professionnelle </h1>
+    <p class="lead" data-aos="fade-up" data-aos-delay="200">Explorez nos formations de Licence professionnelle pour un cursus supérieur solide</p>
   </div>
 </section>
 
 <section class="stats text-center py-5">
   <div class="container">
     <div class="row">
-      <div class="col-md-4"><div class="stat-number" id="countFiliere">{{ licences|length }}</div><p>Formations</p></div>
+      <div class="col-md-4"><div class="stat-number" id="countFiliere">{{ Licence |length }}</div><p>Formations</p></div>
       <div class="col-md-4"><div class="stat-number" id="countStudents">600</div><p>Étudiants inscrits</p></div>
       <div class="col-md-4"><div class="stat-number" id="countOptions">8</div><p>Options disponibles</p></div>
     </div>
@@ -45,7 +45,7 @@ Licence - {{ home_data.site_name }}
 </section>
 
 <section class="container py-5">
-  <div class="text-center mb-5"><h2 class="fw-bold">Nos Programmes de Licence</h2><p class="text-muted">Découvrez nos spécialités Licence</p></div>
+  <div class="text-center mb-5"><h2 class="fw-bold">Nos Programmes de Licence </h2><p class="text-muted">Découvrez nos spécialités Licence professionnelle</p></div>
   <div class="row g-4">
     {% for formation in licences %}
     <div class="col-md-4" data-aos="zoom-in">
