@@ -21,6 +21,7 @@
   }
 
   @media (max-width: 768px) {
+
     #homeCarousel,
     #homeCarousel .carousel-item {
       height: 200px;
@@ -113,177 +114,451 @@
 </section>
 {% endif %}
 
-<!-- ================= FONDATEUR ================= -->
-<section class="container py-4 mb-4">
-  <div class="row align-items-center">
+<!-- ================= NOUVEAU BLOC A PROPOS ================= -->
+<section class="about-premium py-5">
+  <div class="container">
+      <div class="row align-items-center">
 
-    <div class="col-lg-4 mb-3">
-      <img src="{% static 'images/fondateur.jpg' %}" class="img-fluid rounded shadow">
-    </div>
+          <!-- IMAGE -->
+          <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
+              <div class="about-img-box">
+                  <img src="{% static 'images/schoole.jpg' %}">
+                  <div class="about-overlay">
+                      <h4>+10 ans d'excellence académique</h4>
+                  </div>
+              </div>
+          </div>
 
-    <div class="col-lg-5 mb-3">
-      <div class="experience-badge mb-2">
-        <span class="years">14 Ans</span>
-        <small>d'expérience</small>
+          <!-- TEXTE -->
+          <div class="col-md-6" data-aos="fade-left">
+              <h2 class="fw-bold display-6 mb-3">
+                  À propos du Groupe Expert Metier (GEM)
+              </h2>
+
+              <p class="text-muted">
+                  Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs
+                  compétents et innovants capables de répondre aux défis technologiques,
+                  environnementaux et industriels de demain.
+              </p>
+
+              <div class="mission-box my-4">
+                  <h5 class="fw-bold">Notre Mission</h5>
+                  <p>
+                      Former des leaders techniques dotés d’une expertise solide,
+                      d’un esprit critique et d’une forte capacité d’innovation.
+                  </p>
+              </div>
+
+              <div class="row text-center mt-4">
+
+                  <div class="col-4">
+                      <h3 class="fw-bold text-primary">500+</h3>
+                      <small>Étudiants</small>
+                  </div>
+
+                  <div class="col-4">
+                      <h3 class="fw-bold text-primary">20+</h3>
+                      <small>Événements / an</small>
+                  </div>
+
+                  <div class="col-4">
+                      <h3 class="fw-bold text-primary">15+</h3>
+                      <small>Partenaires</small>
+                  </div>
+
+              </div>
+
+              <blockquote class="director-quote mt-4">
+                  “Notre ambition est de bâtir une génération d’ingénieurs
+                  capables d’impacter durablement le monde.”
+                  <br>
+                  <span>— Direction Générale</span>
+              </blockquote>
+
+              <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
+                  Découvrir l’école
+              </a>
+
+          </div>
+
       </div>
-
-      <h3 class="fw-bold text-primary mb-2">
-        « Le succès c’est d’aller d’échec en échec sans perdre son enthousiasme. »
-      </h3>
-
-      <p class="text-muted mb-2">
-        GEM ambitionne de former des leaders intègres et compétents capables de relever les défis de la société africaine.
-      </p>
-
-      <button class="btn btn-primary btn-sm">Fondateur GEM</button>
-    </div>
-
-    <div class="col-lg-3 mb-3">
-      <h5 class="fw-bold text-primary">Qualité</h5>
-      <p class="text-muted small mb-2">Une formation d'excellence adaptée au marché.</p>
-
-      <h5 class="fw-bold text-primary mt-2">Formation</h5>
-      <p class="text-muted small mb-0">Des leaders capables de créer et diriger.</p>
-    </div>
-
   </div>
 </section>
+
+<style>
+  /* ================= IMAGE FONDATEUR HOVER ================= */
+  .founder-img {
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  .founder-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+
+  /* ================= BADGE ANIME ================= */
+  .experience-badge {
+    background: linear-gradient(135deg, #4b5cb8, #6a78d1);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .experience-badge .years {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .pulse-badge {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* ================= BOUTON GRADIENT ================= */
+  .btn-gradient {
+    background: linear-gradient(135deg, #4b5cb8, #6a78d1);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    background: linear-gradient(135deg, #6a78d1, #4b5cb8);
+  }
+
+  /* ================= CITATION ================= */
+  .quote {
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+
+  /* ================= ICONES ================= */
+  .material-icons {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+   /* ================= A PROPOS PREMIUM ================= */
+
+   .about-premium {
+        background: #f8f9fa;
+    }
+
+    .about-img-box {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .about-img-box img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .about-img-box:hover img {
+        transform: scale(1.1);
+    }
+
+    .about-overlay {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: linear-gradient(45deg, #0d6efd, #6610f2);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+    }
+
+    .mission-box {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .director-quote {
+        font-style: italic;
+        background: white;
+        padding: 20px;
+        border-left: 5px solid #0d6efd;
+        border-radius: 10px;
+    }
+
+    .director-quote span {
+        display: block;
+        margin-top: 8px;
+        font-weight: bold;
+        color: #0d6efd;
+    }
+</style>
+
+<!-- N'oublie pas d'inclure Material Icons dans ton base.html -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!-- ================= A PROPOS ================= -->
-<section class="container py-4 mb-4">
-  <div class="row align-items-center mb-4">
-
-    <div class="col-lg-6 mb-3">
-      <img src="{% static 'images/etudiagroup.jpg' %}" class="img-fluid rounded shadow">
-    </div>
-
-    <div class="col-lg-6 mb-3">
-      <h2 class="fw-bold text-primary mb-2">GEM - Groupe Expert Metier</h2>
-      <p class="text-muted mb-2">
-        Groupe Expert Metier (GEM) est une Grande École formant des cadres compétents capables de participer au développement du pays.
-      </p>
-      <a href="#" class="btn btn-primary btn-sm">Savoir plus</a>
-    </div>
-
-  </div>
-</section>
-
-<!-- ================= RENTREE ================= -->
-<div class="text-center mb-3">
-  <h6 class="text-danger mb-1">Inscription</h6>
-  <h2 class="fw-bold text-primary mb-2">RENTREE SCOLAIRE</h2>
-</div>
-
-<div class="container py-4 mb-4">
-  <div class="row align-items-center">
-
-    <div class="col-lg-6 mb-3 text-center">
-      <h5 class="text-danger fw-bold mb-2">INFOS BACHELIER</h5>
-      <img src="{% static 'images/infos-bachelier.jpg' %}" alt="Infos Bachelier" class="infos-img">
-    </div>
-
-    <div class="col-lg-6 mb-3">
-      <div class="row g-3">
-
-        <div class="col-md-6">
-          <div class="fee-card text-center p-3 shadow-sm">
-            <div class="icon-circle mb-2">✓</div>
-            <h5 class="fw-bold text-primary mb-0">Frais inscription : 85000 FCFA</h5>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="fee-card text-center p-3 shadow-sm">
-            <div class="icon-circle mb-2">✓</div>
-            <h5 class="fw-bold text-primary mb-0">Frais annexes : 25000 FCFA</h5>
-          </div>
-        </div>
-
-        <div class="col-12">
-          <div class="fee-card text-center p-3 shadow-sm">
-            <div class="icon-circle mb-2">✓</div>
-            <h5 class="fw-bold text-primary mb-0">Montant scolarité : 0 FCFA pour les affectés</h5>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- ================= ECOLES ================= -->
-<section class="container py-4 mb-4">
-  <div class="text-center mb-3">
+<section class="container py-5 mb-5">
+  <div class="text-center mb-4">
     <h2 class="fw-bold">Groupe Expert Metier (GEM)</h2>
     <p class="text-muted mb-0">Découvrez nos établissements et formations</p>
   </div>
 
-  <div class="row g-3">
-    {% for ecole in ecoles %}
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100 shadow-sm">
-        <img src="{{ ecole.image.url }}" class="card-img-top">
+  <div class="school-slider-wrapper position-relative">
+    <!-- Flèches de navigation -->
+    <button class="slider-btn prev-btn">&#10094;</button>
+    <button class="slider-btn next-btn">&#10095;</button>
+
+    <div class="school-slider">
+      {% for ecole in ecoles %}
+      <div class="school-card h-100 shadow-sm">
+        <img src="{{ ecole.image.url }}" class="school-img" alt="{{ ecole.nom }}">
         <div class="card-body text-center">
-          <h5 class="fw-bold">{{ ecole.nom }}</h5>
-          <p class="text-muted">{{ ecole.description }}</p>
+          <h5 class="fw-bold mb-1">{{ ecole.nom }}</h5>
+          <p class="text-muted mb-0">{{ ecole.description }}</p>
         </div>
       </div>
+      {% empty %}
+      <div class="alert alert-warning text-center">
+        Aucune école disponible pour le moment.
+      </div>
+      {% endfor %}
     </div>
-    {% empty %}
-    <div class="alert alert-warning text-center">
-      Aucune école disponible pour le moment.
-    </div>
-    {% endfor %}
   </div>
 </section>
 
-<!-- ================= NOUVEAU BLOC A PROPOS ================= -->
-<section class="container py-4 mb-4 bg-light rounded-4 shadow-sm">
-  <div class="row align-items-center">
+<style>
+  /* ================= SLIDER HORIZONTAL ================= */
+  .school-slider-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
 
-    <div class="col-lg-6 mb-3">
-      <img src="{% static 'images/schoole.jpg' %}" class="img-fluid rounded shadow">
-    </div>
+  .school-slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+  }
 
-    <div class="col-lg-6 mb-3">
-      <h2 class="fw-bold text-primary mb-2">À propos de GEM</h2>
-      <p class="text-muted mb-2">
-        GEM est une institution qui met l'accent sur l'excellence académique et le développement personnel de chaque étudiant. Nos formations visent à préparer des leaders compétents, innovants et responsables dans divers secteurs.
-      </p>
-      <ul class="list-unstyled text-muted mb-2">
-        <li>✓ Programmes adaptés aux besoins du marché.</li>
-        <li>✓ Enseignants expérimentés et professionnels.</li>
-        <li>✓ Partenariats avec des entreprises locales et internationales.</li>
-        <li>✓ Environnement stimulant et innovant.</li>
-      </ul>
-      <a href="#" class="btn btn-primary btn-sm mt-2">En savoir plus</a>
-    </div>
+  .school-slider::-webkit-scrollbar {
+    height: 8px;
+  }
+  .school-slider::-webkit-scrollbar-thumb {
+    background: #4b5cb8;
+    border-radius: 4px;
+  }
 
-  </div>
-</section>
+  .school-card {
+    flex: 0 0 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .school-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  }
+
+  .school-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .school-img:hover {
+    transform: scale(1.05);
+  }
+
+  .card-body h5 {
+    font-size: 1.2rem;
+  }
+  .card-body p {
+    font-size: 0.95rem;
+  }
+
+  /* ================= BOUTONS ================= */
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(75,92,184,0.8);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: 0 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s;
+  }
+
+  .slider-btn:hover {
+    background: rgba(75,92,184,1);
+  }
+
+  .prev-btn {
+    left: 5px;
+  }
+  .next-btn {
+    right: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .school-card {
+      flex: 0 0 250px;
+    }
+    .slider-btn {
+      font-size: 1.5rem;
+      padding: 0 10px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const slider = document.querySelector(".school-slider");
+    const prevBtn = document.querySelector(".prev-btn");
+    const nextBtn = document.querySelector(".next-btn");
+
+    const scrollAmount = 320; // largeur d'une carte + gap
+
+    nextBtn.addEventListener("click", () => {
+      slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    });
+
+    prevBtn.addEventListener("click", () => {
+      slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    });
+
+    // Optional: auto scroll every 5s
+    setInterval(() => {
+      if(slider.scrollLeft + slider.clientWidth >= slider.scrollWidth){
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    }, 5000);
+  });
+</script>
+
+
 
 <!-- ================= FAQ + CONTACT ================= -->
 <section class="container py-4 mb-4">
   <div class="row g-3">
 
-    <div class="col-md-5">
-      <h3 class="fw-bold mb-2">Foire aux questions (FAQ)</h3>
+     <!-- FAQ -->
+
+     <div class="col-md-5">
+      <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
+
       <div class="accordion" id="faqAccordion">
-        {% for i in "123456" %}
+
+        <!-- Question 1 -->
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ i }}">
-              Question {{ i }}
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+              Comment puis-je m'inscrire en ligne ?
             </button>
           </h2>
-          <div id="faq{{ i }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
             <div class="accordion-body">
-              Réponse de la question {{ i }}.
+              Vous pouvez remplir notre formulaire de préinscription en ligne.
             </div>
           </div>
         </div>
-        {% endfor %}
+
+        <!-- Question 2 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+              Quels documents sont nécessaires ?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Pièce d'identité, justificatif de domicile et bulletins récents.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+              Quel est le coût des formations ?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus de détails.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+              Comment obtenir un certificat ?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+              Puis-je modifier ma préinscription ?
+            </button>
+          </h2>
+          <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+              Les formations sont-elles en ligne ou en présentiel ?
+            </button>
+          </h2>
+          <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en présentiel.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -303,7 +578,8 @@
           <input type="text" class="form-control mb-2" name="prenom" placeholder="Prénom" required>
           <input type="email" class="form-control mb-2" name="email" placeholder="E-mail" required>
           <input type="tel" class="form-control mb-2" name="telephone" placeholder="Téléphone" required>
-          <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..." required></textarea>
+          <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..."
+            required></textarea>
           <button type="submit" class="btn btn-primary w-100">Envoyer</button>
         </form>
       </div>
@@ -314,7 +590,8 @@
   <!-- MAP -->
   <div class="mt-4">
     <div class="map-container">
-      <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed" allowfullscreen loading="lazy"></iframe>
+      <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed" allowfullscreen
+        loading="lazy"></iframe>
     </div>
   </div>
 
