@@ -8,7 +8,9 @@ from django.utils import timezone  # ← IMPORTANT
 TYPE_FILIERE_CHOICES = [
     ('tertiaire', 'Filière Tertiaire'),
     ('industrielle', 'Filière Industrielle'),
+     ('preparatoire', 'Année Preparatoire'),
 ]
+
 
 class Formation(models.Model):
     # titre = models.CharField(max_length=200)
@@ -25,6 +27,23 @@ class Formation(models.Model):
     def __str__(self):
         return self.titre
 
+# model ingenieure
+
+TYPE_CYCLE_CHOICES = [
+    ('licence', 'Licence'),
+    ('master1', 'Master 1'),
+    ('master2', 'Master 2'),
+]
+
+class CycleIngenieur(models.Model):
+    titre = models.CharField(max_length=200, default="Formation Cycle Ingénieur")
+    description = models.TextField()
+    details = models.TextField(blank=True, null=True)
+    type_cycle = models.CharField(max_length=20, choices=TYPE_CYCLE_CHOICES, default='licence')
+    image = models.ImageField(upload_to='cycle_ingenieur/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titre
 # ================= CATEGORY =================
 class Category(models.Model):
     name = models.CharField(max_length=100)

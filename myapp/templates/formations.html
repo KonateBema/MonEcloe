@@ -1,97 +1,81 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-Formations - {{ home_data.site_name }}
-{% endblock %}
+{% block title %} Formations - {{ home_data.site_name }} {% endblock %}
 
 {% block content %}
-
 <style>
 /* ========== HEADER ========== */
 .header {
-    padding: 60px 20px;
-    text-align: center;
-    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
-    /* background: linear-gradient(90deg, hsl(0, 98%, 52%) 0%, hsl(0, 90%, 51%) 100%); */
-    color: #fff;
-    border-radius: 12px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
+  color: #fff;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 /* ========== TICKER ========== */
 .ticker-wrapper {
-    overflow: hidden;
-    width: 100%;
-    border-top: 2px solid rgba(255,255,255,0.5);
-    border-bottom: 2px solid rgba(255,255,255,0.5);
-    padding: 10px 0;
-    position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-top: 2px solid rgba(255,255,255,0.5);
+  border-bottom: 2px solid rgba(255,255,255,0.5);
+  padding: 10px 0;
+  position: relative;
 }
-
 .ticker {
-    display: inline-flex;
-    white-space: nowrap;
-    animation: tickerAnim 25s linear infinite;
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tickerAnim 25s linear infinite;
 }
-
 .ticker span {
-    margin-right: 40px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    white-space: nowrap;
+  margin-right: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
 }
-
 @keyframes tickerAnim {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 
 /* ========== CARTES FORMATIONS ========== */
 .formation-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
 }
-
 .formation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
-
 .formation-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 12px 12px 0 0;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
 }
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-    .header {
-        padding: 40px 10px;
-    }
-    .ticker span {
-        font-size: 1rem;
-        margin-right: 20px;
-    }
-    .formation-card img {
-        height: 150px;
-    }
+  .header { padding: 40px 10px; }
+  .ticker span { font-size: 1rem; margin-right: 20px; }
+  .formation-card img { height: 150px; }
 }
 </style>
 
 <!-- ========== HEADER + TICKER ========== -->
-<div class="container mt-4 ">
-  <div class="header ">
-    <div class="ticker-wrapper ">
+<div class="container mt-4">
+  <div class="header">
+    <div class="ticker-wrapper">
       <div class="ticker">
         <span>Nos Formations - BTS</span>
         <span>Découvrez nos programmes et inscrivez-vous facilement en ligne</span>
@@ -108,7 +92,6 @@ Formations - {{ home_data.site_name }}
     <h2 class="fw-bold">🎓 Filières Tertiaires</h2>
     <p class="text-muted">Découvrez nos formations tertiaires</p>
   </div>
-
   <div class="row g-4">
     {% for formation in tertiaires %}
     <div class="col-md-4" data-aos="zoom-in">
@@ -121,10 +104,7 @@ Formations - {{ home_data.site_name }}
         <div class="card-body text-center d-flex flex-column">
           <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
           <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
-          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
-            data-bs-target="#modalT{{ forloop.counter }}">
-            Plus de détails
-          </button>
+          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal" data-bs-target="#modalT{{ forloop.counter }}">Plus de détails</button>
         </div>
       </div>
     </div>
@@ -142,9 +122,7 @@ Formations - {{ home_data.site_name }}
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">
-              S'inscrire
-            </a>
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">S'inscrire</a>
           </div>
         </div>
       </div>
@@ -159,7 +137,6 @@ Formations - {{ home_data.site_name }}
     <h2 class="fw-bold">🏭 Filières Industrielles</h2>
     <p class="text-muted">Découvrez nos formations industrielles</p>
   </div>
-
   <div class="row g-4">
     {% for formation in industrielles %}
     <div class="col-md-4" data-aos="zoom-in">
@@ -172,10 +149,7 @@ Formations - {{ home_data.site_name }}
         <div class="card-body text-center d-flex flex-column">
           <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
           <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
-          <button class="btn btn-outline-success rounded-pill mt-auto" data-bs-toggle="modal"
-            data-bs-target="#modalI{{ forloop.counter }}">
-            Plus de détails
-          </button>
+          <button class="btn btn-outline-success rounded-pill mt-auto" data-bs-toggle="modal" data-bs-target="#modalI{{ forloop.counter }}">Plus de détails</button>
         </div>
       </div>
     </div>
@@ -193,9 +167,97 @@ Formations - {{ home_data.site_name }}
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">
-              S'inscrire
-            </a>
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">S'inscrire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ========== BUSINESS SCHOOL (EMBS) ========== -->
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">🏫 Business School (EMBS)</h2>
+    <p class="text-muted">Découvrez nos formations et services pour la Business School</p>
+  </div>
+  <div class="row g-4">
+    {% for formation in embs %}
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="card formation-card shadow">
+        {% if formation.image %}
+          <img src="{{ formation.image.url }}" alt="{{ formation.titre }}">
+        {% else %}
+          <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}">
+        {% endif %}
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="fw-bold text-warning">{{ formation.titre }}</h5>
+          <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
+          <button class="btn btn-outline-warning rounded-pill mt-auto" data-bs-toggle="modal" data-bs-target="#modalB{{ forloop.counter }}">Plus de détails</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalB{{ forloop.counter }}">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="fw-bold">{{ formation.titre }}</h5>
+            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{ formation.details }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">S'inscrire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ========== ÉCOLE D’INGÉNIEURS (EMI) ========== -->
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">🛠 École d’ingénieurs (EMI)</h2>
+    <p class="text-muted">Découvrez nos formations d’ingénieurs et services</p>
+  </div>
+  <div class="row g-4">
+    {% for formation in emi %}
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="card formation-card shadow">
+        {% if formation.image %}
+          <img src="{{ formation.image.url }}" alt="{{ formation.titre }}">
+        {% else %}
+          <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}">
+        {% endif %}
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="fw-bold text-danger">{{ formation.titre }}</h5>
+          <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
+          <button class="btn btn-outline-danger rounded-pill mt-auto" data-bs-toggle="modal" data-bs-target="#modalE{{ forloop.counter }}">Plus de détails</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalE{{ forloop.counter }}">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="fw-bold">{{ formation.titre }}</h5>
+            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{ formation.details }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}" class="btn btn-success rounded-pill">S'inscrire</a>
           </div>
         </div>
       </div>
