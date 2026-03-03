@@ -7,9 +7,96 @@
 
 {% block content %}
 
+<style>
+  /* ================= CAROUSEL ================= */
+  #homeCarousel,
+  #homeCarousel .carousel-item {
+    height: 350px;
+  }
+
+  #homeCarousel .carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    #homeCarousel,
+    #homeCarousel .carousel-item {
+      height: 200px;
+    }
+  }
+
+  /* ================= GENERAL ================= */
+  .map-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .experience-badge {
+    background: #4b5cb8;
+    color: white;
+    padding: 8px 16px;
+    display: inline-block;
+    border-radius: 8px;
+  }
+
+  .experience-badge .years {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  .fee-card {
+    border-radius: 15px;
+    background: #fff;
+    transition: 0.3s ease;
+  }
+
+  .fee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    border-radius: 50%;
+    background: #e8f0ff;
+    color: #8b0000;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .infos-img {
+    width: 100%;
+    max-width: 650px;
+    display: block;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    transition: 0.4s;
+  }
+
+  .infos-img:hover {
+    transform: scale(1.03);
+  }
+</style>
+
 <!-- ================= CAROUSEL ================= -->
-<!-- {% if slides %}
-<section class="container-fluid px-0">
+{% if slides %}
+<section class="container-fluid px-0 mb-4">
   <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
       {% for slide in slides %}
@@ -24,82 +111,115 @@
     </div>
   </div>
 </section>
-{% endif %} -->
-<style>
-  /* ===== CAROUSEL HEIGHT CONTROL ===== */
-
-  #homeCarousel {
-    max-height: 420px;
-    /* 🔥 hauteur du slide */
-    overflow: hidden;
-  }
-
-  #homeCarousel .carousel-item {
-    height: 420px;
-    /* même hauteur */
-  }
-
-  #homeCarousel .carousel-item img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    /* évite l’écrasement de l’image */
-  }
-
-  /* 📱 Mobile */
-  @media (max-width: 768px) {
-
-    #homeCarousel,
-    #homeCarousel .carousel-item {
-      height: 250px;
-    }
-
-  }
-
-  .map-container {
-    width: 100%;
-    height: 300px;
-    /* hauteur de la map */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .map-container iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-</style>
-{% if slides %}
-<section class="container-fluid px-0">
-  <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for slide in slides %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-
-        <img src="{{ slide.image.url }}" class="d-block w-100 slide-animated-img">
-
-        <div class="carousel-caption">
-          <h2 class="fw-bold">{{ slide.title }}</h2>
-          <p>{{ slide.message|safe }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 {% endif %}
 
+<!-- ================= FONDATEUR ================= -->
+<section class="container py-4 mb-4">
+  <div class="row align-items-center">
+
+    <div class="col-lg-4 mb-3">
+      <img src="{% static 'images/fondateur.jpg' %}" class="img-fluid rounded shadow">
+    </div>
+
+    <div class="col-lg-5 mb-3">
+      <div class="experience-badge mb-2">
+        <span class="years">14 Ans</span>
+        <small>d'expérience</small>
+      </div>
+
+      <h3 class="fw-bold text-primary mb-2">
+        « Le succès c’est d’aller d’échec en échec sans perdre son enthousiasme. »
+      </h3>
+
+      <p class="text-muted mb-2">
+        GEM ambitionne de former des leaders intègres et compétents capables de relever les défis de la société africaine.
+      </p>
+
+      <button class="btn btn-primary btn-sm">Fondateur GEM</button>
+    </div>
+
+    <div class="col-lg-3 mb-3">
+      <h5 class="fw-bold text-primary">Qualité</h5>
+      <p class="text-muted small mb-2">Une formation d'excellence adaptée au marché.</p>
+
+      <h5 class="fw-bold text-primary mt-2">Formation</h5>
+      <p class="text-muted small mb-0">Des leaders capables de créer et diriger.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= A PROPOS ================= -->
+<section class="container py-4 mb-4">
+  <div class="row align-items-center mb-4">
+
+    <div class="col-lg-6 mb-3">
+      <img src="{% static 'images/etudiagroup.jpg' %}" class="img-fluid rounded shadow">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <h2 class="fw-bold text-primary mb-2">GEM - Groupe Expert Metier</h2>
+      <p class="text-muted mb-2">
+        Groupe Expert Metier (GEM) est une Grande École formant des cadres compétents capables de participer au développement du pays.
+      </p>
+      <a href="#" class="btn btn-primary btn-sm">Savoir plus</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= RENTREE ================= -->
+<div class="text-center mb-3">
+  <h6 class="text-danger mb-1">Inscription</h6>
+  <h2 class="fw-bold text-primary mb-2">RENTREE SCOLAIRE</h2>
+</div>
+
+<div class="container py-4 mb-4">
+  <div class="row align-items-center">
+
+    <div class="col-lg-6 mb-3 text-center">
+      <h5 class="text-danger fw-bold mb-2">INFOS BACHELIER</h5>
+      <img src="{% static 'images/infos-bachelier.jpg' %}" alt="Infos Bachelier" class="infos-img">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <div class="fee-card text-center p-3 shadow-sm">
+            <div class="icon-circle mb-2">✓</div>
+            <h5 class="fw-bold text-primary mb-0">Frais inscription : 85000 FCFA</h5>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="fee-card text-center p-3 shadow-sm">
+            <div class="icon-circle mb-2">✓</div>
+            <h5 class="fw-bold text-primary mb-0">Frais annexes : 25000 FCFA</h5>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="fee-card text-center p-3 shadow-sm">
+            <div class="icon-circle mb-2">✓</div>
+            <h5 class="fw-bold text-primary mb-0">Montant scolarité : 0 FCFA pour les affectés</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- ================= ECOLES ================= -->
-<section class="container py-5">
-  <div class="text-center mb-5">
+<section class="container py-4 mb-4">
+  <div class="text-center mb-3">
     <h2 class="fw-bold">Groupe Expert Metier (GEM)</h2>
-    <p class="text-muted">Découvrez nos établissements et formations</p>
+    <p class="text-muted mb-0">Découvrez nos établissements et formations</p>
   </div>
 
-  <div class="row g-4">
+  <div class="row g-3">
     {% for ecole in ecoles %}
     <div class="col-md-6 col-lg-4">
       <div class="card h-100 shadow-sm">
@@ -118,132 +238,86 @@
   </div>
 </section>
 
-<!-- ================= CONTACT + FAQ ================= -->
-<section class="container py-5">
-  <div class="row align-items-stretch">
+<!-- ================= NOUVEAU BLOC A PROPOS ================= -->
+<section class="container py-4 mb-4 bg-light rounded-4 shadow-sm">
+  <div class="row align-items-center">
 
-    <!-- FAQ -->
+    <div class="col-lg-6 mb-3">
+      <img src="{% static 'images/schoole.jpg' %}" class="img-fluid rounded shadow">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <h2 class="fw-bold text-primary mb-2">À propos de GEM</h2>
+      <p class="text-muted mb-2">
+        GEM est une institution qui met l'accent sur l'excellence académique et le développement personnel de chaque étudiant. Nos formations visent à préparer des leaders compétents, innovants et responsables dans divers secteurs.
+      </p>
+      <ul class="list-unstyled text-muted mb-2">
+        <li>✓ Programmes adaptés aux besoins du marché.</li>
+        <li>✓ Enseignants expérimentés et professionnels.</li>
+        <li>✓ Partenariats avec des entreprises locales et internationales.</li>
+        <li>✓ Environnement stimulant et innovant.</li>
+      </ul>
+      <a href="#" class="btn btn-primary btn-sm mt-2">En savoir plus</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FAQ + CONTACT ================= -->
+<section class="container py-4 mb-4">
+  <div class="row g-3">
 
     <div class="col-md-5">
-      <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
-
+      <h3 class="fw-bold mb-2">Foire aux questions (FAQ)</h3>
       <div class="accordion" id="faqAccordion">
-
-        <!-- Question 1 -->
+        {% for i in "123456" %}
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-              Comment puis-je m'inscrire en ligne ?
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ i }}">
+              Question {{ i }}
             </button>
           </h2>
-          <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+          <div id="faq{{ i }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
             <div class="accordion-body">
-              Vous pouvez remplir notre formulaire de préinscription en ligne.
+              Réponse de la question {{ i }}.
             </div>
           </div>
-        </div>
-
-        <!-- Question 2 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-              Quels documents sont nécessaires ?
-            </button>
-          </h2>
-          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Pièce d'identité, justificatif de domicile et bulletins récents.
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-              Quel est le coût des formations ?
-            </button>
-          </h2>
-          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus de détails.
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-              Comment obtenir un certificat ?
-            </button>
-          </h2>
-          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-              Puis-je modifier ma préinscription ?
-            </button>
-          </h2>
-          <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
-              Les formations sont-elles en ligne ou en présentiel ?
-            </button>
-          </h2>
-          <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en présentiel.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- FORMULAIRE CONTACT -->
-    <div class="col-md-7">
-      <div class="card shadow p-4 border-0">
-        <h5 class="fw-bold mb-3">Besoin d'informations ? Contactez-nous</h5>
-        <!-- <p>vvvvvvv</p> -->
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success">
-          {{ message }}
         </div>
         {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="card shadow p-3 border-0">
+        <h5 class="fw-bold mb-2">Besoin d'informations ? Contactez-nous</h5>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success mb-2">{{ message }}</div>
+        {% endfor %}
         {% endif %}
+
         <form method="POST" action="{% url 'home' %}">
           {% csrf_token %}
-          <input type="text" class="form-control mb-3" name="nom" placeholder="Nom" required>
-          <input type="text" class="form-control mb-3" name="prenom" placeholder="Prénom" required>
-          <input type="email" class="form-control mb-3" name="email" placeholder="E-mail" required>
-          <input type="tel" class="form-control mb-3" name="telephone" placeholder="Numéro de téléphone" required
-            pattern="[0-9]{10}" title="Entrez un numéro à 10 chiffres">
-          <textarea class="form-control mb-3" name="message" rows="4" placeholder="Votre message..."
-            required></textarea>
+          <input type="text" class="form-control mb-2" name="nom" placeholder="Nom" required>
+          <input type="text" class="form-control mb-2" name="prenom" placeholder="Prénom" required>
+          <input type="email" class="form-control mb-2" name="email" placeholder="E-mail" required>
+          <input type="tel" class="form-control mb-2" name="telephone" placeholder="Téléphone" required>
+          <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..." required></textarea>
           <button type="submit" class="btn btn-primary w-100">Envoyer</button>
         </form>
       </div>
     </div>
-    <!-- MAPS -->
-    <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed" allowfullscreen=""
-      loading="lazy">
-    </iframe>
+
   </div>
+
+  <!-- MAP -->
+  <div class="mt-4">
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+
 </section>
 
 {% endblock %}

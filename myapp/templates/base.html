@@ -199,7 +199,7 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'vie_associative' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'vie_associative' %}">
-                            Vie associative
+                            Vie étudiante
                         </a>
                     </li>
 
@@ -233,84 +233,77 @@
     {% block content %}
     {% endblock %}
 
-    <footer class="footer bg-dark text-white pt-5 pb-3">
+    <footer class="footer bg-dark text-white pt-3 pb-2">
         <div class="container">
             <div class="row">
-
+    
                 <!-- Section A propos -->
-                <div class="col-md-4 mb-4 text-center text-md-start">
+                <div class="col-md-4 mb-3 text-center text-md-start">
                     {% if home_data.logo %}
-                    <img src="{{ home_data.logo.url }}" alt="Logo" height="50" class="mb-2">
+                    <img src="{{ home_data.logo.url }}" alt="Logo" height="40" class="mb-1">
                     {% endif %}
-                    <p class="small">{{ home_data.footer_message|safe }}</p>
+                    <p class="small mb-0">{{ home_data.footer_message|safe }}</p>
                 </div>
-
+    
                 <!-- Liens utiles -->
-                <div class="col-md-4 mb-4 text-center">
-                    <h6 class="fw-bold mb-3">Liens utiles</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Accueil</a></li>
-                        <li><a href="{% url 'formations' %}" class="text-white text-decoration-none">Formations</a></li>
-                        <li><a href="{% url 'vie_associative' %}" class="text-white text-decoration-none">Vie
-                                associative</a></li>
-                        <li><a href="{% url 'evenements' %}" class="text-white text-decoration-none"> Événements
-                                institutionnels </a></li>
-                        <li><a href="{% url 'certificats' %}" class="text-white text-decoration-none">Certificats</a>
-                        </li>
+                <div class="col-md-4 mb-3 text-center">
+                    <h6 class="fw-bold mb-2">Liens utiles</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'home' %}" class="text-white text-decoration-none small">Accueil</a></li>
+                        <li><a href="{% url 'formations' %}" class="text-white text-decoration-none small">Formations</a></li>
+                        <li><a href="{% url 'vie_associative' %}" class="text-white text-decoration-none small">Vie étudiante</a></li>
+                        <li><a href="{% url 'evenements' %}" class="text-white text-decoration-none small">Événements</a></li>
+                        <li><a href="{% url 'certificats' %}" class="text-white text-decoration-none small">Certificats</a></li>
                     </ul>
                 </div>
-
+    
                 <!-- Contact & réseaux sociaux -->
-                <div class="col-md-4 mb-4 text-center text-md-end">
-                    <h6 class="fw-bold mb-3">Contactez-nous</h6>
-                    <!-- <p class="small mb-1"><i class="bi bi-envelope-fill me-2"></i>{{ home_data.email }}</p>
-                    <p class="small mb-2"><i class="bi bi-telephone-fill me-2"></i>{{ home_data.telephone }}</p> -->
-                    <p class="small mb-1"><i class="bi bi-envelope-fill me-2"></i>0150536686 /2722204432 </p>
+                <div class="col-md-4 mb-3 text-center text-md-end">
+                    <h6 class="fw-bold mb-2">Contactez-nous</h6>
+                    <p class="small mb-1"><i class="bi bi-envelope-fill me-2"></i>0150536686 / 2722204432</p>
                     <p class="small mb-2"><i class="bi bi-telephone-fill me-2"></i>groupeexpertmetier@gmail.com</p>
-                    <!-- Réseaux sociaux -->
-                    <div class="d-flex justify-content-center justify-content-md-end gap-2">
-                        <a href="https://www.facebook.com/share/p/14YeWXSMCHP/"
-                            class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
-                                class="bi bi-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
-                                class="bi bi-instagram"></i></a>
-
-                        <a href="https://wa.me/2250150536686" target="_blank" class="btn btn-sm rounded-circle"
-                            style="background-color:#25D366; color:white;">
-                            <i class="bi bi-whatsapp"></i>
-                        </a>
-
-
+                    <div class="d-flex justify-content-center justify-content-md-end gap-1">
+                        <a href="https://www.facebook.com/share/p/14YeWXSMCHP/" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/2250150536686" target="_blank" class="btn btn-sm rounded-circle" style="background-color:#25D366; color:white;"><i class="bi bi-whatsapp"></i></a>
                     </div>
                 </div>
-
+    
             </div>
-
-            <hr class="border-light">
-
-            <div class="text-center small">
+    
+            <hr class="border-light my-2">
+    
+            <div class="text-center small mb-0">
                 &copy; {{ home_data.site_name }} - Tous droits réservés
             </div>
         </div>
     </footer>
-
+    
     <style>
-        .footer {
-            background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-            color: white;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    .footer {
+        background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+        color: white;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .footer a:hover {
+        text-decoration: underline;
+    }
+    
+    .footer .btn-outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .footer h6 {
+        font-size: 0.9rem;
+    }
+    
+    .footer p, .footer li a {
+        font-size: 0.8rem;
+    }
     </style>
 
 </body>
