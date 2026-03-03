@@ -46,7 +46,7 @@ urlpatterns = [
     # path('produit/<int:id>/', views.product_detail, name='product_detail')
     # path('contact/', views.contact, name='contact'),
     path('evenementse/', evenements_view, name='evenements'),
-    path('preinscription/', preinscription_view, name='preinscription'),
+    # path('preinscription/', preinscription_view, name='preinscription'),
     path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
     path('formations/', views.formations, name='formations'),
     path('programmes/', views.programmes_view, name='programmes'),  # <-- ici
@@ -56,7 +56,12 @@ urlpatterns = [
     path('inscription/<int:association_id>/', views.inscription_association,name='inscription_association'),
     path('contact/', contact_view, name='contact'),
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
-    path('e3m-school/', views.e3m_school, name='e3m_school')
+    path('e3m-school/', views.e3m_school, name='e3m_school'),
+    path("admission/", views.admission_view, name="admission"),
+    path("admission/procedure/", views.procedure_admission, name="procedure_admission"),
+    path("admission/frais/", views.frais_scolarite, name="frais_scolarite"),
+    # path("admission/preinscription/", views.preinscription, name="preinscription"),
+    path("admission/preinscription/", views.preinscription_view, name="preinscription"),
 
 
 

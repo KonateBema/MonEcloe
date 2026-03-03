@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Admission - {{ home_data.site_name }}
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero text-center py-5">
+    <div class="container">
+      <h1 class="display-4 fw-bold">Admission à E3M School of Engineering</h1>
+      <p class="lead mt-3">Découvrez les conditions, la procédure, les frais et inscrivez-vous facilement.</p>
+      <a href="{% url 'preinscription' %}" class="btn btn-lg rounded-pill px-4 mt-4" style="background-color:#0d6efd; color:white; border:none;">
+        Accéder au formulaire de préinscription
+      </a>
+    </div>
+  
+    <!-- Styles d'animation -->
+    <style>
+      .hero {
+        position: relative;
+        color: white;
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "images/admission_hero.jpg" %}') center/cover no-repeat;
+        height: 55vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        animation: heroZoom 15s ease-in-out infinite;
+      }
+  
+      @keyframes heroZoom {
+        0% { background-size: 100% 100%; transform: scale(1); }
+        25% { background-size: 105% 105%; transform: scale(1.02); }
+        50% { background-size: 110% 110%; transform: scale(1.05); }
+        75% { background-size: 105% 105%; transform: scale(1.02); }
+        100% { background-size: 100% 100%; transform: scale(1); }
+      }
+    </style>
+  </section>
+
+<!-- ================= CONDITIONS ================= -->
+<section class="container py-5">
+  <h2 class="text-primary section-title text-center">Conditions d’Admission</h2>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
+        <h5 class="fw-bold">Baccalauréat ou équivalent</h5>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
+        <h5 class="fw-bold">Relevé de notes</h5>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
+        <h5 class="fw-bold">Copie CNI</h5>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
+        <h5 class="fw-bold">Photos d’identité</h5>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCEDURE ================= -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-primary section-title text-center">Procédure d’Admission</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+          <div class="display-4 text-primary mb-2">1</div>
+          <h5 class="fw-bold">Remplir le formulaire</h5>
+          <p class="text-muted">Accédez au formulaire de préinscription et remplissez toutes les informations demandées.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+          <div class="display-4 text-primary mb-2">2</div>
+          <h5 class="fw-bold">Fournir les documents</h5>
+          <p class="text-muted">Préparez vos pièces justificatives : diplômes, relevés, CNI, photos d’identité.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+          <div class="display-4 text-primary mb-2">3</div>
+          <h5 class="fw-bold">Validation du dossier</h5>
+          <p class="text-muted">Notre équipe vérifie votre candidature et vous informe de la conformité du dossier.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
+          <div class="display-4 text-primary mb-2">4</div>
+          <h5 class="fw-bold">Réception de l’admission</h5>
+          <p class="text-muted">Vous recevez votre notification d’admission et les instructions pour finaliser votre inscription.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FRAIS ================= -->
+<section class="container py-5">
+  <h2 class="text-primary section-title text-center">Frais de Scolarité</h2>
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
+        <h5 class="fw-bold">Frais d’inscription</h5>
+        <p class="text-muted">50 000 FCFA</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
+        <h5 class="fw-bold">Frais semestriels</h5>
+        <p class="text-muted">250 000 FCFA</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
+        <h5 class="fw-bold">Autres frais</h5>
+        <p class="text-muted">Matériel pédagogique, visites, etc.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APERÇU FORMULAIRE ================= -->
+
+<!-- ================= STYLES ================= -->
+<style>
+.section-title { font-size: 2rem; margin-bottom: 50px; position: relative; }
+.section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: #0d6efd; margin: 10px auto 0; border-radius: 2px; }
+.hover-shadow:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); transition: all 0.3s ease; }
+form .form-control { border-radius: 10px; padding: 12px 15px; border: 1px solid #ddd; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+form .form-control:focus { border-color: #0d6efd; box-shadow: 0 0 10px rgba(13,110,253,0.15); }
+</style>
+
+{% endblock %}

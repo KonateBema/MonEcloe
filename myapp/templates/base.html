@@ -132,6 +132,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admission' %}active fw-bold text-primary{% endif %}"
+                            href="{% url 'admission' %}">
+                            Admission
+                        </a>
+                    </li>
+            
+
+
+                    <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'vie_associative' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'vie_associative' %}">
                             Vie associative
@@ -141,14 +150,14 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'evenements' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'evenements' %}">
-                            Événements institutionnels
+                            Événements
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'preinscription' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'preinscription' %}">
-                            Préinscription en ligne
+                            Préinscription
                         </a>
                     </li>
 

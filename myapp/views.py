@@ -519,3 +519,23 @@ def e3m_school(request):
     slides = Slide.objects.all()
     filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
     return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
+
+
+
+
+
+def conditions_admission(request):
+    return render(request, "conditions.html")
+
+
+def admission_view(request):
+    return render(request, "admission.html")
+
+def procedure_admission(request):
+    return render(request, "procedure.html")
+
+def frais_scolarite(request):
+    return render(request, "frais.html")
+
+def preinscription(request):
+    return render(request, "preinscription.html")
