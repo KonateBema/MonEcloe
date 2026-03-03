@@ -34,7 +34,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Spacer
 from .models import Certificat
 from .models import *
-from .models import Formation
+from .models import Formation , CycleIngenieur
 from reportlab.platypus import Image
 from reportlab.lib.units import mm
 # import weasyprint  # optionnel si tu veux un PDF
@@ -520,22 +520,80 @@ def e3m_school(request):
     filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
     return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
 
+def procedure_admission(request):
+    # Version temporaire juste pour tester
+    return HttpResponse("Page procédure d'admission")
 
-
-
-
-def conditions_admission(request):
-    return render(request, "conditions.html")
-
+def frais_scolarite(request):
+    # Version simple juste pour tester
+    return HttpResponse("Page Frais de scolarité")
 
 def admission_view(request):
     return render(request, "admission.html")
 
-def procedure_admission(request):
-    return render(request, "procedure.html")
-
-def frais_scolarite(request):
-    return render(request, "frais.html")
-
 def preinscription(request):
     return render(request, "preinscription.html")
+
+from django.shortcuts import render
+
+def filiere_tertiaires(request):
+    tertiaires = Formation.objects.filter(type_filiere='tertiaire')
+    return render(request, 'filiere_tertiaires.html', {'tertiaires': tertiaires})
+
+def filiere_industrielles(request):
+    industrielles = Formation.objects.filter(type_filiere='industrielle')
+    return render(request, 'filiere_industrielles.htm', {'industrielles': industrielles})
+
+def prepa(request):
+    preparatoire = Formation.objects.filter(type_filiere='preparatoire')
+    return render(request, 'annee_prepa.html', {'preparatoire': preparatoire})
+
+# def prepa(request):
+#     return render(request, 'annee_prepa.html')
+
+# def licence(request):
+#     return render(request, 'licence.html')
+
+def licence(request):
+    licences = CycleIngenieur.objects.filter(type_cycle='licence')
+    return render(request, 'licence.html', {'licences': licences})
+
+
+# def masters1(request):
+#     return render(request, 'masters1.html')
+
+# def master1(request):
+#     masters1 = CycleIngenieur.objects.filter(type_cycle='master1')
+#     return render(request, 'master1.html', {'masters1': masters1})
+# def masters1(request):
+#     master1_list = CycleIngenieur.objects.filter(type_cycle='master1')
+#     return render(request, 'masters1.html', {'master1_list': master1_list})
+
+
+def masters1(request):
+    master1_list = CycleIngenieur.objects.filter(type_cycle='master1')
+    master2_list = CycleIngenieur.objects.filter(type_cycle='master2')
+    return render(request, 'masters1.html', {
+        'master1_list': master1_list,
+        'master2_list': master2_list
+    })
+
+# def master2(request):
+#     masters2 = CycleIngenieur.objects.filter(type_cycle='master2')
+#     return render(request, 'myapp/master2.html', {'masters2': masters2})
+
+def embs(request):
+    embs = Formation.objects.filter(type_filiere='embs')
+    return render(request, 'filiere_embs.html', {'embs': embs})
+
+def cycle_ingenieur(request):
+    licences = CycleIngenieur.objects.filter(type_cycle='licence')
+    master1s = CycleIngenieur.objects.filter(type_cycle='master1')
+    master2s = CycleIngenieur.objects.filter(type_cycle='master2')
+
+    context = {
+        'licences': licences,
+        'master1s': master1s,
+        'master2s': master2s,
+    }
+    return render(request, 'licence.html', context)

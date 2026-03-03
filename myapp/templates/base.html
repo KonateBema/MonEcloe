@@ -115,21 +115,77 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'home' %}">
-                            GEM Academy
+                            Accueil
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'formations' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'formations' %}">
-                            Formations
+                            Business School (EMBS)
                         </a>
+                    </li> -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'formations_tertiaires formations_industrielles formations_prepa' %}active fw-bold text-primary{% endif %}" 
+                           href="#" 
+                           id="formationsDropdown" 
+                           role="button" 
+                           data-bs-toggle="dropdown" 
+                           aria-expanded="false">
+                            Business School (EMBS)
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="formationsDropdown">
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'formations_tertiaires' %}active fw-bold text-primary{% endif %}" 
+                                   href="{% url 'formations_tertiaires' %}">
+                                   Filières Tertiaires
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'formations_industrielles' %}active fw-bold text-primary{% endif %}" 
+                                   href="{% url 'formations_industrielles' %}">
+                                   Filières Industrielles
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'formations_prepa' %}active fw-bold text-primary{% endif %}" 
+                                   href="{% url 'formations_prepa' %}">
+                                   Année Préparatoire
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
+
+                    <!-- <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'e3m_school' %}active fw-bold text-primary{% endif %}"
                            href="{% url 'e3m_school' %}">
                            E3M School of Engineering
                         </a>
+                    </li> -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'licence masters1 masters2' %}active fw-bold text-primary{% endif %}" 
+                           href="#" 
+                           id="e3mDropdown" 
+                           role="button" 
+                           data-bs-toggle="dropdown" 
+                           aria-expanded="false">
+                            E3M School of Engineering
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="e3mDropdown">
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'licence' %}active fw-bold text-primary{% endif %}" 
+                                   href="{% url 'licence' %}">
+                                   Licence
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'masters1' %}active fw-bold text-primary{% endif %}" 
+                                   href="{% url 'masters1' %}">
+                                   Masters 1 et 2
+                                </a>
+                            </li>
+                         
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'admission' %}active fw-bold text-primary{% endif %}"

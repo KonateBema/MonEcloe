@@ -13,7 +13,7 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .models import Slide, HomeSlide
 from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
 from django.db.models import Count
-from .models import Formation  # ajoute cette ligne si elle n'existe pas
+from .models import Formation  , CycleIngenieur# ajoute cette ligne si elle n'existe pas
 from .models import Evenement_inst
 
 
@@ -403,6 +403,12 @@ class Evenement_instAdmin(admin.ModelAdmin):
         return "-"
     video_preview.short_description = 'Vidéo'
 # ==============================
+# Option avec personnalisation
+@admin.register(CycleIngenieur)
+class CycleIngenieurAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'type_cycle', 'description')  # colonnes affichées
+    list_filter = ('type_cycle',)  # filtre par type
+    search_fields = ('titre', 'description')  # barre de recherche
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
 # ==============================
 # admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
@@ -413,6 +419,7 @@ admin_site = MyAdminSite(name='myadmin')
 admin_site.register(User, UserAdmin)
 admin_site.register(Group, GroupAdmin)
 admin_site.register(Formation)
+admin_site.register(CycleIngenieur)
 # admin_site.register(Formation, FormationAdmin)
 admin_site.register(HomePage, HomePageAdmin)
 admin_site.register(Contact, ContactAdmin)

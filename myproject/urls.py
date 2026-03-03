@@ -61,7 +61,15 @@ urlpatterns = [
     path("admission/procedure/", views.procedure_admission, name="procedure_admission"),
     path("admission/frais/", views.frais_scolarite, name="frais_scolarite"),
     # path("admission/preinscription/", views.preinscription, name="preinscription"),
+    path("admission/procedure/", views.procedure_admission, name="procedure_admission"),
     path("admission/preinscription/", views.preinscription_view, name="preinscription"),
+    # path('filiere-tertiaires/', views.tertiaires, name='formations_tertiaires'),
+    path('filiere-tertiaires/', views.filiere_tertiaires, name='formations_tertiaires'),
+    # path('filiere-industrielles/', views.industrielles, name='formations_industrielles'),
+    path('filiere-industrielles/', views.filiere_industrielles, name='formations_industrielles'),
+    path('annee-prepa/', views.prepa, name='formations_prepa'),
+    path('e3m/licence/', views.licence, name='licence'),
+    path('e3m/masters1/', views.masters1, name='masters1'),
 
 
 
