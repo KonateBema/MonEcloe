@@ -302,33 +302,7 @@ def contact(request):
     else:
         return redirect('home')
 
-
-#     return render(request, 'preinscription.html', {'form': form, 'home_data': home_data})
-# def preinscription_view(request):
-#     # Définition simple de home_data
-#     home_data = {
-#         'site_name': '',
-#         'email': 'groupeexpertmetier@gmail.com',
-#         'telephone': '+225 0150536686 /2722204432 '
-#     }
-
-#     initial_data = {}
-#     if 'formation' in request.GET:
-#         initial_data['formation'] = request.GET['formation']
-
-#     if request.method == 'POST':
-#         form = PreinscriptionForm(request.POST)
-#         if form.is_valid():
-#             preinscrit = form.save()
-#             messages.success(request, "Votre demande a été envoyée avec succès !")
-#             return redirect('preinscription')
-#     else:
-#         form = PreinscriptionForm(initial=initial_data)
-
-#     return render(request, 'preinscription.html', {
-#         'form': form,
-#         'home_data': home_data
-#     })
+        
 def preinscription_view(request):
 
     home_data = {

@@ -43,8 +43,6 @@ urlpatterns = [
     path('commande-confirmation/<int:commande_id>/', views.commande_confirmation, name='commande_confirmation'),
     path('commande-confirmation-pdf/<int:commande_id>/', views.generate_pdf, name='generate_pdf'),
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
-    # path('produit/<int:id>/', views.product_detail, name='product_detail')
-    # path('contact/', views.contact, name='contact'),
     path('evenementse/', evenements_view, name='evenements'),
     # path('preinscription/', preinscription_view, name='preinscription'),
     path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
@@ -71,7 +69,6 @@ urlpatterns = [
     path('e3m/licence/', views.licence, name='licence'),
     path('e3m/masters1/', views.masters1, name='masters1'),
      path('inscription/', views.inscription_view, name='inscription'),
-
 
 
 ]
