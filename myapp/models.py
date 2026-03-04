@@ -273,7 +273,8 @@ class Preinscription(models.Model):
 
     commune = models.CharField(max_length=100, null=True, blank=True)
     quartier = models.CharField(max_length=100, null=True, blank=True)
-
+  # 🆕 Champ photo
+    photo = models.ImageField(upload_to='photos_etudiants/', blank=True, null=True)
     # ✅ NOUVEAUX CHAMPS
     nationalite = models.CharField(max_length=100, blank=True)
     etablissement_origine = models.CharField(max_length=150, blank=True)
@@ -407,3 +408,104 @@ class Evenement_inst(models.Model):
 
     def __str__(self):
         return self.titre
+
+# myapp/models.py
+
+
+class Inscription(models.Model):
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=20)
+    date_naissance = models.DateField()
+    formation = models.CharField(max_length=100)
+    commune = models.CharField(max_length=100)
+    quartier = models.CharField(max_length=100)
+    message = models.TextField(blank=True, null=True)
+
+    # Infos académiques
+    nationalite = models.CharField(max_length=50, blank=True, null=True)
+    etablissement_origine = models.CharField(max_length=150, blank=True, null=True)
+    diplome = models.CharField(max_length=50, blank=True, null=True)
+    annee_obtention = models.IntegerField(blank=True, null=True)
+
+    # Infos parentales
+    nom_pere = models.CharField(max_length=100, blank=True, null=True)
+    telephone_pere = models.CharField(max_length=20, blank=True, null=True)
+    adresse_parents = models.TextField(blank=True, null=True)
+
+    # Photo
+    # photo = models.ImageField(upload_to='inscriptions/photos/', blank=True, null=True)
+    identifiant = models.CharField(max_length=20, blank=True, null=True)  # plus de unique=True
+    SEXE_CHOICES = [
+        ('M', 'Masculin'),
+        ('F', 'Féminin'),
+    ]
+    sexe = models.CharField(max_length=1, choices=SEXE_CHOICES, default='M')
+    photo = models.ImageField(upload_to='photos/')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nom} {self.prenom}"
+    # Informations personnelles
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=20)
+    date_naissance = models.DateField()
+    formation = models.CharField(max_length=100)
+    commune = models.CharField(max_length=100)
+    quartier = models.CharField(max_length=100)
+    message = models.TextField(blank=True, null=True)
+
+    # Informations académiques
+    nationalite = models.CharField(max_length=100, blank=True, null=True)
+    etablissement_origine = models.CharField(max_length=200, blank=True, null=True)
+    diplome = models.CharField(max_length=100, blank=True, null=True)
+    annee_obtention = models.CharField(max_length=4, blank=True, null=True)
+
+    # Informations parentales
+    nom_pere = models.CharField(max_length=100, blank=True, null=True)
+    telephone_pere = models.CharField(max_length=20, blank=True, null=True)
+    adresse_parents = models.TextField(blank=True, null=True)
+
+    # Pièces jointes
+    piece_recto = models.ImageField(upload_to='inscriptions/', blank=True, null=True)
+    piece_verso = models.ImageField(upload_to='inscriptions/', blank=True, null=True)
+    photo = models.ImageField(upload_to='inscriptions/photos/', blank=True, null=True)
+
+    # Date d'inscription
+    date_inscription = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nom} {self.prenom} - {self.formation}"
+    # Informations personnelles
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    telephone = models.CharField(max_length=20)
+    date_naissance = models.DateField()
+    nationalite = models.CharField(max_length=50)
+
+    # Formation
+    formation = models.CharField(max_length=100)
+    commune = models.CharField(max_length=100)
+    quartier = models.CharField(max_length=100)
+    etablissement_origine = models.CharField(max_length=150)
+    diplome = models.CharField(max_length=100)
+    annee_obtention = models.IntegerField()
+
+    # Parents
+    nom_pere = models.CharField(max_length=100)
+    telephone_pere = models.CharField(max_length=20)
+    adresse_parents = models.CharField(max_length=200)
+
+    # Photo de l’étudiant
+    photo = models.ImageField(upload_to='photos_etudiants/', blank=True, null=True)
+
+    # Date inscription automatique
+    date_inscription = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nom} {self.prenom} - {self.formation}"

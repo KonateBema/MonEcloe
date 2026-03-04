@@ -91,6 +91,7 @@ Préinscription - {{ home_data.site_name }}
       {% csrf_token %}
 
       <!-- PERSONNEL -->
+       
       <div class="row mb-3">
         <div class="col-md-6">{{ form.nom.label_tag }} {{ form.nom }}</div>
         <div class="col-md-6">{{ form.prenom.label_tag }} {{ form.prenom }}</div>
@@ -365,6 +366,8 @@ Préinscription - {{ home_data.site_name }}
     logoEcole.onload = tryDraw;
     logoMinistere.onload = tryDraw;
   }
+
+  
 </script>
 
 {% endblock %}

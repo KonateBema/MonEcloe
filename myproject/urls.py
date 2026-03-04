@@ -70,6 +70,7 @@ urlpatterns = [
     path('annee-prepa/', views.prepa, name='formations_prepa'),
     path('e3m/licence/', views.licence, name='licence'),
     path('e3m/masters1/', views.masters1, name='masters1'),
+     path('inscription/', views.inscription_view, name='inscription'),
 
 
 

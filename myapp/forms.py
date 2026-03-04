@@ -1,6 +1,6 @@
 from django import forms
 from .models import Commande
-from .models import Preinscription
+from .models import Preinscription, Inscription
 
 class CommandeForm(forms.ModelForm):
     class Meta:
@@ -145,4 +145,30 @@ class PreinscriptionForm(forms.ModelForm):
             'piece_verso': forms.ClearableFileInput(attrs={
                 'class': 'form-control'
             }),
+        }
+
+class InscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Inscription
+        fields = '__all__'  # ou liste complète des champs
+        widgets = {
+            'nom': forms.TextInput(attrs={'class':'form-control'}),
+            'prenom': forms.TextInput(attrs={'class':'form-control'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'telephone': forms.TextInput(attrs={'class':'form-control'}),
+            'date_naissance': forms.DateInput(attrs={'type':'date','class':'form-control'}),
+            'formation': forms.TextInput(attrs={'class':'form-control'}),
+            'commune': forms.TextInput(attrs={'class':'form-control'}),
+            'quartier': forms.TextInput(attrs={'class':'form-control'}),
+            'message': forms.Textarea(attrs={'class':'form-control','rows':4}),
+            'nationalite': forms.TextInput(attrs={'class':'form-control'}),
+            'etablissement_origine': forms.TextInput(attrs={'class':'form-control'}),
+            'diplome': forms.TextInput(attrs={'class':'form-control'}),
+            'annee_obtention': forms.NumberInput(attrs={'class':'form-control'}),
+            'nom_pere': forms.TextInput(attrs={'class':'form-control'}),
+            'telephone_pere': forms.TextInput(attrs={'class':'form-control'}),
+            'adresse_parents': forms.Textarea(attrs={'class':'form-control','rows':3}),
+            'photo': forms.ClearableFileInput(attrs={'class':'form-control'}),
+            'identifiant': forms.TextInput(attrs={'class':'form-control'}),
+            'sexe': forms.Select(attrs={'class':'form-select'}),
         }

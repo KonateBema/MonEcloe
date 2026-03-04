@@ -15,8 +15,11 @@ from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , 
 from django.db.models import Count
 from .models import Formation  , CycleIngenieur# ajoute cette ligne si elle n'existe pas
 from .models import Evenement_inst
-
-
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4
+import openpyxl
+from reportlab.pdfgen import canvas
+from .models import Inscription
 # ==============================
 #      PRODUCT ADMIN
 # ==============================
@@ -308,14 +311,148 @@ class EcoleAdmin(admin.ModelAdmin):
         }),
     )
 
+
+# Pour Excel
 @admin.register(Preinscription)
 class PreinscriptionAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'prenom', 'email', 'telephone', 'formation', 'commune', 'quartier','date_inscription')
+    list_display = (
+        'nom', 'prenom', 'email', 'telephone', 'formation', 
+        'commune', 'quartier','date_naissance','nationalite',
+        'etablissement_origine','diplome','annee_obtention',
+        'nom_pere','telephone_pere','adresse_parents','date_inscription'
+    )
     list_filter = ('formation', 'date_inscription')
     search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
     ordering = ('-date_inscription',)
     readonly_fields = ('date_inscription',)
 
+    actions = ['export_excel', 'export_pdf']
+
+    # ---------------- EXPORT EXCEL ----------------
+    def export_excel(self, request, queryset):
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        sheet.title = "Préinscriptions"
+
+        headers = [
+            "Nom", "Prénom", "Email", "Téléphone", "Formation",
+            "Commune", "Quartier", "Date de naissance", "Nationalité",
+            "Établissement", "Diplôme", "Année d'obtention",
+            "Nom père", "Téléphone père", "Adresse parents", "Message", "Date inscription"
+        ]
+        sheet.append(headers)
+
+        for obj in queryset:
+            sheet.append([
+                obj.nom, obj.prenom, obj.email, obj.telephone, obj.formation,
+                obj.commune, obj.quartier, obj.date_naissance, obj.nationalite,
+                obj.etablissement_origine, obj.diplome, obj.annee_obtention,
+                obj.nom_pere, obj.telephone_pere, obj.adresse_parents,
+                obj.message, obj.date_inscription.strftime("%Y-%m-%d %H:%M")
+            ])
+
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename=preinscriptions.xlsx'
+        workbook.save(response)
+        return response
+
+    export_excel.short_description = "Exporter sélection en Excel"
+
+    # ---------------- EXPORT PDF ----------------
+    def export_pdf(self, request, queryset):
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="preinscriptions.pdf"'
+
+        pdf = canvas.Canvas(response, pagesize=A4)
+        width, height = A4
+        page_num = 1
+        numero_etudiant = 1
+
+        for obj in queryset:
+            y = height - 60  # marge du haut
+
+            # ---------------- HEADER ----------------
+            pdf.setFont("Helvetica-Bold", 16)
+            pdf.drawString(50, y, f"Préinscription Étudiant n° {numero_etudiant}")
+            y -= 30
+
+            # Photo de l'étudiant
+            if obj.photo:
+                try:
+                    img = ImageReader(obj.photo.path)
+                    pdf.drawImage(img, width - 120, height - 100, width=80, height=80, preserveAspectRatio=True)
+                except Exception as e:
+                    print("Erreur chargement photo PDF:", e)
+
+            # ---------------- INFORMATIONS PERSONNELLES ----------------
+            pdf.setFont("Helvetica-Bold", 14)
+            pdf.drawString(50, y, "Informations Personnelles")
+            y -= 20
+
+            def ligne_deux_colonnes(label1, val1, label2, val2):
+                nonlocal y
+                pdf.setFont("Helvetica-Bold", 12)
+                pdf.drawString(50, y, f"{label1}:")
+                pdf.drawString(300, y, f"{label2}:")
+                pdf.setFont("Helvetica", 12)
+                pdf.drawString(120, y, val1 or "-")
+                pdf.drawString(380, y, val2 or "-")
+                y -= 18
+
+            ligne_deux_colonnes("Nom", obj.nom, "Prénom", obj.prenom)
+            ligne_deux_colonnes("Email", obj.email, "Téléphone", obj.telephone)
+            ligne_deux_colonnes("Formation", obj.formation, "Commune", obj.commune)
+            ligne_deux_colonnes("Quartier", obj.quartier, "Date Naiss", str(obj.date_naissance))
+
+            # ---------------- INFORMATIONS ACADÉMIQUES ----------------
+            pdf.setFont("Helvetica-Bold", 14)
+            pdf.drawString(50, y, "Informations Académiques")
+            y -= 20
+            ligne_deux_colonnes("Nationalité", obj.nationalite, "école", obj.etablissement_origine)
+            ligne_deux_colonnes("Diplôme", obj.diplome, "Année ", str(obj.annee_obtention))
+
+            # ---------------- INFORMATIONS PARENTALES ----------------
+            pdf.setFont("Helvetica-Bold", 14)
+            pdf.drawString(50, y, "Informations Parentales")
+            y -= 20
+            ligne_deux_colonnes("Nom père", obj.nom_pere, "Tél père", obj.telephone_pere)
+            pdf.setFont("Helvetica-Bold", 12)
+            pdf.drawString(50, y, "Adresse parents:")
+            pdf.setFont("Helvetica", 12)
+            text = pdf.beginText(160, y)
+            for line in (obj.adresse_parents or "-").splitlines():
+                text.textLine(line)
+                y -= 15
+            pdf.drawText(text)
+            y -= 10
+
+            pdf.setFont("Helvetica-Bold", 12)
+            pdf.drawString(50, y, "Message:")
+            pdf.setFont("Helvetica", 12)
+            text = pdf.beginText(120, y)
+            for line in (obj.message or "-").splitlines():
+                text.textLine(line)
+                y -= 15
+            pdf.drawText(text)
+            y -= 30
+
+            # ---------------- FOOTER ----------------
+            pdf.setLineWidth(0.5)
+            pdf.line(30, 40, width - 30, 40)
+            pdf.setFont("Helvetica", 10)
+            pdf.drawString(50, 30, "Groupe Expert Métier (GEM) | www.gem.ci | +225 0150536686")
+            pdf.drawRightString(width - 50, 30, f"Page {page_num}")
+
+            pdf.showPage()
+            page_num += 1
+            numero_etudiant += 1
+
+        pdf.save()
+        return response
+
+    export_pdf.short_description = "Exporter sélection en PDF"
 @admin.register(Association)
 class AssociationAdmin(admin.ModelAdmin):
     list_display = ('nom', 'responsable', 'contact', 'image_preview')
@@ -356,14 +493,6 @@ class FormationAdmin(admin.ModelAdmin):
     search_fields = ('titre',)
 
 # Définition des choix pour le type de filière
-
-
-# class Formation(models.Model):
-#     titre = models.CharField(max_length=200)
-#     description = models.TextField()
-#     details = models.TextField()
-#     type_filiere = models.CharField(max_length=50, choices=TYPE_FILIERE_CHOICES)
-#     image = models.ImageField(upload_to='formations/', blank=True, null=True)
 
 def dashboard_callback(request, context):
     context.update({
@@ -410,6 +539,104 @@ class CycleIngenieurAdmin(admin.ModelAdmin):
     list_filter = ('type_cycle',)  # filtre par type
     search_fields = ('titre', 'description')  # barre de recherche
 #      INSTANTIATION DE L'ADMIN PERSONNALISÉ
+
+@admin.register(Inscription)
+class InscriptionAdmin(admin.ModelAdmin):
+    list_display = (
+        'nom', 'prenom', 'email', 'telephone', 'formation', 
+        'commune', 'quartier','date_naissance','nationalite',
+        'etablissement_origine','diplome','annee_obtention',
+        'nom_pere','telephone_pere','adresse_parents','date_inscription'
+    )
+    list_filter = ('formation', 'date_inscription')
+    search_fields = ('nom', 'prenom', 'email', 'telephone', 'formation')
+    ordering = ('-date_inscription',)
+    readonly_fields = ('date_inscription',)
+
+    actions = ['export_excel', 'export_pdf']
+
+    # ---------------- EXPORT EXCEL ----------------
+    def export_excel(self, request, queryset):
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        sheet.title = "Inscriptions"
+
+        headers = [
+            "Nom", "Prénom", "Email", "Téléphone", "Formation",
+            "Commune", "Quartier", "Date de naissance", "Nationalité",
+            "Établissement", "Diplôme", "Année d'obtention",
+            "Nom père", "Téléphone père", "Adresse parents", "Date inscription"
+        ]
+        sheet.append(headers)
+
+        for obj in queryset:
+            sheet.append([
+                obj.nom, obj.prenom, obj.email, obj.telephone, obj.formation,
+                obj.commune, obj.quartier, obj.date_naissance, obj.nationalite,
+                obj.etablissement_origine, obj.diplome, obj.annee_obtention,
+                obj.nom_pere, obj.telephone_pere, obj.adresse_parents,
+                obj.date_inscription.strftime("%Y-%m-%d %H:%M")
+            ])
+
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=inscriptions.xlsx'
+        workbook.save(response)
+        return response
+
+    export_excel.short_description = "Exporter sélection en Excel"
+
+    # ---------------- EXPORT PDF ----------------
+    def export_pdf(self, request, queryset):
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="inscriptions.pdf"'
+
+        pdf = canvas.Canvas(response, pagesize=A4)
+        width, height = A4
+        y = height - 50
+
+        pdf.setFont("Helvetica-Bold", 16)
+        pdf.drawString(50, y, "Liste des Inscriptions")
+        y -= 30
+
+        pdf.setFont("Helvetica", 10)
+
+        for i, obj in enumerate(queryset, start=1):
+            # Numérotation
+            pdf.drawString(50, y, f"{i}. {obj.nom} {obj.prenom}")
+            y -= 15
+
+            # Infos principales
+            lines = [
+                f"Email: {obj.email}  Téléphone: {obj.telephone}",
+                f"Formation: {obj.formation}  Commune: {obj.commune}  Quartier: {obj.quartier}",
+                f"Date naissance: {obj.date_naissance}  Nationalité: {obj.nationalite}",
+                f"Établissement: {obj.etablissement_origine}  Diplôme: {obj.diplome}  Année obtention: {obj.annee_obtention}",
+                f"Nom père: {obj.nom_pere}  Téléphone père: {obj.telephone_pere}",
+                f"Adresse parents: {obj.adresse_parents}",
+            ]
+
+            for line in lines:
+                pdf.drawString(60, y, line)
+                y -= 15
+
+            # Photo si disponible
+            if obj.photo:
+                try:
+                    pdf.drawImage(obj.photo.path, 400, y + 15, width=80, height=80)
+                except Exception as e:
+                    print("Erreur chargement photo PDF:", e)
+
+            y -= 90  # espace entre les étudiants
+
+            if y < 50:
+                pdf.showPage()
+                y = height - 50
+                pdf.setFont("Helvetica", 10)
+
+        pdf.save()
+        return response
+
+    export_pdf.short_description = "Exporter sélection en PDF"
 # ==============================
 # admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
 # admin_site = MyAdminSite(name='admin')
@@ -434,5 +661,6 @@ admin_site.register(HomeSlide, HomeSlideAdmin)  # <-- nouveau modèle
 # Enregistrer Ecole sur l'admin personnalisé
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)
+admin_site.register(Inscription, InscriptionAdmin)
 admin_site.register(Evenement, EvenementAdmin)
 admin_site.register(InscriptionAssociation, InscriptionAssociationAdmin)

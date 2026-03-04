@@ -208,14 +208,35 @@
                             href="{% url 'evenements' %}">
                             Événements
                         </a>
+                    </li> 
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle 
+                            {% if request.resolver_match.url_name in 'inscription preinscription' %}active fw-bold text-primary{% endif %}"
+                            href="#" id="etudiantsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Étudiants
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="etudiantsDropdown">
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'inscription' %}active fw-bold text-primary{% endif %}"
+                                   href="{% url 'inscription' %}">
+                                    Inscription
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {% if request.resolver_match.url_name == 'preinscription' %}active fw-bold text-primary{% endif %}"
+                                   href="{% url 'preinscription' %}">
+                                    Préinscription 
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'preinscription' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'preinscription' %}">
                             Préinscription
                         </a>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'certificats' %}active fw-bold text-primary{% endif %}"
