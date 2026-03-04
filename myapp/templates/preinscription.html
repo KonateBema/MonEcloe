@@ -14,47 +14,21 @@ Préinscription - {{ home_data.site_name }}
     background: #f4f6f9;
   }
 
-  .header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .header {
-    background: url("{% static 'images/slide1.jpg' %}") center/cover no-repeat;
-    padding: 80px 20px;
-    border-radius: 15px;
-    color: white;
+  .header,
+  .hero {
     position: relative;
     overflow: hidden;
+    border-radius: 15px;
+    color: white;
   }
 
-  /* effet sombre sur l’image pour lisibilité */
-  .header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-  /* pour mettre le texte au-dessus */
-  /* .header * {
-  position: relative;
-  z-index: 2;
-} */
   .hero {
     background: url("{% static 'images/preinscription.jpg' %}") center center / cover no-repeat;
     min-height: 400px;
-    width: 100%;
-    border-radius: 15px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-
-    position: relative;
-    color: white;
-    overflow: hidden;
     padding: 60px 20px;
   }
 
@@ -70,20 +44,6 @@ Préinscription - {{ home_data.site_name }}
     z-index: 2;
   }
 
-  /* overlay sombre */
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-  /* contenu au-dessus de l’image */
-  .hero-content {
-    position: relative;
-    z-index: 2;
-  }
-
   .hero h1 {
     font-size: 42px;
     font-weight: 700;
@@ -91,48 +51,6 @@ Préinscription - {{ home_data.site_name }}
 
   .hero p {
     font-size: 18px;
-  }
-
-  .logo {
-    max-height: 90px;
-  }
-
-  /* .header {
-    background: url("{% static 'images/preinscription.jpg' %}") no-repeat center center;
-    background-size: cover;
-    min-height: 350px;
-   
-    width: 100%;
-    border-radius: 15px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  } */
-
-  .header h1 {
-    color: #fff;
-  }
-
-  .header p {
-    color: #eee;
-  }
-
-
-  .header img {
-    max-height: 90px;
-    margin-bottom: 15px;
-  }
-
-  .header h1 {
-    font-weight: 700;
-    color: #0d6efd;
   }
 
   .card-form {
@@ -158,116 +76,168 @@ Préinscription - {{ home_data.site_name }}
 
 <div class="container py-5">
 
-  <!-- <div class="header">
-    <img src="{% static 'images/logo.png' %}" alt="Logo">
-    <h1>Préinscription en ligne</h1>
-    <p class="text-muted">{{ home_data.site_name }}</p>
-  </div> -->
+  <!-- HERO -->
   <div class="hero">
     <div class="hero-content">
-      <!-- <img src="{% static 'images/logo.png' %}" class="logo mb-3"> -->
       <h1>Inscription et Préinscription en ligne</h1>
       <p>{{ home_data.site_name }}</p>
     </div>
   </div>
-  <br>
-  <!-- <div class="text-center mb-4">
-    <a href="{% url 'home' %}" class="btn btn-secondary">
-      ← Retour à l’accueil
-    </a>
-  </div> -->
 
+  <br>
+  <!-- FORMULAIRE -->
   <div class="card-form">
-    <form id="preinscriptionForm" method="POST" onsubmit="showRecapModal(event)">
+    <form id="preinscriptionForm" method="POST" enctype="multipart/form-data" onsubmit="showRecapModal(event)">
       {% csrf_token %}
 
+      <!-- PERSONNEL -->
       <div class="row mb-3">
         <div class="col-md-6">{{ form.nom.label_tag }} {{ form.nom }}</div>
         <div class="col-md-6">{{ form.prenom.label_tag }} {{ form.prenom }}</div>
       </div>
-
       <div class="row mb-3">
         <div class="col-md-6">{{ form.email.label_tag }} {{ form.email }}</div>
         <div class="col-md-6">{{ form.telephone.label_tag }} {{ form.telephone }}</div>
       </div>
-
       <div class="row mb-3">
         <div class="col-md-6">{{ form.date_naissance.label_tag }} {{ form.date_naissance }}</div>
         <div class="col-md-6">{{ form.formation.label_tag }} {{ form.formation }}</div>
       </div>
-
-      <!-- ✅ NOUVEAUX CHAMPS -->
       <div class="row mb-3">
         <div class="col-md-6">{{ form.commune.label_tag }} {{ form.commune }}</div>
         <div class="col-md-6">{{ form.quartier.label_tag }} {{ form.quartier }}</div>
       </div>
+      <div class="mb-4">{{ form.message.label_tag }} {{ form.message }}</div>
 
-      <div class="mb-4">
-        {{ form.message.label_tag }}
-        {{ form.message }}
+      <hr class="my-4">
+      <h5 class="fw-bold text-primary mb-3">Informations Académiques</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">{{ form.nationalite.label_tag }} {{ form.nationalite }}</div>
+        <div class="col-md-6">{{ form.etablissement_origine.label_tag }} {{ form.etablissement_origine }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">{{ form.diplome.label_tag }} {{ form.diplome }}</div>
+        <div class="col-md-6">{{ form.annee_obtention.label_tag }} {{ form.annee_obtention }}</div>
+      </div>
+
+      <hr class="my-4">
+      <h5 class="fw-bold text-primary mb-3">Informations Parentales</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">{{ form.nom_pere.label_tag }} {{ form.nom_pere }}</div>
+        <div class="col-md-6">{{ form.telephone_pere.label_tag }} {{ form.telephone_pere }}</div>
+      </div>
+      <div class="mb-3">{{ form.adresse_parents.label_tag }} {{ form.adresse_parents }}</div>
+
+      <hr class="my-4">
+      <h5 class="fw-bold text-primary mb-3">Pièces à fournir</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">{{ form.piece_recto.label_tag }} {{ form.piece_recto }}</div>
+        <div class="col-md-6">{{ form.piece_verso.label_tag }} {{ form.piece_verso }}</div>
       </div>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-primary px-4">
-          Voir le récapitulatif
-        </button>
+        <button type="submit" class="btn btn-primary px-4">Voir le récapitulatif</button>
       </div>
-
     </form>
   </div>
 
 </div>
 
-<!-- ✅ MODAL RECAP -->
+<!-- MODAL RECAP -->
 <div class="modal fade" id="recapModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">Récapitulatif de Préinscription</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-
       <div class="modal-body">
+        <!-- DEUX COLONNES -->
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Nom :</strong> <span id="recapNom"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Prénom :</strong> <span id="recapPrenom"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Email :</strong> <span id="recapEmail"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Téléphone :</strong> <span id="recapTelephone"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Formation :</strong> <span id="recapFormation"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Commune :</strong> <span id="recapCommune"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Quartier :</strong> <span id="recapQuartier"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Message :</strong> <span id="recapMessage"></span></p>
+          </div>
+        </div>
 
-        <p><strong>Nom :</strong> <span id="recapNom"></span></p>
-        <p><strong>Prénom :</strong> <span id="recapPrenom"></span></p>
-        <p><strong>Email :</strong> <span id="recapEmail"></span></p>
-        <p><strong>Téléphone :</strong> <span id="recapTelephone"></span></p>
-        <p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p>
-        <p><strong>Formation :</strong> <span id="recapFormation"></span></p>
+        <hr>
+        <h6 class="fw-bold text-primary">Informations Académiques</h6>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Nationalité :</strong> <span id="recapNationalite"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Établissement :</strong> <span id="recapEtablissement"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Diplôme :</strong> <span id="recapDiplome"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Année :</strong> <span id="recapAnnee"></span></p>
+          </div>
+        </div>
 
-        <!-- ✅ AJOUTÉS -->
-        <p><strong>Commune :</strong> <span id="recapCommune"></span></p>
-        <p><strong>Quartier :</strong> <span id="recapQuartier"></span></p>
-
-        <p><strong>Message(1ere année ou 2eme année) :</strong> <span id="recapMessage"></span></p>
-
+        <hr>
+        <h6 class="fw-bold text-primary">Informations Parentales</h6>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Nom du père :</strong> <span id="recapNomPere"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Téléphone :</strong> <span id="recapTelephonePere"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Adresse :</strong> <span id="recapAdresseParents"></span></p>
+          </div>
+        </div>
       </div>
-
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">
-          ✅ Confirmer l’envoi
-        </button>
-
-        <button type="button" class="btn btn-primary" onclick="telechargerRecap()">
-          📄 Télécharger PDF
-        </button>
-
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Fermer
-        </button>
+        <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">✅ Confirmer l’envoi</button>
+        <button type="button" class="btn btn-primary" onclick="telechargerRecap()">📄 Télécharger PDF</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
-
     </div>
   </div>
 </div>
 
 <script>
-
   function showRecapModal(event) {
     event.preventDefault();
-
     recapNom.textContent = id_nom.value;
     recapPrenom.textContent = id_prenom.value;
     recapEmail.textContent = id_email.value;
@@ -277,101 +247,128 @@ Préinscription - {{ home_data.site_name }}
     recapCommune.textContent = id_commune.value;
     recapQuartier.textContent = id_quartier.value;
     recapMessage.textContent = id_message.value;
-
+    recapNationalite.textContent = id_nationalite.value;
+    recapEtablissement.textContent = id_etablissement_origine.value;
+    recapDiplome.textContent = id_diplome.value;
+    recapAnnee.textContent = id_annee_obtention.value;
+    recapNomPere.textContent = id_nom_pere.value;
+    recapTelephonePere.textContent = id_telephone_pere.value;
+    recapAdresseParents.textContent = id_adresse_parents.value;
     new bootstrap.Modal(document.getElementById('recapModal')).show();
   }
 
-  function envoyerFormulaire() {
-    document.getElementById("preinscriptionForm").submit();
-  }
+  function envoyerFormulaire() { document.getElementById("preinscriptionForm").submit(); }
 
-function telechargerRecap() {
+  // PDF
+  function telechargerRecap() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
+    let y = 65;
 
-    // Logos
     const logoEcole = new Image();
     const logoMinistere = new Image();
-
     logoEcole.src = "{% static 'images/logo.png' %}";
     logoMinistere.src = "{% static 'images/ministere.jpg' %}";
 
     let loadedImages = 0;
     function tryDraw() {
-        loadedImages++;
-        if (loadedImages < 2) return; // attendre les 2 logos
+      loadedImages++;
+      if (loadedImages < 2) return;
 
-        // ===== HEADER =====
-        // Logo école à gauche
-        doc.addImage(logoEcole, 'PNG', 15, 10, 30, 30);
+      // HEADER
+      doc.addImage(logoEcole, 'PNG', 15, 10, 30, 30);
+      doc.setFontSize(12); doc.setFont("helvetica", "bold");
+      doc.text("RÉPUBLIQUE DE CÔTE D’IVOIRE", pageWidth - 15, 20, { align: "right" });
+      const logoWidth = 25, logoHeight = 25;
+      doc.addImage(logoMinistere, 'PNG', pageWidth - 15 - logoWidth, 25, logoWidth, logoHeight);
+      doc.setFontSize(10); doc.setFont("helvetica", "normal");
+      doc.text("Union – Discipline – Travail", pageWidth - 15, 50, { align: "right" });
+      doc.setLineWidth(0.5); doc.line(10, 55, pageWidth - 10, 55);
 
-        // Texte header ligne 1 à droite
-        doc.setFontSize(12);
+      // TITRE
+      doc.setFontSize(16); doc.setFont("helvetica", "bold");
+      doc.text("Fiche de Préinscription", pageWidth / 2, y, { align: "center" }); y += 15;
+      doc.setFontSize(12); doc.setFont("helvetica", "normal");
+
+      // FONCTIONS UTILES
+      function ligneDeuxColonnes(label1, val1, label2, val2) {
         doc.setFont("helvetica", "bold");
-        doc.text("RÉPUBLIQUE DE CÔTE D’IVOIRE", pageWidth - 15, 20, { align: "right" });
-
-        // Logo ministère à droite sous le texte
-        const logoWidth = 25;
-        const logoHeight = 25;
-        doc.addImage(logoMinistere, 'PNG', pageWidth - 15 - logoWidth, 25, logoWidth, logoHeight);
-
-        // Texte header ligne 2 à droite
-        doc.setFontSize(10);
+        doc.text(label1, 20, y); doc.text(label2, 110, y); y += 6;
         doc.setFont("helvetica", "normal");
-        doc.text("Union – Discipline – Travail", pageWidth - 15, 50, { align: "right" });
+        doc.text(val1 || "-", 20, y); doc.text(val2 || "-", 110, y); y += 12;
+      }
 
-        // Ligne séparation
-        doc.setLineWidth(0.5);
-        doc.line(10, 55, pageWidth - 10, 55);
+      function addField(label, value) {
+        if (!value) value = "-";
+        const splitText = doc.splitTextToSize(value, pageWidth - 40);
+        if (y > pageHeight - 40) { doc.addPage(); y = 20; }
+        doc.setFont("helvetica", "bold"); doc.text(label + " :", 20, y);
+        doc.setFont("helvetica", "normal"); doc.text(splitText, 60, y);
+        y += splitText.length * 7 + 5;
+      }
 
-        // ===== CONTENU =====
-        let y = 65;
-        doc.setFontSize(16);
-        doc.setFont("helvetica", "bold");
-        doc.text("Fiche de Préinscription", pageWidth / 2, y, { align: "center" });
-        y += 15;
+      // INFORMATIONS PERSONNELLES
+      doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS PERSONNELLES", 20, y); y += 10;
+      doc.setFont("helvetica", "normal");
+      ligneDeuxColonnes("Nom :", recapNom.textContent, "Prénom :", recapPrenom.textContent);
+      ligneDeuxColonnes("Email :", recapEmail.textContent, "Téléphone :", recapTelephone.textContent);
+      ligneDeuxColonnes("Date de naissance :", recapDateNaissance.textContent, "Formation :", recapFormation.textContent);
+      ligneDeuxColonnes("Commune :", recapCommune.textContent, "Quartier :", recapQuartier.textContent);
+      addField("Message", recapMessage.textContent);
 
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
+      // INFORMATIONS ACADÉMIQUES
+      doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS ACADÉMIQUES", 20, y); y += 10; doc.setFont("helvetica", "normal");
+      ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
+      ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
 
-        function addField(label, value) {
-            const splitText = doc.splitTextToSize(value, pageWidth - 80);
-            doc.setFont("helvetica", "bold");
-            doc.text(label + " :", 20, y);
-            doc.setFont("helvetica", "normal");
-            doc.text(splitText, 60, y);
-            y += splitText.length * 7 + 5;
-        }
+      // INFORMATIONS PARENTALES
+      doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS PARENTALES", 20, y); y += 10; doc.setFont("helvetica", "normal");
+      ligneDeuxColonnes("Nom du père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
+      addField("Adresse des parents  :", recapAdresseParents.textContent);
 
-        addField("Nom", recapNom.textContent);
-        addField("Prénom", recapPrenom.textContent);
-        addField("Email", recapEmail.textContent);
-        addField("Téléphone", recapTelephone.textContent);
-        addField("Date de naissance", recapDateNaissance.textContent);
-        addField("Formation", recapFormation.textContent);
-        addField("Commune", recapCommune.textContent);
-        addField("Quartier", recapQuartier.textContent);
-        addField("Message", recapMessage.textContent);
-        // ===== FOOTER =====
-        doc.setLineWidth(0.5);
-        doc.line(10, pageHeight - 20, pageWidth - 10, pageHeight - 20);
-
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "normal");
+      // PIÈCES RECTO/VERSO
+      addPieceImages(() => {
+        doc.setLineWidth(0.5); doc.line(10, pageHeight - 20, pageWidth - 10, pageHeight - 20);
+        doc.setFontSize(9); doc.setFont("helvetica", "normal");
         doc.text("Groupe Expert Métier (GEM) | www.gem.ci | +225 0150536686", pageWidth / 2, pageHeight - 10, { align: "center" });
         doc.text("Page 1", pageWidth - 20, pageHeight - 10, { align: "right" });
-
-        // Sauvegarde PDF
         doc.save("recap_preinscription.pdf");
+      });
+
+      function addPieceImages(callback) {
+        const fileRecto = document.getElementById("id_piece_recto").files[0];
+        const fileVerso = document.getElementById("id_piece_verso").files[0];
+        if (!fileRecto && !fileVerso) { callback(); return; }
+        const readerR = new FileReader(); const readerV = new FileReader();
+        let loaded = 0; function checkLoaded() { loaded++; if (loaded < (fileRecto && fileVerso ? 2 : 1)) return; callback(); }
+
+        if (fileRecto) {
+          readerR.onload = function (e) {
+            if (y > pageHeight - 80) { doc.addPage(); y = 20; }
+            doc.setFont("helvetica", "bold"); doc.text("PIÈCE D'IDENTITÉ (RECTO)", 20, y); y += 10;
+            doc.addImage(e.target.result, "JPEG", 20, y, 80, 50); y += 50 + 10; checkLoaded();
+          }; readerR.readAsDataURL(fileRecto);
+        }
+        if (fileVerso) {
+          readerV.onload = function (e) {
+            if (y > pageHeight - 80) { doc.addPage(); y = 20; }
+            doc.setFont("helvetica", "bold"); doc.text("PIÈCE D'IDENTITÉ (VERSO)", fileRecto ? 110 : 20, y - (fileRecto ? 60 : 0));
+            doc.addImage(e.target.result, "JPEG", fileRecto ? 110 : 20, y - (fileRecto ? 60 : 0), 80, 50);
+            if (!fileRecto) y += 50 + 10;
+            checkLoaded();
+          }; readerV.readAsDataURL(fileVerso);
+        }
+      }
+
     }
 
-    // Vérifier que les deux logos sont chargés
     logoEcole.onload = tryDraw;
     logoMinistere.onload = tryDraw;
-}
+  }
+
+
 </script>
 
 {% endblock %}

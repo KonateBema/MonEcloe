@@ -251,24 +251,56 @@ def contact(request):
 
 
 #     return render(request, 'preinscription.html', {'form': form, 'home_data': home_data})
+# def preinscription_view(request):
+#     # Définition simple de home_data
+#     home_data = {
+#         'site_name': '',
+#         'email': 'groupeexpertmetier@gmail.com',
+#         'telephone': '+225 0150536686 /2722204432 '
+#     }
+
+#     initial_data = {}
+#     if 'formation' in request.GET:
+#         initial_data['formation'] = request.GET['formation']
+
+#     if request.method == 'POST':
+#         form = PreinscriptionForm(request.POST)
+#         if form.is_valid():
+#             preinscrit = form.save()
+#             messages.success(request, "Votre demande a été envoyée avec succès !")
+#             return redirect('preinscription')
+#     else:
+#         form = PreinscriptionForm(initial=initial_data)
+
+#     return render(request, 'preinscription.html', {
+#         'form': form,
+#         'home_data': home_data
+#     })
 def preinscription_view(request):
-    # Définition simple de home_data
+
     home_data = {
         'site_name': '',
         'email': 'groupeexpertmetier@gmail.com',
-        'telephone': '+225 0150536686 /2722204432 '
+        'telephone': '+225 0150536686 / 2722204432'
     }
 
+    # Pré-remplissage automatique de la formation si présent dans l'URL
     initial_data = {}
-    if 'formation' in request.GET:
-        initial_data['formation'] = request.GET['formation']
+    if request.GET.get('formation'):
+        initial_data['formation'] = request.GET.get('formation')
 
     if request.method == 'POST':
-        form = PreinscriptionForm(request.POST)
+        # ✅ IMPORTANT : ajouter request.FILES
+        form = PreinscriptionForm(request.POST, request.FILES)
+
         if form.is_valid():
-            preinscrit = form.save()
+            form.save()
             messages.success(request, "Votre demande a été envoyée avec succès !")
             return redirect('preinscription')
+
+        else:
+            messages.error(request, "Veuillez corriger les erreurs du formulaire.")
+
     else:
         form = PreinscriptionForm(initial=initial_data)
 

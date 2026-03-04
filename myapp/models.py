@@ -245,6 +245,22 @@ class Ecole(models.Model):
     def __str__(self):
         return self.nom
 
+# class Preinscription(models.Model):
+#     nom = models.CharField(max_length=100)
+#     prenom = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     telephone = models.CharField(max_length=20, blank=True)
+#     date_naissance = models.DateField(blank=True, null=True)
+#     formation = models.CharField(max_length=150)
+#     message = models.TextField(blank=True)
+#     date_inscription = models.DateTimeField(auto_now_add=True)
+#     commune = models.CharField(max_length=100, null=True, blank=True)
+#     quartier = models.CharField(max_length=100, null=True, blank=True)
+
+
+#     def __str__(self):
+#         return f"{self.nom} {self.prenom} - {self.formation}"
+
 class Preinscription(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
@@ -254,12 +270,28 @@ class Preinscription(models.Model):
     formation = models.CharField(max_length=150)
     message = models.TextField(blank=True)
     date_inscription = models.DateTimeField(auto_now_add=True)
+
     commune = models.CharField(max_length=100, null=True, blank=True)
     quartier = models.CharField(max_length=100, null=True, blank=True)
 
+    # ✅ NOUVEAUX CHAMPS
+    nationalite = models.CharField(max_length=100, blank=True)
+    etablissement_origine = models.CharField(max_length=150, blank=True)
+    diplome = models.CharField(max_length=150, blank=True)
+    annee_obtention = models.PositiveIntegerField(null=True, blank=True)
+
+    nom_pere = models.CharField(max_length=150, blank=True)
+    telephone_pere = models.CharField(max_length=20, blank=True)
+    adresse_parents = models.TextField(blank=True)
+
+    piece_recto = models.ImageField(upload_to='pieces/', blank=True, null=True)
+    piece_verso = models.ImageField(upload_to='pieces/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.nom} {self.prenom} - {self.formation}"
+
+
+
 
 class Programme(models.Model):
     titre = models.CharField(max_length=200)
