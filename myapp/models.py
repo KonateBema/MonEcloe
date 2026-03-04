@@ -6,22 +6,26 @@ from django.utils import timezone  # ← IMPORTANT
 #       FORMATION
 # ==============================
 TYPE_FILIERE_CHOICES = [
-    ('tertiaire', 'Filière Tertiaire'),
-    ('industrielle', 'Filière Industrielle'),
-     ('preparatoire', 'Année Preparatoire'),
+    ('bts', 'BTS (BAC+2)'),
+    ('licence', 'Licence (BAC+3)'),
+    ('master', 'Master (BAC+5)'),
+    ('ingenieur', 'Cycle Ingénieur (BAC+5)'),
+    ('business', 'Business School (EMBS)'),
+    ('preparatoire', 'Année Préparatoire'),
 ]
 
 
 class Formation(models.Model):
-    # titre = models.CharField(max_length=200)
     titre = models.CharField(max_length=200, default="Formation par défaut")
     description = models.TextField()
     details = models.TextField(blank=True, null=True)
+
     type_filiere = models.CharField(
         max_length=50,
         choices=TYPE_FILIERE_CHOICES,
-        default='tertiaire'
+        default='bts'
     )
+
     image = models.ImageField(upload_to='formations/', blank=True, null=True)
 
     def __str__(self):

@@ -119,13 +119,13 @@
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'formations' %}active fw-bold text-primary{% endif %}"
                             href="{% url 'formations' %}">
                             Business School (EMBS)
                         </a>
-                    </li> -->
-                    <li class="nav-item dropdown">
+                    </li> 
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'formations_tertiaires formations_industrielles formations_prepa' %}active fw-bold text-primary{% endif %}" 
                            href="#" 
                            id="formationsDropdown" 
@@ -141,12 +141,6 @@
                                    Filières Tertiaires
                                 </a>
                             </li>
-                            <!-- <li>
-                                <a class="dropdown-item {% if request.resolver_match.url_name == 'formations_industrielles' %}active fw-bold text-primary{% endif %}" 
-                                   href="{% url 'formations_industrielles' %}">
-                                   Filières Industrielles
-                                </a>
-                            </li> -->
                             <li>
                                 <a class="dropdown-item {% if request.resolver_match.url_name == 'formations_prepa' %}active fw-bold text-primary{% endif %}" 
                                    href="{% url 'formations_prepa' %}">
@@ -154,7 +148,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
                     <!-- <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'e3m_school' %}active fw-bold text-primary{% endif %}"

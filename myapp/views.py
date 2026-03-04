@@ -558,14 +558,32 @@ def inscription_association(request, association_id):
         "association": association
     })
 
-def formations(request):
-    tertiaires = Formation.objects.filter(type_filiere='tertiaire')
-    industrielles = Formation.objects.filter(type_filiere='industrielle')
+# def formations(request):
+#     tertiaires = Formation.objects.filter(type_filiere='tertiaire')
+#     industrielles = Formation.objects.filter(type_filiere='industrielle')
 
-    return render(request, 'formations.html', {
-        'tertiaires': tertiaires,
-        'industrielles': industrielles,
-    })
+#     return render(request, 'formations.html', {
+#         'tertiaires': tertiaires,
+#         'industrielles': industrielles,
+#     })
+
+def formations(request):
+
+    context = {
+        'bts': Formation.objects.filter(type_filiere='bts'),
+        'licence': Formation.objects.filter(type_filiere='licence'),
+        'master': Formation.objects.filter(type_filiere='master'),
+        'cycles': Formation.objects.filter(type_filiere='ingenieur'),
+        'embs': Formation.objects.filter(type_filiere='business'),
+        'preparatoire': Formation.objects.filter(type_filiere='preparatoire'),
+    }
+
+    return render(request, 'formations.html', context)
+
+
+
+
+
 
 
 @staff_member_required
