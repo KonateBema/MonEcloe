@@ -9,15 +9,17 @@
 <div class="container mt-4">
   <div class="header text-center text-white p-5 rounded"
        style="background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);">
-    <h1 class="fw-bold">Nos Formations</h1>
-    <p>Découvrez tous nos programmes académiques</p>
+    <h1 class="fw-bold">Nous disposons des cours </h1>
+    <p>en présentiel</p>
+    <p>en distantiel</p>
+    <p>en hybride</p>
   </div>
 </div>
 
 <!-- ================= BTS ================= -->
 <section class="container py-5">
   <div class="text-center mb-5">
-    <h2 class="fw-bold text-primary">🎓 BTS (BAC+2)</h2>
+    <h2 class="fw-bold text-primary">🎓 BTS (DIPLOME BAC+2)</h2>
   </div>
 
   <div class="row g-4">
@@ -55,21 +57,33 @@
   <div class="row g-4">
     {% for formation in licence %}
     <div class="col-md-4">
-      <div class="program-block text-center">
-        <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
-        <p class="text-muted small">Formation professionnalisante Bac+3</p>
-        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-           class="btn btn-outline-success btn-sm rounded-pill mt-3">
-           S'inscrire
-        </a>
+      <div class="card formation-card shadow h-100">
+
+        {% if formation.image %}
+        <img src="{{ formation.image.url }}" class="card-img-top">
+        {% else %}
+        <img src="{% static 'images/formation.jpg' %}" class="card-img-top">
+        {% endif %}
+
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
+          <p class="text-muted small">
+            {{ formation.description|truncatechars:120 }}
+          </p>
+
+          <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+             class="btn btn-outline-success rounded-pill mt-auto">
+             S'inscrire
+          </a>
+        </div>
+
       </div>
     </div>
     {% empty %}
-    <p class="text-center text-muted">Aucune Licence disponible pour le moment .</p>
+    <p class="text-center text-muted">Aucune Licence disponible pour le moment.</p>
     {% endfor %}
   </div>
 </section>
-
 <!-- ================= MASTER info ================= -->
 <section class="container py-5">
   <div class="text-center mb-5">
@@ -95,7 +109,7 @@
 </section>
 
 <!-- ================= CYCLE INGENIEUR ================= -->
-<section class="container py-5 bg-light rounded">
+<!-- <section class="container py-5 bg-light rounded">
   <div class="text-center mb-5">
     <h2 class="fw-bold text-warning">⚙️ Cycle Ingénieur (BAC+5)</h2>
   </div>
@@ -116,10 +130,10 @@
     <p class="text-center text-muted">Aucun cycle ingénieur disponible.</p>
     {% endfor %}
   </div>
-</section>
+</section> -->
 
 <!-- ================= BUSINESS SCHOOL ================= -->
-<section class="container py-5">
+<!-- <section class="container py-5">
   <div class="text-center mb-5">
     <h2 class="fw-bold text-info">🏫 Business School (EMBS)</h2>
   </div>
@@ -145,7 +159,7 @@
     <p class="text-center text-muted">Aucune formation EMBS disponible.</p>
     {% endfor %}
   </div>
-</section>
+</section> -->
 
 <!-- ================= ANNEE PREPARATOIRE ================= -->
 <section class="container py-5 bg-light rounded">
