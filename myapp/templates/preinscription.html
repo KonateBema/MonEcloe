@@ -110,7 +110,7 @@ Préinscription - {{ home_data.site_name }}
       </div>
       <div class="mb-4">{{ form.message.label_tag }} {{ form.message }}</div>
 
-      <hr class="my-4">
+      <!-- <hr class="my-4">
       <h5 class="fw-bold text-primary mb-3">Informations Académiques</h5>
       <div class="row mb-3">
         <div class="col-md-6">{{ form.nationalite.label_tag }} {{ form.nationalite }}</div>
@@ -119,15 +119,15 @@ Préinscription - {{ home_data.site_name }}
       <div class="row mb-3">
         <div class="col-md-6">{{ form.diplome.label_tag }} {{ form.diplome }}</div>
         <div class="col-md-6">{{ form.annee_obtention.label_tag }} {{ form.annee_obtention }}</div>
-      </div>
+      </div> -->
 
-      <hr class="my-4">
+      <!-- <hr class="my-4">
       <h5 class="fw-bold text-primary mb-3">Informations Parentales</h5>
       <div class="row mb-3">
         <div class="col-md-6">{{ form.nom_pere.label_tag }} {{ form.nom_pere }}</div>
         <div class="col-md-6">{{ form.telephone_pere.label_tag }} {{ form.telephone_pere }}</div>
       </div>
-      <div class="mb-3">{{ form.adresse_parents.label_tag }} {{ form.adresse_parents }}</div>
+      <div class="mb-3">{{ form.adresse_parents.label_tag }} {{ form.adresse_parents }}</div> -->
 
       <hr class="my-4">
       <h5 class="fw-bold text-primary mb-3">Pièces à fournir</h5>
@@ -193,7 +193,7 @@ Préinscription - {{ home_data.site_name }}
         </div>
 
         <hr>
-        <h6 class="fw-bold text-primary">Informations Académiques</h6>
+        <!-- <h6 class="fw-bold text-primary">Informations Académiques</h6>
         <div class="row">
           <div class="col-md-6">
             <p><strong>Nationalité :</strong> <span id="recapNationalite"></span></p>
@@ -209,9 +209,9 @@ Préinscription - {{ home_data.site_name }}
           <div class="col-md-6">
             <p><strong>Année :</strong> <span id="recapAnnee"></span></p>
           </div>
-        </div>
+        </div> -->
 
-        <hr>
+        <!-- <hr>
         <h6 class="fw-bold text-primary">Informations Parentales</h6>
         <div class="row">
           <div class="col-md-6">
@@ -225,7 +225,7 @@ Préinscription - {{ home_data.site_name }}
           <div class="col-md-12">
             <p><strong>Adresse :</strong> <span id="recapAdresseParents"></span></p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">✅ Confirmer l’envoi</button>
@@ -248,13 +248,13 @@ Préinscription - {{ home_data.site_name }}
     recapCommune.textContent = id_commune.value;
     recapQuartier.textContent = id_quartier.value;
     recapMessage.textContent = id_message.value;
-    recapNationalite.textContent = id_nationalite.value;
-    recapEtablissement.textContent = id_etablissement_origine.value;
-    recapDiplome.textContent = id_diplome.value;
-    recapAnnee.textContent = id_annee_obtention.value;
-    recapNomPere.textContent = id_nom_pere.value;
-    recapTelephonePere.textContent = id_telephone_pere.value;
-    recapAdresseParents.textContent = id_adresse_parents.value;
+    // recapNationalite.textContent = id_nationalite.value;
+    // recapEtablissement.textContent = id_etablissement_origine.value;
+    // recapDiplome.textContent = id_diplome.value;
+    // recapAnnee.textContent = id_annee_obtention.value;
+    // recapNomPere.textContent = id_nom_pere.value;
+    // recapTelephonePere.textContent = id_telephone_pere.value;
+    // recapAdresseParents.textContent = id_adresse_parents.value;
     new bootstrap.Modal(document.getElementById('recapModal')).show();
   }
 
@@ -320,14 +320,16 @@ Préinscription - {{ home_data.site_name }}
       addField("Message", recapMessage.textContent);
 
       // INFORMATIONS ACADÉMIQUES
-      doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS ACADÉMIQUES", 20, y); y += 10; doc.setFont("helvetica", "normal");
-      ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
-      ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
+
+      // doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS ACADÉMIQUES", 20, y); y += 10; doc.setFont("helvetica", "normal");
+      // ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
+      // ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
 
       // INFORMATIONS PARENTALES
-      doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS PARENTALES", 20, y); y += 10; doc.setFont("helvetica", "normal");
-      ligneDeuxColonnes("Nom du père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
-      addField("Adresse des parents  :", recapAdresseParents.textContent);
+
+      // doc.setFont("helvetica", "bold"); doc.text("INFORMATIONS PARENTALES", 20, y); y += 10; doc.setFont("helvetica", "normal");
+      // ligneDeuxColonnes("Nom du père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
+      // addField("Adresse des parents  :", recapAdresseParents.textContent);
 
       // PIÈCES RECTO/VERSO
       addPieceImages(() => {

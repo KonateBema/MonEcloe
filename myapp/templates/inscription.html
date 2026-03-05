@@ -39,38 +39,61 @@
     z-index: 2;
   }
 
-  .hero h1 { font-size: 42px; font-weight: 700; }
-  .hero p { font-size: 18px; }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
 
   /* Form card */
   .card-form {
     background: #fff;
     border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     padding: 40px;
   }
 
-  .form-control { border-radius: 10px; }
-  .btn { border-radius: 8px; font-weight: 600; }
-  .modal-content { border-radius: 15px; }
+  .form-control {
+    border-radius: 10px;
+  }
+
+  .btn {
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .modal-content {
+    border-radius: 15px;
+  }
 
   /* Photo preview */
   #photoPreviewContainer {
-    width: 150px; height: 200px;
+    width: 150px;
+    height: 200px;
     border: 2px dashed #007bff;
     border-radius: 5px;
     overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #f8f9fa;
-    cursor: pointer; position: relative;
+    cursor: pointer;
+    position: relative;
   }
 
   #photoPreviewContainer img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   #photoPlaceholder {
-    position: absolute; font-size: 14px; text-align: center;
+    position: absolute;
+    font-size: 14px;
+    text-align: center;
   }
 </style>
 
@@ -174,45 +197,85 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-md-6"><p><strong>Identifiant :</strong> <span id="recapIdentifiant"></span></p></div>
-          <div class="col-md-6"><p><strong>Sexe :</strong> <span id="recapSexe"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Identifiant :</strong> <span id="recapIdentifiant"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Sexe :</strong> <span id="recapSexe"></span></p>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6"><p><strong>Nom :</strong> <span id="recapNom"></span></p></div>
-          <div class="col-md-6"><p><strong>Prénom :</strong> <span id="recapPrenom"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Nom :</strong> <span id="recapNom"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Prénom :</strong> <span id="recapPrenom"></span></p>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6"><p><strong>Email :</strong> <span id="recapEmail"></span></p></div>
-          <div class="col-md-6"><p><strong>Téléphone :</strong> <span id="recapTelephone"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Email :</strong> <span id="recapEmail"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Téléphone :</strong> <span id="recapTelephone"></span></p>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6"><p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p></div>
-          <div class="col-md-6"><p><strong>Formation :</strong> <span id="recapFormation"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Formation :</strong> <span id="recapFormation"></span></p>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6"><p><strong>Commune :</strong> <span id="recapCommune"></span></p></div>
-          <div class="col-md-6"><p><strong>Quartier :</strong> <span id="recapQuartier"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Commune :</strong> <span id="recapCommune"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Quartier :</strong> <span id="recapQuartier"></span></p>
+          </div>
         </div>
 
         <hr>
         <h6 class="fw-bold text-primary">Informations Académiques</h6>
         <div class="row">
-          <div class="col-md-6"><p><strong>Nationalité :</strong> <span id="recapNationalite"></span></p></div>
-          <div class="col-md-6"><p><strong>Établissement :</strong> <span id="recapEtablissement"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Nationalité :</strong> <span id="recapNationalite"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Établissement :</strong> <span id="recapEtablissement"></span></p>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-6"><p><strong>Diplôme :</strong> <span id="recapDiplome"></span></p></div>
-          <div class="col-md-6"><p><strong>Année :</strong> <span id="recapAnnee"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Diplôme :</strong> <span id="recapDiplome"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Année :</strong> <span id="recapAnnee"></span></p>
+          </div>
         </div>
 
         <hr>
         <h6 class="fw-bold text-primary">Informations Parentales</h6>
         <div class="row">
-          <div class="col-md-6"><p><strong>Nom du père :</strong> <span id="recapNomPere"></span></p></div>
-          <div class="col-md-6"><p><strong>Téléphone père :</strong> <span id="recapTelephonePere"></span></p></div>
+          <div class="col-md-6">
+            <p><strong>Nom du père :</strong> <span id="recapNomPere"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Téléphone père :</strong> <span id="recapTelephonePere"></span></p>
+          </div>
         </div>
-        <div class="row"><div class="col-12"><p><strong>Adresse :</strong> <span id="recapAdresseParents"></span></p></div></div>
-        <div class="row"><div class="col-12"><p><strong>Photo :</strong> <span id="recapPhoto"></span></p></div></div>
+        <div class="row">
+          <div class="col-12">
+            <p><strong>Adresse :</strong> <span id="recapAdresseParents"></span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p><strong>Photo :</strong> <span id="recapPhoto"></span></p>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">✅ Confirmer</button>
@@ -252,96 +315,117 @@
   function envoyerFormulaire() { document.getElementById("inscriptionForm").submit(); }
 
   function telechargerRecap() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.getWidth();
-  let y = 20;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = 20;
 
-  // ================== ENTÊTE ==================
-  const logo = new Image();
-  logo.src = "{% static 'images/logo.png' %}"; // Logo école
-  logo.onload = function() {
-    const logoWidth = 40;
-    const logoHeight = 40;
-    doc.addImage(logo, "PNG", 20, y, logoWidth, logoHeight);
+    // ================== ENTÊTE ==================
+    const logo = new Image();
+    logo.src = "{% static 'images/logo.png' %}"; // Logo école
+    logo.onload = function () {
+      const logoWidth = 40;
+      const logoHeight = 40;
+      doc.addImage(logo, "PNG", 20, y, logoWidth, logoHeight);
 
-    // Photo élève à droite
-    const photo = document.getElementById("photoPreview");
-    if(photo && photo.src) {
-      const maxWidth = 40;   // largeur max
-      const maxHeight = 40;  // hauteur max
-      const imgProps = doc.getImageProperties(photo.src);
-      let photoWidth = imgProps.width;
-      let photoHeight = imgProps.height;
+      // Photo élève à droite
+      const photo = document.getElementById("photoPreview");
+      if (photo && photo.src) {
+        const maxWidth = 40;
+        const maxHeight = 40;
+        const imgProps = doc.getImageProperties(photo.src);
+        let photoWidth = imgProps.width;
+        let photoHeight = imgProps.height;
 
-      // Ratio pour ne pas dépasser maxWidth/maxHeight
-      const ratio = Math.min(maxWidth / photoWidth, maxHeight / photoHeight, 1);
-      photoWidth *= ratio;
-      photoHeight *= ratio;
+        const ratio = Math.min(maxWidth / photoWidth, maxHeight / photoHeight, 1);
+        photoWidth *= ratio;
+        photoHeight *= ratio;
 
-      doc.addImage(photo.src, "JPEG", pageWidth - photoWidth - 20, y, photoWidth, photoHeight);
-    }
+        doc.addImage(photo.src, "JPEG", pageWidth - photoWidth - 20, y, photoWidth, photoHeight);
+      }
 
-    // TITRE centré
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("Fiche d'Inscription", pageWidth / 2, y + 10, { align: "center" });
-    y += 50;
-
-    // ================== FONCTIONS UTILITAIRES ==================
-    function ligneDeuxColonnes(label1, val1, label2, val2) {
+      // TITRE centré
+      doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
-      doc.text(label1, 20, y);
-      doc.text(label2, 110, y);
-      y += 6;
+      doc.text("Fiche d'Inscription", pageWidth / 2, y + 10, { align: "center" });
+      y += 50;
+
+      // ================== FONCTIONS UTILITAIRES ==================
+      function ligneDeuxColonnes(label1, val1, label2, val2) {
+        doc.setFont("helvetica", "bold");
+        doc.text(label1, 20, y);
+        doc.text(label2, 110, y);
+        y += 6;
+        doc.setFont("helvetica", "normal");
+        doc.text(val1 || "-", 20, y);
+        doc.text(val2 || "-", 110, y);
+        y += 12;
+      }
+
+      function sectionTitre(titre) {
+        doc.setDrawColor(0);
+        doc.setLineWidth(0.5);
+        doc.line(20, y, pageWidth - 20, y);
+        y += 5;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(titre, 20, y);
+        y += 7;
+      }
+
+      // ================== CONTENU ==================
+      sectionTitre("Informations Personnelles");
+      ligneDeuxColonnes("Identifiant :", recapIdentifiant.textContent, "Sexe :", recapSexe.textContent);
+      ligneDeuxColonnes("Nom :", recapNom.textContent, "Prénom :", recapPrenom.textContent);
+      ligneDeuxColonnes("Email :", recapEmail.textContent, "Téléphone :", recapTelephone.textContent);
+      ligneDeuxColonnes("Date de naissance :", recapDateNaissance.textContent, "Formation :", recapFormation.textContent);
+      ligneDeuxColonnes("Commune :", recapCommune.textContent, "Quartier :", recapQuartier.textContent);
+
+      sectionTitre("Informations Académiques");
+      ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
+      ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
+
+      sectionTitre("Informations Parentales");
+      ligneDeuxColonnes("Nom père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
+      doc.setFont("helvetica", "bold");
+      doc.text("Adresse :", 20, y);
       doc.setFont("helvetica", "normal");
-      doc.text(val1 || "-", 20, y);
-      doc.text(val2 || "-", 110, y);
-      y += 12;
-    }
+      doc.text(recapAdresseParents.textContent, 50, y);
+      y += 15;
 
-    function sectionTitre(titre) {
-      doc.setDrawColor(0);
-      doc.setLineWidth(0.5);
-      doc.line(20, y, pageWidth - 20, y);
-      y += 5;
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.text(titre, 20, y);
-      y += 7;
-    }
+      // ================== SIGNATURES ==================
+      y += 10; // espace après la dernière info
 
-    // ================== CONTENU ==================
-    sectionTitre("Informations Personnelles");
-    ligneDeuxColonnes("Identifiant :", recapIdentifiant.textContent, "Sexe :", recapSexe.textContent);
-    ligneDeuxColonnes("Nom :", recapNom.textContent, "Prénom :", recapPrenom.textContent);
-    ligneDeuxColonnes("Email :", recapEmail.textContent, "Téléphone :", recapTelephone.textContent);
-    ligneDeuxColonnes("Date de naissance :", recapDateNaissance.textContent, "Formation :", recapFormation.textContent);
-    ligneDeuxColonnes("Commune :", recapCommune.textContent, "Quartier :", recapQuartier.textContent);
+      const signatureWidth = 70;
 
-    sectionTitre("Informations Académiques");
-    ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
-    ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
+      // Signature Élève
+      doc.line(30, y, 30 + signatureWidth, y);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text("Signature de l'étudiant", 30, y + 5);
 
-    sectionTitre("Informations Parentales");
-    ligneDeuxColonnes("Nom père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
-    doc.setFont("helvetica", "bold");
-    doc.text("Adresse :", 20, y);
-    doc.setFont("helvetica", "normal");
-    doc.text(recapAdresseParents.textContent, 50, y);
-    y += 15;
+      // Signature Parent
+      doc.line(pageWidth - 30 - signatureWidth, y, pageWidth - 30, y);
+      doc.text("Signature responsable GEM", pageWidth - 30 - signatureWidth, y + 5);
 
-    // ================== PIED DE PAGE ==================
-    const date = new Date();
-    const dateStr = date.toLocaleDateString();
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "italic");
-    doc.text(`Fiche générée le ${dateStr} - {{ home_data.site_name }}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: "center" });
+      y += 20;
+      // ================== PIED DE PAGE ==================
+      // ================== PIED DE PAGE ==================
+      // const date = new Date();
+      // const dateStr = date.toLocaleDateString();
 
-    // ================== ENREGISTREMENT ==================
-    doc.save("inscription.pdf");
-  };
-}
+      // doc.setFontSize(10);
+      // doc.setFont("helvetica", "italic");
+      // doc.text(
+      //   `Fiche générée le ${dateStr} - {{ home_data.site_name }}`,
+      //   pageWidth / 2,
+      //   doc.internal.pageSize.getHeight() - 10,
+      //   { align: "center" }
+      // );
+      // ================== ENREGISTREMENT ==================
+      doc.save("inscription.pdf");
+    };
+  }
 
   // Aperçu photo
   const photoInput = document.getElementById("id_photo");
@@ -349,11 +433,11 @@
   const photoContainer = document.getElementById("photoPreviewContainer");
   const photoPlaceholder = document.getElementById("photoPlaceholder");
 
-  photoContainer.addEventListener("click", ()=>{ photoInput.click(); });
+  photoContainer.addEventListener("click", () => { photoInput.click(); });
 
-  photoInput.addEventListener("change", function(event){
+  photoInput.addEventListener("change", function (event) {
     const [file] = event.target.files;
-    if(file){
+    if (file) {
       photoPreview.src = URL.createObjectURL(file);
       photoPreview.style.display = "block";
       photoPlaceholder.style.display = "none";

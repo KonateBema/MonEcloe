@@ -121,22 +121,22 @@ class PreinscriptionForm(forms.ModelForm):
             }),
 
             # ✅ Informations académiques
-            'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
-            'etablissement_origine': forms.TextInput(attrs={'class': 'form-control'}),
-            'diplome': forms.TextInput(attrs={'class': 'form-control'}),
-            'annee_obtention': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': 1900,
-                'max': 2100
-            }),
+            # 'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'etablissement_origine': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'diplome': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'annee_obtention': forms.NumberInput(attrs={
+            #     'class': 'form-control',
+            #     'min': 1900,
+            #     'max': 2100
+            # }),
 
             # ✅ Informations parentales
-            'nom_pere': forms.TextInput(attrs={'class': 'form-control'}),
-            'telephone_pere': forms.TextInput(attrs={'class': 'form-control'}),
-            'adresse_parents': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3
-            }),
+            # 'nom_pere': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'telephone_pere': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'adresse_parents': forms.Textarea(attrs={
+            #     'class': 'form-control',
+            #     'rows': 3
+            # }),
 
             # ✅ Upload fichiers
             'piece_recto': forms.ClearableFileInput(attrs={
