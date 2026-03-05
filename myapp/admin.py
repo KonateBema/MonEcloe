@@ -638,6 +638,17 @@ class InscriptionAdmin(admin.ModelAdmin):
 
     export_pdf.short_description = "Exporter sélection en PDF"
 # ==============================
+from .models import E3MSchool
+
+@admin.register(E3MSchool)
+class E3MSchoolAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'type_filiere', 'date_creation')
+    list_filter = ('type_filiere',)
+    search_fields = ('titre',)
+
+
+
+
 # admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
 # admin_site = MyAdminSite(name='admin')
 admin_site = MyAdminSite(name='myadmin')
@@ -659,6 +670,7 @@ admin_site.register(Resultat)
 admin_site.register(Association, AssociationAdmin)
 admin_site.register(HomeSlide, HomeSlideAdmin)  # <-- nouveau modèle
 # Enregistrer Ecole sur l'admin personnalisé
+admin_site.register(E3MSchool, E3MSchoolAdmin)
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)
 admin_site.register(Inscription, InscriptionAdmin)

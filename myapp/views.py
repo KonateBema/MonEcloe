@@ -592,11 +592,33 @@ def evenements_view(request):
 # def e3m_school(request):
 #     return render(request, 'e3m_school.html')
 
-def e3m_school(request):
-    slides = Slide.objects.all()
-    filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
-    return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
+# def e3m_school(request):
+#     slides = Slide.objects.all()
+#     filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
+#     return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
+from .models import E3MSchool
 
+def e3m_school(request):
+
+    slides = Slide.objects.all()
+
+    bts = E3MSchool.objects.filter(type_filiere='bts')
+    licence = E3MSchool.objects.filter(type_filiere='licence')
+    master = E3MSchool.objects.filter(type_filiere='master')
+    ingenieur = E3MSchool.objects.filter(type_filiere='ingenieur')
+    preparatoire = E3MSchool.objects.filter(type_filiere='preparatoire')
+
+    context = {
+        'slides': slides,
+        'bts': bts,
+        'licence': licence,
+        'master': master,
+        'ingenieur': ingenieur,
+        'preparatoire': preparatoire
+    }
+
+    return render(request, 'e3m_school.html', context)
+    
 def procedure_admission(request):
     # Version temporaire juste pour tester
     return HttpResponse("Page procédure d'admission")
@@ -625,26 +647,13 @@ def prepa(request):
     preparatoire = Formation.objects.filter(type_filiere='preparatoire')
     return render(request, 'annee_prepa.html', {'preparatoire': preparatoire})
 
-# def prepa(request):
-#     return render(request, 'annee_prepa.html')
 
-# def licence(request):
-#     return render(request, 'licence.html')
 
 def licence(request):
     licences = CycleIngenieur.objects.filter(type_cycle='licence')
     return render(request, 'licence.html', {'licences': licences})
 
 
-# def masters1(request):
-#     return render(request, 'masters1.html')
-
-# def master1(request):
-#     masters1 = CycleIngenieur.objects.filter(type_cycle='master1')
-#     return render(request, 'master1.html', {'masters1': masters1})
-# def masters1(request):
-#     master1_list = CycleIngenieur.objects.filter(type_cycle='master1')
-#     return render(request, 'masters1.html', {'master1_list': master1_list})
 
 
 def masters1(request):
@@ -655,9 +664,7 @@ def masters1(request):
         'master2_list': master2_list
     })
 
-# def master2(request):
-#     masters2 = CycleIngenieur.objects.filter(type_cycle='master2')
-#     return render(request, 'myapp/master2.html', {'masters2': masters2})
+
 
 def embs(request):
     embs = Formation.objects.filter(type_filiere='embs')

@@ -285,9 +285,155 @@ Vie Associative - {{ home_data.site_name }}
 
 
 <!-- ================= ASSOCIATIONS ================= -->
-
-<!-- ================= FILIÈRES CYCLE INGÉNIEUR ================= -->
+<!-- ================= BTS ================= -->
 <section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">🎓 BTS (DIPLOME BAC+2)</h2>
+    </div>
+
+    <div class="row g-4">
+        {% for formation in bts %}
+        <div class="col-md-4">
+            <div class="card formation-card shadow h-100">
+                {% if formation.image %}
+                <img src="{{ formation.image.url }}" class="card-img-top">
+                {% else %}
+                <img src="{% static 'images/formation.jpg' %}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body d-flex flex-column text-center">
+                    <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
+                    <p class="text-muted">{{ formation.description|truncatechars:120 }}</p>
+                    <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                        class="btn btn-outline-primary rounded-pill mt-auto">
+                        S'inscrire
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Aucun BTS disponible.</p>
+        {% endfor %}
+    </div>
+</section>
+
+
+<!-- ================= LICENCE  ================= -->
+<section class="container py-5 bg-light rounded">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-success">📘 Licence (BAC+3)</h2>
+    </div>
+
+    <div class="row g-4">
+        {% for formation in licence %}
+        <div class="col-md-4">
+            <div class="card formation-card shadow h-100">
+
+                {% if formation.image %}
+                <img src="{{ formation.image.url }}" class="card-img-top">
+                {% else %}
+                <img src="{% static 'images/formation.jpg' %}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
+                    <p class="text-muted small">
+                        {{ formation.description|truncatechars:120 }}
+                    </p>
+
+                    <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                        class="btn btn-outline-success rounded-pill mt-auto">
+                        S'inscrire
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Aucune Licence disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ================= MASTER info ================= -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-danger">🎓 Master (BAC+5)</h2>
+    </div>
+    <div class="row g-4">
+        {% for formation in master %}
+        <div class="col-md-4">
+
+            <div class="card formation-card shadow h-100">
+
+                {% if formation.image %}
+                <img src="{{ formation.image.url }}" class="card-img-top">
+                {% else %}
+                <img src="{% static 'images/formation.jpg' %}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="fw-bold text-danger">{{ formation.titre }}</h5>
+
+                    <p class="text-muted small">
+                        {{ formation.description|truncatechars:120 }}
+                    </p>
+
+                    <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                        class="btn btn-outline-danger rounded-pill mt-auto">
+                        S'inscrire
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Aucun Master disponible.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ================= CYCLE INGENIEUR ================= -->
+<section class="container py-5 bg-light rounded">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-warning">⚙️ Cycle Ingénieur (BAC+5)</h2>
+    </div>
+
+    <div class="row g-4">
+        {% for formation in ingenieur %}
+        <div class="col-md-4">
+
+            <div class="card formation-card shadow h-100">
+
+                {% if formation.image %}
+                <img src="{{ formation.image.url }}" class="card-img-top">
+                {% else %}
+                <img src="{% static 'images/formation.jpg' %}" class="card-img-top">
+                {% endif %}
+
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="fw-bold text-warning">{{ formation.titre }}</h5>
+
+                    <p class="text-muted small">
+                        {{ formation.description|truncatechars:120 }}
+                    </p>
+
+                    <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                        class="btn btn-outline-warning rounded-pill mt-auto">
+                        S'inscrire
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Aucun cycle ingénieur disponible.</p>
+        {% endfor %}
+    </div>
+</section>
+<!-- ================= FILIÈRES CYCLE INGÉNIEUR ================= -->
+<!-- <section class="container py-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold display-5">Cycle Ingénieur</h2>
         <p class="text-muted">Des filières d’excellence pour former les leaders de demain</p>
@@ -295,7 +441,6 @@ Vie Associative - {{ home_data.site_name }}
 
     <div class="row g-4">
 
-        <!-- Génie Civil -->
         <div class="col-md-4" data-aos="fade-up">
             <div class="card filiere-premium h-100">
 
@@ -318,8 +463,6 @@ Vie Associative - {{ home_data.site_name }}
 
             </div>
         </div>
-
-        <!-- Environnement Durable -->
         <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
             <div class="card filiere-premium h-100">
 
@@ -342,8 +485,6 @@ Vie Associative - {{ home_data.site_name }}
 
             </div>
         </div>
-
-        <!-- IA & Big Data -->
         <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
             <div class="card filiere-premium h-100">
 
@@ -368,10 +509,9 @@ Vie Associative - {{ home_data.site_name }}
         </div>
 
     </div>
-</section>
+</section> -->
 <!-- ================= EVENEMENTS ================= -->
 
-<!-- ================= A PROPOS ================= -->
 <!-- ================= A PROPOS PREMIUM ================= -->
 
 <section class="about-premium py-5">
