@@ -89,9 +89,7 @@ Préinscription - {{ home_data.site_name }}
   <div class="card-form">
     <form id="preinscriptionForm" method="POST" enctype="multipart/form-data" onsubmit="showRecapModal(event)">
       {% csrf_token %}
-
       <!-- PERSONNEL -->
-       
       <div class="row mb-3">
         <div class="col-md-6">{{ form.nom.label_tag }} {{ form.nom }}</div>
         <div class="col-md-6">{{ form.prenom.label_tag }} {{ form.prenom }}</div>
@@ -369,7 +367,7 @@ Préinscription - {{ home_data.site_name }}
     logoMinistere.onload = tryDraw;
   }
 
-  
+
 </script>
 
 {% endblock %}
