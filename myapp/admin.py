@@ -10,18 +10,15 @@ from django.shortcuts import redirect
 from .models import Product, Category, Supplier, SupplierDetail, HomePage, Commande ,Preinscription,Contact
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import Slide, HomeSlide
-from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation
+from .models import Slide, HomeSlide ,Evenement_inst
+from .models import Ecole, Certificat, Question, Choix, Resultat ,Association , Evenement, InscriptionAssociation,Inscription, Formation  , CycleIngenieur
 from django.db.models import Count
-from .models import Formation  , CycleIngenieur# ajoute cette ligne si elle n'existe pas
-from .models import Evenement_inst
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import A4
 import openpyxl
 from reportlab.pdfgen import canvas
-from .models import Inscription
 # ==============================
-#      PRODUCT ADMIN
+#      PRODUCT ADMIN c
 # ==============================
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
