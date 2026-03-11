@@ -8,252 +8,290 @@
 {% block content %}
 
 <style>
-  /* ================= CAROUSEL ================= */
-  #homeCarousel,
-  #homeCarousel .carousel-item {
-    height: 350px;
-  }
-
-  #homeCarousel .carousel-item img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-
-  @media (max-width: 768px) {
-
+    /* ================= CAROUSEL ================= */
     #homeCarousel,
     #homeCarousel .carousel-item {
-      height: 200px;
+        height: 350px;
     }
-  }
 
-  /* ================= GENERAL ================= */
-  .map-container {
-    width: 100%;
-    height: 300px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-  }
+    #homeCarousel .carousel-item img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
 
-  .map-container iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
+    @media (max-width: 768px) {
 
-  .experience-badge {
-    background: #4b5cb8;
-    color: white;
-    padding: 8px 16px;
-    display: inline-block;
-    border-radius: 8px;
-  }
+        #homeCarousel,
+        #homeCarousel .carousel-item {
+            height: 200px;
+        }
+    }
 
-  .experience-badge .years {
-    font-size: 1.8rem;
-    font-weight: bold;
-  }
+    /* ================= GENERAL ================= */
+    .map-container {
+        width: 100%;
+        height: 300px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
 
-  .fee-card {
-    border-radius: 15px;
-    background: #fff;
-    transition: 0.3s ease;
-  }
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
 
-  .fee-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-  }
+    .experience-badge {
+        background: #4b5cb8;
+        color: white;
+        padding: 8px 16px;
+        display: inline-block;
+        border-radius: 8px;
+    }
 
-  .icon-circle {
-    width: 60px;
-    height: 60px;
-    margin: auto;
-    border-radius: 50%;
-    background: #e8f0ff;
-    color: #8b0000;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .experience-badge .years {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
 
-  .infos-img {
-    width: 100%;
-    max-width: 650px;
-    display: block;
-    margin: auto;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    transition: 0.4s;
-  }
+    .fee-card {
+        border-radius: 15px;
+        background: #fff;
+        transition: 0.3s ease;
+    }
 
-  .infos-img:hover {
-    transform: scale(1.03);
-  }
+    .fee-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        margin: auto;
+        border-radius: 50%;
+        background: #e8f0ff;
+        color: #8b0000;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .infos-img {
+        width: 100%;
+        max-width: 650px;
+        display: block;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        transition: 0.4s;
+    }
+
+    .infos-img:hover {
+        transform: scale(1.03);
+    }
 </style>
 
 <!-- ================= CAROUSEL ================= -->
 {% if slides %}
 <section class="container-fluid px-0 mb-4">
-  <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for slide in slides %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <img src="{{ slide.image.url }}" class="d-block w-100">
-        <div class="carousel-caption">
-          <h2 class="fw-bold">{{ slide.title }}</h2>
-          <p>{{ slide.message|safe }}</p>
+    <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for slide in slides %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ slide.image.url }}" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h2 class="fw-bold">{{ slide.title }}</h2>
+                    <p>{{ slide.message|safe }}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-      </div>
-      {% endfor %}
     </div>
-  </div>
 </section>
 {% endif %}
 
 <!-- ================= NOUVEAU BLOC A PROPOS ================= -->
 <section class="about-premium py-5">
-  <div class="container">
-      <div class="row align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
 
-          <!-- IMAGE -->
-          <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
-              <div class="about-img-box">
-                  <img src="{% static 'images/schoole.jpg' %}">
-                  <div class="about-overlay">
-                      <h4>+10 ans d'excellence académique</h4>
-                  </div>
-              </div>
-          </div>
+            <!-- IMAGE -->
+            <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
+                <div class="about-img-box">
+                    <img src="{% static 'images/schoole.jpg' %}">
+                    <div class="about-overlay">
+                        <h4>+10 ans d'excellence académique</h4>
+                    </div>
+                </div>
+            </div>
 
-          <!-- TEXTE -->
-          <div class="col-md-6" data-aos="fade-left">
-            <h2 class="fw-bold display-6 mb-3 text-danger">
-              À propos du Groupe Expert Metier (GEM)
-          </h2>
+            <!-- TEXTE -->
+            <div class="col-md-6" data-aos="fade-left">
+                <h2 class="fw-bold display-6 mb-3 text-danger">
+                    À propos du Groupe Expert Metier (GEM)
+                </h2>
 
-              <p class="text-muted">
-                  Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs
-                  compétents et innovants capables de répondre aux défis technologiques,
-                  environnementaux et industriels de demain.
-              </p>
+                <p class="text-muted">
+                    Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs
+                    compétents et innovants capables de répondre aux défis technologiques,
+                    environnementaux et industriels de demain.
+                </p>
 
-              <div class="mission-box my-4">
-                  <h5 class="fw-bold">Notre Mission</h5>
-                  <p>
-                      Former des leaders techniques dotés d’une expertise solide,
-                      d’un esprit critique et d’une forte capacité d’innovation.
-                  </p>
-              </div>
+                <div class="mission-box my-4">
+                    <h5 class="fw-bold">Notre Mission</h5>
+                    <p>
+                        Former des leaders techniques dotés d’une expertise solide,
+                        d’un esprit critique et d’une forte capacité d’innovation.
+                    </p>
+                </div>
 
-              <div class="row text-center mt-4">
+                <div class="row text-center mt-4">
 
-                  <div class="col-4">
-                      <h3 class="fw-bold text-primary">500+</h3>
-                      <small>Étudiants</small>
-                  </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">500+</h3>
+                        <small>Étudiants</small>
+                    </div>
 
-                  <div class="col-4">
-                      <h3 class="fw-bold text-primary">20+</h3>
-                      <small>Événements / an</small>
-                  </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">20+</h3>
+                        <small>Événements / an</small>
+                    </div>
 
-                  <div class="col-4">
-                      <h3 class="fw-bold text-primary">15+</h3>
-                      <small>Partenaires</small>
-                  </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary">15+</h3>
+                        <small>Partenaires</small>
+                    </div>
 
-              </div>
+                </div>
 
-              <blockquote class="director-quote mt-4">
-                  “Notre ambition est de bâtir une génération d’ingénieurs
-                  capables d’impacter durablement le monde.”
-                  <br>
-                  <span>— Direction Générale</span>
-              </blockquote>
+                <blockquote class="director-quote mt-4">
+                    “Notre ambition est de bâtir une génération d’ingénieurs
+                    capables d’impacter durablement le monde.”
+                    <br>
+                    <span>— Direction Générale</span>
+                </blockquote>
 
-              <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
-                  Découvrir l’école
-              </a>
+                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
+                    Découvrir l’école
+                </a>
 
-          </div>
+            </div>
 
-      </div>
-  </div>
+        </div>
+    </div>
 </section>
 
+
+
+
 <style>
-  /* ================= IMAGE FONDATEUR HOVER ================= */
-  .founder-img {
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-  }
-  .founder-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  }
+    /* WHY CHOOSE */
 
-  /* ================= BADGE ANIME ================= */
-  .experience-badge {
-    background: linear-gradient(135deg, #4b5cb8, #6a78d1);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 12px;
-    display: inline-block;
-    text-align: center;
-  }
+    .choose-card {
+        background: white;
+        border-radius: 14px;
+        transition: 0.3s;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
 
-  .experience-badge .years {
-    display: block;
-    font-size: 2rem;
-    font-weight: bold;
-  }
+    .choose-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
 
-  .pulse-badge {
-    animation: pulse 2s infinite;
-  }
+    .icon-box {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        color: white;
+        font-size: 26px;
+    }
 
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-  }
+    /* ================= IMAGE FONDATEUR HOVER ================= */
+    .founder-img {
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
 
-  /* ================= BOUTON GRADIENT ================= */
-  .btn-gradient {
-    background: linear-gradient(135deg, #4b5cb8, #6a78d1);
-    border: none;
-    padding: 10px 22px;
-    border-radius: 10px;
-    color: white;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
+    .founder-img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
 
-  .btn-gradient:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    background: linear-gradient(135deg, #6a78d1, #4b5cb8);
-  }
+    /* ================= BADGE ANIME ================= */
+    .experience-badge {
+        background: linear-gradient(135deg, #4b5cb8, #6a78d1);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        display: inline-block;
+        text-align: center;
+    }
 
-  /* ================= CITATION ================= */
-  .quote {
-    font-style: italic;
-    font-size: 1.5rem;
-    line-height: 1.4;
-  }
+    .experience-badge .years {
+        display: block;
+        font-size: 2rem;
+        font-weight: bold;
+    }
 
-  /* ================= ICONES ================= */
-  .material-icons {
-    font-size: 28px;
-    line-height: 1;
-  }
+    .pulse-badge {
+        animation: pulse 2s infinite;
+    }
 
-   /* ================= A PROPOS PREMIUM ================= */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
 
-   .about-premium {
+        50% {
+            transform: scale(1.08);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* ================= BOUTON GRADIENT ================= */
+    .btn-gradient {
+        background: linear-gradient(135deg, #4b5cb8, #6a78d1);
+        border: none;
+        padding: 10px 22px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        background: linear-gradient(135deg, #6a78d1, #4b5cb8);
+    }
+
+    /* ================= CITATION ================= */
+    .quote {
+        font-style: italic;
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+
+    /* ================= ICONES ================= */
+    .material-icons {
+        font-size: 28px;
+        line-height: 1;
+    }
+
+    /* ================= A PROPOS PREMIUM ================= */
+
+    .about-premium {
         background: #f8f9fa;
     }
 
@@ -315,283 +353,398 @@
 
 <!-- ================= ECOLES ================= -->
 <section class="container py-5 mb-5">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold text-danger">Groupe Expert Metier (GEM)</h2>
-    <p class="text-muted mb-0">Découvrez nos établissements et formations</p>
-  </div>
-
-  <div class="school-slider-wrapper position-relative">
-    <!-- Flèches de navigation -->
-    <button class="slider-btn prev-btn">&#10094;</button>
-    <button class="slider-btn next-btn">&#10095;</button>
-
-    <div class="school-slider">
-      {% for ecole in ecoles %}
-      <div class="school-card h-100 shadow-sm">
-        <img src="{{ ecole.image.url }}" class="school-img" alt="{{ ecole.nom }}">
-        <div class="card-body text-center">
-          <h5 class="fw-bold mb-1">{{ ecole.nom }}</h5>
-          <p class="text-muted mb-0">{{ ecole.description }}</p>
-        </div>
-      </div>
-      {% empty %}
-      <div class="alert alert-warning text-center">
-        Aucune école disponible pour le moment.
-      </div>
-      {% endfor %}
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-danger">Groupe Expert Metier (GEM)</h2>
+        <p class="text-muted mb-0">Découvrez nos établissements et formations</p>
     </div>
-  </div>
+
+    <div class="school-slider-wrapper position-relative">
+        <!-- Flèches de navigation -->
+        <button class="slider-btn prev-btn">&#10094;</button>
+        <button class="slider-btn next-btn">&#10095;</button>
+
+        <div class="school-slider">
+            {% for ecole in ecoles %}
+            <div class="school-card h-100 shadow-sm">
+                <img src="{{ ecole.image.url }}" class="school-img" alt="{{ ecole.nom }}">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold mb-1">{{ ecole.nom }}</h5>
+                    <p class="text-muted mb-0">{{ ecole.description }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-warning text-center">
+                Aucune école disponible pour le moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </section>
+<!-- POURQUOI CHOISIR E3M -->
 
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="fw-bold text-primary">
+            Pourquoi choisir GEM ?
+        </h2>
+
+        <p class="text-muted">
+            Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- CARD 1 -->
+
+        <div class="col-md-3" data-aos="fade-up">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-primary">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Formation de qualité</h5>
+
+                <p class="text-muted small">
+                    Des programmes adaptés aux besoins du marché et aux technologies modernes.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 2 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-success">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Experts enseignants</h5>
+
+                <p class="text-muted small">
+                    Des enseignants expérimentés issus du monde académique et professionnel.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 3 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-warning">
+                    <i class="fas fa-globe-africa"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Ouverture internationale</h5>
+
+                <p class="text-muted small">
+                    Partenariats académiques et stages à l’international.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 4 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-danger">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Insertion professionnelle</h5>
+
+                <p class="text-muted small">
+                    Des formations orientées vers l'emploi et l’entrepreneuriat.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 <style>
-  /* ================= SLIDER HORIZONTAL ================= */
-  .school-slider-wrapper {
-    position: relative;
-    overflow: hidden;
-  }
+    /* ================= SLIDER HORIZONTAL ================= */
+    .school-slider-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
 
-  .school-slider {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 10px 0;
-  }
+    .school-slider {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 10px 0;
+    }
 
-  .school-slider::-webkit-scrollbar {
-    height: 8px;
-  }
-  .school-slider::-webkit-scrollbar-thumb {
-    background: #4b5cb8;
-    border-radius: 4px;
-  }
+    .school-slider::-webkit-scrollbar {
+        height: 8px;
+    }
 
-  .school-card {
-    flex: 0 0 300px;
-    border-radius: 15px;
-    overflow: hidden;
-    background: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-  }
+    .school-slider::-webkit-scrollbar-thumb {
+        background: #4b5cb8;
+        border-radius: 4px;
+    }
 
-  .school-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  }
-
-  .school-img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .school-img:hover {
-    transform: scale(1.05);
-  }
-
-  .card-body h5 {
-    font-size: 1.2rem;
-  }
-  .card-body p {
-    font-size: 0.95rem;
-  }
-
-  /* ================= BOUTONS ================= */
-  .slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(75,92,184,0.8);
-    color: white;
-    border: none;
-    font-size: 2rem;
-    padding: 0 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-    transition: background 0.3s;
-  }
-
-  .slider-btn:hover {
-    background: rgba(75,92,184,1);
-  }
-
-  .prev-btn {
-    left: 5px;
-  }
-  .next-btn {
-    right: 5px;
-  }
-
-  @media (max-width: 768px) {
     .school-card {
-      flex: 0 0 250px;
+        flex: 0 0 300px;
+        border-radius: 15px;
+        overflow: hidden;
+        background: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
     }
+
+    .school-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .school-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .school-img:hover {
+        transform: scale(1.05);
+    }
+
+    .card-body h5 {
+        font-size: 1.2rem;
+    }
+
+    .card-body p {
+        font-size: 0.95rem;
+    }
+
+    /* ================= BOUTONS ================= */
     .slider-btn {
-      font-size: 1.5rem;
-      padding: 0 10px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(75, 92, 184, 0.8);
+        color: white;
+        border: none;
+        font-size: 2rem;
+        padding: 0 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: background 0.3s;
     }
-  }
+
+    .slider-btn:hover {
+        background: rgba(75, 92, 184, 1);
+    }
+
+    .prev-btn {
+        left: 5px;
+    }
+
+    .next-btn {
+        right: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .school-card {
+            flex: 0 0 250px;
+        }
+
+        .slider-btn {
+            font-size: 1.5rem;
+            padding: 0 10px;
+        }
+    }
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.querySelector(".school-slider");
-    const prevBtn = document.querySelector(".prev-btn");
-    const nextBtn = document.querySelector(".next-btn");
+    document.addEventListener("DOMContentLoaded", function () {
+        const slider = document.querySelector(".school-slider");
+        const prevBtn = document.querySelector(".prev-btn");
+        const nextBtn = document.querySelector(".next-btn");
 
-    const scrollAmount = 320; // largeur d'une carte + gap
+        const scrollAmount = 320; // largeur d'une carte + gap
 
-    nextBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        nextBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        });
+
+        prevBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        });
+
+        // Optional: auto scroll every 5s
+        setInterval(() => {
+            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+                slider.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+                slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            }
+        }, 5000);
     });
-
-    prevBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    });
-
-    // Optional: auto scroll every 5s
-    setInterval(() => {
-      if(slider.scrollLeft + slider.clientWidth >= slider.scrollWidth){
-        slider.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      }
-    }, 5000);
-  });
 </script>
 
 
 
 <!-- ================= FAQ + CONTACT ================= -->
 <section class="container py-4 mb-4">
-  <div class="row g-3">
+    <div class="row g-3">
 
-     <!-- FAQ -->
+        <!-- FAQ -->
 
-     <div class="col-md-5">
-      <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
+        <div class="col-md-5">
+            <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
 
-      <div class="accordion" id="faqAccordion">
+            <div class="accordion" id="faqAccordion">
 
-        <!-- Question 1 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-              Comment puis-je m'inscrire en ligne ?
-            </button>
-          </h2>
-          <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Vous pouvez remplir notre formulaire de préinscription en ligne.
+                <!-- Question 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq1">
+                            Comment puis-je m'inscrire en ligne ?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Vous pouvez remplir notre formulaire de préinscription en ligne.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq2">
+                            Quels documents sont nécessaires ?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Pièce d'identité, justificatif de domicile et bulletins récents.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq3">
+                            Quel est le coût des formations ?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus
+                            de détails.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq4">
+                            Comment obtenir un certificat ?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq5">
+                            Puis-je modifier ma préinscription ?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq6">
+                            Les formations sont-elles en ligne ou en présentiel ?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en
+                            présentiel.
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
-        <!-- Question 2 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-              Quels documents sont nécessaires ?
-            </button>
-          </h2>
-          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Pièce d'identité, justificatif de domicile et bulletins récents.
-            </div>
-          </div>
-        </div>
+        <div class="col-md-7">
+            <div class="card shadow p-3 border-0">
+                <h5 class="fw-bold mb-2">Besoin d'informations ? Contactez-nous</h5>
 
-        <!-- Question 3 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-              Quel est le coût des formations ?
-            </button>
-          </h2>
-          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus de détails.
-            </div>
-          </div>
-        </div>
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success mb-2">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
 
-        <!-- Question 4 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-              Comment obtenir un certificat ?
-            </button>
-          </h2>
-          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.
+                <form method="POST" action="{% url 'home' %}">
+                    {% csrf_token %}
+                    <input type="text" class="form-control mb-2" name="nom" placeholder="Nom" required>
+                    <input type="text" class="form-control mb-2" name="prenom" placeholder="Prénom" required>
+                    <input type="email" class="form-control mb-2" name="email" placeholder="E-mail" required>
+                    <input type="tel" class="form-control mb-2" name="telephone" placeholder="Téléphone" required>
+                    <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..."
+                        required></textarea>
+                    <button type="submit" class="btn btn-primary w-100">Envoyer</button>
+                </form>
             </div>
-          </div>
         </div>
-
-        <!-- Question 5 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-              Puis-je modifier ma préinscription ?
-            </button>
-          </h2>
-          <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
-              Les formations sont-elles en ligne ou en présentiel ?
-            </button>
-          </h2>
-          <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en présentiel.
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <div class="col-md-7">
-      <div class="card shadow p-3 border-0">
-        <h5 class="fw-bold mb-2">Besoin d'informations ? Contactez-nous</h5>
-
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success mb-2">{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-
-        <form method="POST" action="{% url 'home' %}">
-          {% csrf_token %}
-          <input type="text" class="form-control mb-2" name="nom" placeholder="Nom" required>
-          <input type="text" class="form-control mb-2" name="prenom" placeholder="Prénom" required>
-          <input type="email" class="form-control mb-2" name="email" placeholder="E-mail" required>
-          <input type="tel" class="form-control mb-2" name="telephone" placeholder="Téléphone" required>
-          <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..."
-            required></textarea>
-          <button type="submit" class="btn btn-primary w-100">Envoyer</button>
-        </form>
-      </div>
+    <!-- MAP -->
+    <div class="mt-4">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed"
+                allowfullscreen loading="lazy"></iframe>
+        </div>
     </div>
-  </div>
-  <!-- MAP -->
-  <div class="mt-4">
-    <div class="map-container">
-      <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed" allowfullscreen
-        loading="lazy"></iframe>
-    </div>
-  </div>
 
 </section>
 

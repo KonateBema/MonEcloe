@@ -7,16 +7,17 @@ Formations - {{ home_data.site_name }}
 
 {% block content %}
 
-<!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <style>
     /* HERO */
+
     .hero {
-        background:linear-gradient(rgba(0, 0, 0, .55), rgba(0, 0, 0, .55)),
+        background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)),
         url("{% static 'images/schoole.jpg' %}") center/cover no-repeat;
-        height: 60vh;
+
+        height: 70vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -25,12 +26,26 @@ Formations - {{ home_data.site_name }}
     }
 
     .hero h1 {
-        font-weight: 700;
+        font-weight: 800;
+        letter-spacing: 1px;
     }
 
-    /* SECTION TITLES */
+    .hero p {
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .hero-btn {
+        margin-top: 20px;
+        padding: 12px 28px;
+        font-weight: 600;
+        border-radius: 30px;
+    }
+
+    /* SECTION */
+
     .section {
-        padding: 60px 0;
+        padding: 70px 0;
     }
 
     .section-title {
@@ -39,19 +54,25 @@ Formations - {{ home_data.site_name }}
     }
 
     /* STATS */
+
     .stats {
         background: linear-gradient(90deg, #0d6efd, #6610f2);
         color: white;
-        padding: 40px 0;
+        padding: 60px 0;
         text-align: center;
     }
 
     .stat-number {
-        font-size: 2.2rem;
-        font-weight: 700;
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+
+    .stat-box {
+        padding: 15px;
     }
 
     /* SWIPER */
+
     .formation-slider {
         padding: 20px 0 60px 0;
     }
@@ -60,202 +81,509 @@ Formations - {{ home_data.site_name }}
         padding-bottom: 40px;
     }
 
+    /* CARD */
+
     .formation-card {
         border: none;
-        border-radius: 14px;
+        border-radius: 16px;
         overflow: hidden;
-        transition: .3s;
+        transition: all .35s;
+        background: white;
     }
 
     .formation-card img {
-        height: 200px;
+        height: 210px;
         object-fit: cover;
     }
 
     .formation-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+    }
+
+    /* BADGE */
+
+    .level-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: .8rem;
+        font-weight: 600;
+        color: white;
     }
 
     /* ABOUT */
+
     .about-section {
         background: #f8f9fa;
-        padding: 60px 0;
+        padding: 80px 0;
     }
 
     .about-img img {
         width: 100%;
         height: 380px;
         object-fit: cover;
-        border-radius: 14px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     }
 
     .mission-box {
         background: white;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     }
 
     .director-quote {
-        border-left: 4px solid #0d6efd;
-        padding-left: 12px;
+        border-left: 5px solid #0d6efd;
+        padding-left: 15px;
         font-style: italic;
+        font-size: 1.05rem;
+    }
+
+    /* WHY CHOOSE */
+
+    .choose-card {
+        background: white;
+        border-radius: 14px;
+        transition: 0.3s;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .choose-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon-box {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        color: white;
+        font-size: 26px;
     }
 </style>
 
+
 <!-- HERO -->
+
 <section class="hero">
+
     <div class="container">
+
         <h1 class="display-5 mb-3" data-aos="fade-up">
             Établissement privé d’enseignement supérieur agréé
         </h1>
+
         <p class="lead" data-aos="fade-up" data-aos-delay="200">
             L’E3M School of Engineering propose des formations du
             <strong>Bac+2 au Bac+5</strong> en Génie Civil,
             Environnement Durable et Intelligence Artificielle.
         </p>
+
+        <a href="{% url 'preinscription' %}" class="btn btn-primary hero-btn" data-aos="zoom-in" data-aos-delay="400">
+            S'inscrire maintenant
+        </a>
+
     </div>
 </section>
 
+
 <!-- STATS -->
+
 <section class="stats">
+
     <div class="container">
+
         <div class="row">
-            <div class="col-md-4">
+
+            <div class="col-md-4 stat-box">
                 <div class="stat-number">{{ associations|length }}</div>
                 <p>Partenariats</p>
             </div>
-            <div class="col-md-4">
-                <div class="stat-number">500</div>
+
+            <div class="col-md-4 stat-box">
+                <div class="stat-number">500+</div>
                 <p>Étudiants</p>
             </div>
-            <div class="col-md-4">
-                <div class="stat-number">20</div>
+
+            <div class="col-md-4 stat-box">
+                <div class="stat-number">20+</div>
                 <p>Événements / an</p>
             </div>
+
         </div>
+
     </div>
+
 </section>
 
-<!-- BTS SLIDER -->
+
+
+<!-- BTS -->
+
 <section class="section container formation-slider">
+
     <h2 class="text-center text-primary section-title">🎓 BTS (BAC+2)</h2>
+
     <div class="swiper btsSwiper">
+
         <div class="swiper-wrapper">
+
             {% for formation in bts %}
+
             <div class="swiper-slide">
-                <div class="card formation-card shadow-sm">
-                    {% if formation.image %}<img src="{{ formation.image.url }}">{% else %}<img
-                        src="{% static 'images/formation.jpg' %}">{% endif %}
+
+                <div class="card formation-card shadow-sm position-relative">
+
+                    <span class="level-badge bg-primary">BTS</span>
+
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
+
                     <div class="card-body text-center">
+
                         <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
-                        <p class="text-muted small">{{ formation.description|truncatechars:110 }}</p>
+
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:110 }}
+                        </p>
+
                         <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-primary rounded-pill">S'inscrire</a>
+                            class="btn btn-outline-primary rounded-pill px-4">
+                            S'inscrire
+                        </a>
+
                     </div>
+
                 </div>
+
             </div>
+
             {% endfor %}
+
         </div>
+
         <div class="swiper-pagination"></div>
+
     </div>
+
 </section>
 
-<!-- LICENCE SLIDER -->
+
+
+<!-- LICENCE -->
+
 <section class="section container formation-slider">
+
     <h2 class="text-center text-success section-title">📘 Licence (BAC+3)</h2>
+
     <div class="swiper licenceSwiper">
+
         <div class="swiper-wrapper">
+
             {% for formation in licence %}
+
             <div class="swiper-slide">
-                <div class="card formation-card shadow-sm">
-                    {% if formation.image %}<img src="{{ formation.image.url }}">{% else %}<img
-                        src="{% static 'images/formation.jpg' %}">{% endif %}
+
+                <div class="card formation-card shadow-sm position-relative">
+
+                    <span class="level-badge bg-success">Licence</span>
+
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
+
                     <div class="card-body text-center">
+
                         <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
-                        <p class="text-muted small">{{ formation.description|truncatechars:110 }}</p>
+
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:110 }}
+                        </p>
+
                         <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-success rounded-pill">S'inscrire</a>
+                            class="btn btn-outline-success rounded-pill px-4">
+                            S'inscrire
+                        </a>
+
                     </div>
+
                 </div>
+
             </div>
+
             {% endfor %}
+
         </div>
+
         <div class="swiper-pagination"></div>
+
     </div>
+
 </section>
 
-<!-- MASTER SLIDER -->
+
+
+<!-- MASTER -->
+
 <section class="section container formation-slider">
+
     <h2 class="text-center text-danger section-title">🎓 Master (BAC+5)</h2>
+
     <div class="swiper masterSwiper">
+
         <div class="swiper-wrapper">
+
             {% for formation in master %}
+
             <div class="swiper-slide">
-                <div class="card formation-card shadow-sm">
-                    {% if formation.image %}<img src="{{ formation.image.url }}">{% else %}<img
-                        src="{% static 'images/formation.jpg' %}">{% endif %}
+
+                <div class="card formation-card shadow-sm position-relative">
+
+                    <span class="level-badge bg-danger">Master</span>
+
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
+
                     <div class="card-body text-center">
+
                         <h5 class="fw-bold text-danger">{{ formation.titre }}</h5>
-                        <p class="text-muted small">{{ formation.description|truncatechars:110 }}</p>
+
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:110 }}
+                        </p>
+
                         <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-danger rounded-pill">S'inscrire</a>
+                            class="btn btn-outline-danger rounded-pill px-4">
+                            S'inscrire
+                        </a>
+
                     </div>
+
                 </div>
+
             </div>
+
             {% endfor %}
+
         </div>
+
         <div class="swiper-pagination"></div>
+
     </div>
+
 </section>
 
-<!-- ABOUT -->
-<section class="about-section">
-    <div class="container">
-        <div class="row align-items-center g-4">
-            <div class="col-md-6">
-                <div class="about-img"><img src="{% static 'images/schoole.jpg' %}"></div>
-            </div>
-            <div class="col-md-6">
-                <h2 class="fw-bold mb-3 text-danger">À propos de l’E3M School of Engineering</h2>
-                <p class="text-muted">E3M forme des ingénieurs capables de répondre aux défis technologiques et
-                    environnementaux modernes grâce à une formation de qualité.</p>
-                <div class="mission-box my-3">
-                    <h5 class="fw-bold">Notre mission</h5>
-                    <p>Former des leaders techniques capables d’innover et de contribuer au développement durable.</p>
+
+<!-- POURQUOI CHOISIR E3M -->
+
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="fw-bold text-primary">
+            Pourquoi choisir E3M School of Engineering ?
+        </h2>
+
+        <p class="text-muted">
+            Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- CARD 1 -->
+
+        <div class="col-md-3" data-aos="fade-up">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-primary">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-                <blockquote class="director-quote">Notre ambition est de bâtir une génération d’ingénieurs capables
-                    d’impacter durablement le monde.</blockquote>
+
+                <h5 class="fw-bold mt-3">Formation de qualité</h5>
+
+                <p class="text-muted small">
+                    Des programmes adaptés aux besoins du marché et aux technologies modernes.
+                </p>
+
             </div>
+
         </div>
+
+
+        <!-- CARD 2 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-success">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Experts enseignants</h5>
+
+                <p class="text-muted small">
+                    Des enseignants expérimentés issus du monde académique et professionnel.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 3 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-warning">
+                    <i class="fas fa-globe-africa"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Ouverture internationale</h5>
+
+                <p class="text-muted small">
+                    Partenariats académiques et stages à l’international.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD 4 -->
+
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+
+            <div class="choose-card text-center p-4 h-100">
+
+                <div class="icon-box bg-danger">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+
+                <h5 class="fw-bold mt-3">Insertion professionnelle</h5>
+
+                <p class="text-muted small">
+                    Des formations orientées vers l'emploi et l’entrepreneuriat.
+                </p>
+
+            </div>
+
+        </div>
+
     </div>
+
+</section>
+<!-- ABOUT -->
+
+<section class="about-section">
+
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-md-6">
+
+                <div class="about-img">
+                    <img src="{% static 'images/schoole.jpg' %}">
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <h2 class="fw-bold mb-3 text-danger">
+                    À propos de l’E3M School of Engineering
+                </h2>
+
+                <p class="text-muted">
+                    E3M forme des ingénieurs capables de répondre aux défis technologiques et environnementaux modernes
+                    grâce à une formation de qualité.
+                </p>
+
+                <div class="mission-box my-3">
+
+                    <h5 class="fw-bold">Notre mission</h5>
+
+                    <p>
+                        Former des leaders techniques capables d’innover et de contribuer au développement durable.
+                    </p>
+
+                </div>
+
+                <blockquote class="director-quote">
+                    Notre ambition est de bâtir une génération d’ingénieurs capables d’impacter durablement le monde.
+                </blockquote>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </section>
 
-<!-- Swiper JS + AOS -->
+
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
 <script>
+
     AOS.init();
 
     function initSwiper(className, delay) {
+
         return new Swiper(className, {
+
             slidesPerView: 3,
             spaceBetween: 20,
             loop: true,
-            autoplay: { delay: delay, disableOnInteraction: false },
-            pagination: { el: className + " .swiper-pagination", clickable: true },
+
+            autoplay: {
+                delay: delay,
+                disableOnInteraction: false
+            },
+
+            pagination: {
+                el: className + " .swiper-pagination",
+                clickable: true
+            },
+
             breakpoints: {
                 320: { slidesPerView: 1 },
                 768: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 }
             }
+
         });
+
     }
 
     initSwiper(".btsSwiper", 3000);
     initSwiper(".licenceSwiper", 3500);
     initSwiper(".masterSwiper", 4000);
+
 </script>
 
 {% endblock %}
