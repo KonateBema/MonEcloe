@@ -19,7 +19,7 @@ import os
 from .models import Association , Evenement
 from .models import Product, HomePage, HomeSlide, Commande 
 from .forms import CommandeForm
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4 ,landscape
 from .models import Product, HomePage, HomeSlide, Commande ,Ecole 
 from .forms import CommandeForm
 from .forms import PreinscriptionForm ,InscriptionForm
@@ -28,16 +28,19 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from reportlab.platypus import SimpleDocTemplate, Paragraph,Table,TableStyle
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Spacer
-from .models import Certificat
+from .models import Certificat,Resultat
 from .models import *
 from .models import Formation , CycleIngenieur
 from reportlab.platypus import Image
 from reportlab.lib.units import mm
-# import weasyprint  # optionnel si tu veux un PDF
+from reportlab.lib.units import cm  # <-- c'est ça qui manquait
+import qrcode
+import io
+from datetime import datetime
+import random
 # =================== HOME ===================
 
 def home(request):
@@ -479,37 +482,129 @@ def certificats(request):
     home_data = HomeData.objects.first()
     return render(request, 'certificats.html', {'certificats': certificats, 'home_data': home_data})
 
-def passer_certificat(request, id):
+# def passer_certificat(request, id):
 
+#     certificat = get_object_or_404(Certificat, id=id)
+#     questions = Question.objects.filter(certificat=certificat)
+
+#     if request.method == "POST":
+#         score = 0
+#         total = questions.count()
+
+#         for question in questions:
+#             reponse = request.POST.get(str(question.id))
+#             if reponse:
+#                 choix = Choix.objects.get(id=reponse)
+#                 if choix.est_correct:
+#                     score += 1
+
+#         Resultat.objects.create(
+#             certificat=certificat,
+#             nom_etudiant=request.POST.get("nom"),
+#             score=score
+#         )
+
+#         return render(request, "resultat.html", {
+#             "score": score,
+#             "total": total
+#         })
+
+#     return render(request, "passer_certificat.html", {
+#         "certificat": certificat,
+#         "questions": questions
+#     })
+
+
+# from .models import Certificat, Question, Choix, Resultat
+
+# def passer_certificat(request, id):
+#     certificat = get_object_or_404(Certificat, id=id)
+#     questions = Question.objects.filter(certificat=certificat)
+
+#     if request.method == "POST":
+#         score = 0
+#         total = questions.count()
+#         nom_etudiant = request.POST.get("nom", "Anonyme")  # valeur par défaut
+
+#         for question in questions:
+#             reponse = request.POST.get(f"question_{question.id}")  # correspond au template
+#             if reponse:
+#                 choix = get_object_or_404(Choix, id=reponse)
+#                 if choix.est_correct:
+#                     score += 1
+
+#         # Enregistrer le résultat
+#         Resultat.objects.create(
+#             certificat=certificat,
+#             nom_etudiant=nom_etudiant,
+#             score=score
+#         )
+
+#         # Calcul du pourcentage
+#         pourcentage = (score / total) * 100 if total > 0 else 0
+
+#         return render(request, "resultat.html", {
+#             "score": score,
+#             "total": total,
+#             "pourcentage": pourcentage,
+#             "certificat": certificat,
+#             "cert": certificat   # 👈 IMPORTANT
+#         })
+
+#     return render(request, "passer_certificat.html", {
+#         "certificat": certificat,
+#         "questions": questions
+#     })
+
+
+def passer_certificat(request, id):
+    # Récupération du certificat
     certificat = get_object_or_404(Certificat, id=id)
     questions = Question.objects.filter(certificat=certificat)
 
     if request.method == "POST":
         score = 0
         total = questions.count()
+        nom_etudiant = request.POST.get("nom", "Anonyme")  # valeur par défaut
 
+        # Calcul du score
         for question in questions:
-            reponse = request.POST.get(str(question.id))
+            reponse = request.POST.get(f"question_{question.id}")
             if reponse:
-                choix = Choix.objects.get(id=reponse)
+                choix = get_object_or_404(Choix, id=reponse)
                 if choix.est_correct:
                     score += 1
 
-        Resultat.objects.create(
+        # Enregistrer le résultat
+        resultat = Resultat.objects.create(
             certificat=certificat,
-            nom_etudiant=request.POST.get("nom"),
+            nom_etudiant=nom_etudiant,
             score=score
         )
 
+        # Option 1 : redirection directe vers le PDF du certificat
+        return redirect('generer_certificat_pdf', certificat_id=certificat.id)
+
+        # Option 2 : si tu veux afficher le résultat avant de générer le PDF, 
+        # tu peux rendre le template "resultat.html" avec :
+        """
+        pourcentage = (score / total) * 100 if total > 0 else 0
         return render(request, "resultat.html", {
             "score": score,
-            "total": total
+            "total": total,
+            "pourcentage": pourcentage,
+            "certificat": certificat,
+            "cert": certificat,
+            "resultat": resultat
         })
+        """
 
+    # Si GET, afficher le formulaire pour passer le certificat
     return render(request, "passer_certificat.html", {
         "certificat": certificat,
         "questions": questions
     })
+
 
 def inscription_association(request, association_id):
     association = Association.objects.get(id=association_id)
@@ -708,3 +803,375 @@ def inscription_view(request):
     }
 
     return render(request, 'inscription.html', context)
+
+
+
+
+from .models import Certificat, Question, Choix, Resultat
+
+def passer_certificat(request, id):
+    certificat = get_object_or_404(Certificat, id=id)
+    questions = Question.objects.filter(certificat=certificat)
+
+    if request.method == "POST":
+        score = 0
+        total = questions.count()
+        nom_etudiant = request.POST.get("nom") or "Anonyme"
+
+        # Calcul du score
+        for question in questions:
+            reponse = request.POST.get(f"question_{question.id}")
+            if reponse:
+                choix = get_object_or_404(Choix, id=reponse)
+                if choix.est_correct:
+                    score += 1
+
+        # Enregistrer le résultat
+        resultat = Resultat.objects.create(
+            certificat=certificat,
+            nom_etudiant=nom_etudiant,
+            score=score
+        )
+
+        pourcentage = (score / total) * 100 if total > 0 else 0
+        reussite = pourcentage >= 50  # condition de réussite
+
+        # On rend le template résultat avec le résultat et certificat
+        return render(request, "resultat.html", {
+            "score": score,
+            "total": total,
+            "pourcentage": round(pourcentage, 2),
+            "reussite": reussite,
+            "certificat": certificat,
+            "resultat": resultat  # 🔑 pour générer le PDF
+        })
+
+    return render(request, "passer_certificat.html", {
+        "certificat": certificat,
+        "questions": questions
+    })
+# def generer_certificat_pdf(request, resultat_id):
+#     resultat = get_object_or_404(Resultat, id=resultat_id)
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="Certificat_{resultat.nom_etudiant}.pdf"'
+
+#     buffer = BytesIO()
+#     p = canvas.Canvas(buffer, pagesize=A4)
+#     width, height = A4
+
+#     # Fond et titre
+#     p.setFont("Helvetica-Bold", 28)
+#     p.drawCentredString(width / 2, height - 5*cm, "Certificat de Réussite")
+
+#     p.setFont("Helvetica", 20)
+#     p.drawCentredString(width / 2, height - 7*cm, f"Décerné à : {resultat.nom_etudiant}")
+
+#     p.setFont("Helvetica", 18)
+#     p.drawCentredString(width / 2, height - 9*cm, f"Pour avoir réussi : {resultat.certificat.titre}")
+
+#     p.setFont("Helvetica", 16)
+#     p.drawCentredString(width / 2, height - 11*cm, f"Score : {resultat.score} / {resultat.certificat.questions.count()}")
+
+#     # Date
+#     import datetime
+#     date_str = datetime.date.today().strftime("%d/%m/%Y")
+#     p.setFont("Helvetica-Oblique", 14)
+#     p.drawCentredString(width / 2, height - 13*cm, f"Date : {date_str}")
+
+#     p.showPage()
+#     p.save()
+
+#     pdf = buffer.getvalue()
+#     buffer.close()
+#     response.write(pdf)
+#     return response
+
+from datetime import date
+
+def generer_certificat_pdf(request, certificat_id):
+
+    certificat = Certificat.objects.get(id=certificat_id)
+
+    utilisateur = request.user
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificat.pdf"'
+
+    pdf = canvas.Canvas(response, pagesize=A4)
+
+    width, height = A4
+
+    # Bordure
+    pdf.rect(1*cm, 1*cm, width-2*cm, height-2*cm)
+
+    # Titre
+    pdf.setFont("Helvetica-Bold", 28)
+    pdf.drawCentredString(width/2, height-4*cm, "CERTIFICAT")
+
+    pdf.setFont("Helvetica", 16)
+    pdf.drawCentredString(width/2, height-6*cm, "Ce certificat est décerné à")
+
+    # Nom utilisateur
+    pdf.setFont("Helvetica-Bold", 22)
+    pdf.drawCentredString(width/2, height-8*cm, utilisateur.username)
+
+    pdf.setFont("Helvetica", 16)
+    pdf.drawCentredString(width/2, height-10*cm, "Pour avoir réussi la certification")
+
+    # Nom certification
+    pdf.setFont("Helvetica-Bold", 20)
+    pdf.drawCentredString(width/2, height-12*cm, certificat.titre)
+
+    # Date
+    pdf.setFont("Helvetica", 14)
+    pdf.drawCentredString(
+        width/2,
+        height-15*cm,
+        f"Délivré le {date.today().strftime('%d/%m/%Y')}"
+    )
+
+    # Signature
+    pdf.drawString(width-7*cm, 3*cm, "Signature")
+
+    pdf.save()
+
+    return response
+
+
+# def telecharger_certificat(request, resultat_id):
+    # Récupérer le résultat et le certificat
+    resultat = get_object_or_404(Resultat, id=resultat_id)
+    certificat = resultat.certificat
+
+    # Créer la réponse HTTP PDF
+    response = HttpResponse(content_type='application/pdf')
+    filename = f"Certificat_{resultat.nom_etudiant}.pdf"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    # Canvas ReportLab
+    c = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # -------------------------------
+    # Fond dégradé
+    # -------------------------------
+    from reportlab.lib.colors import PCMYKColor
+
+    # Fond bleu clair → blanc
+    c.setFillColor(PCMYKColor(20, 0, 0, 0))
+    c.rect(0, 0, width, height, fill=True, stroke=False)
+    c.setFillColor(colors.white)
+    c.rect(1*cm, 1*cm, width - 2*cm, height - 2*cm, fill=True, stroke=False)
+
+    # -------------------------------
+    # Bordures décoratives
+    # -------------------------------
+    c.setStrokeColor(colors.HexColor("#0d6efd"))
+    c.setLineWidth(6)
+    c.rect(1.2*cm, 1.2*cm, width - 2.4*cm, height - 2.4*cm)
+
+    c.setStrokeColor(colors.HexColor("#6610f2"))
+    c.setLineWidth(2)
+    c.rect(1.7*cm, 1.7*cm, width - 3.4*cm, height - 3.4*cm)
+
+    # -------------------------------
+    # Titre principal
+    # -------------------------------
+    c.setFont("Helvetica-Bold", 36)
+    c.setFillColor(colors.HexColor("#0d6efd"))
+    c.drawCentredString(width/2, height - 6*cm, "Certificat de Réussite")
+
+    # -------------------------------
+    # Nom de l’étudiant
+    # -------------------------------
+    c.setFont("Helvetica-Bold", 28)
+    c.setFillColor(colors.black)
+    c.drawCentredString(width/2, height - 9*cm, f"{resultat.nom_etudiant}")
+
+    # -------------------------------
+    # Message de réussite
+    # -------------------------------
+    c.setFont("Helvetica", 16)
+    c.setFillColor(colors.black)
+    c.drawCentredString(width/2, height - 11*cm, "A complété avec succès la certification :")
+
+    c.setFont("Helvetica-BoldOblique", 22)
+    c.setFillColor(colors.HexColor("#6610f2"))
+    c.drawCentredString(width/2, height - 13*cm, f"{certificat.titre}")
+
+    # -------------------------------
+    # Score et détails
+    # -------------------------------
+    c.setFont("Helvetica", 14)
+    total_questions = certificat.question_set.count()
+    c.drawCentredString(width/2, height - 15*cm, f"Score obtenu : {resultat.score} / {total_questions}")
+
+    # -------------------------------
+    # Ligne décorative
+    # -------------------------------
+    c.setStrokeColor(colors.HexColor("#0d6efd"))
+    c.setLineWidth(1.5)
+    c.line(3*cm, height - 16*cm, width - 3*cm, height - 16*cm)
+
+    # -------------------------------
+    # Footer avec signature (optionnelle)
+    # -------------------------------
+    c.setFont("Helvetica-Oblique", 12)
+    c.setFillColor(colors.gray)
+    c.drawCentredString(width/2, 3*cm, "Certificat généré automatiquement par votre plateforme de formation")
+
+    # -------------------------------
+    # Logo (optionnel)
+    # -------------------------------
+    # c.drawImage("static/images/logo.png", width-6*cm, height-6*cm, width=4*cm, height=4*cm, mask='auto')
+
+    # Finaliser PDF
+    c.showPage()
+    c.save()
+
+    return response
+
+
+def telecharger_certificat(request, resultat_id):
+    # Récupérer le résultat et le certificat
+    resultat = get_object_or_404(Resultat, id=resultat_id)
+    certificat = resultat.certificat
+
+    # Créer la réponse PDF
+    response = HttpResponse(content_type='application/pdf')
+    filename = f"Certificat_{resultat.nom_etudiant}.pdf"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    # Canvas
+    # c = canvas.Canvas(response, pagesize=A4)
+    # width, height = A4
+    # Canvas
+    c = canvas.Canvas(response, pagesize=landscape(A4))
+    width, height = landscape(A4)  # largeur et hauteur ajustées pour paysage
+    # -------------------------------
+    # Fond très léger
+    # -------------------------------
+    c.setFillColor(colors.HexColor("#fffaf0"))
+    c.rect(0, 0, width, height, fill=True, stroke=False)
+
+    # -------------------------------
+    # Bordure décorative dorée
+    # -------------------------------
+    c.setStrokeColor(colors.HexColor("#DAA520"))  # Gold
+    c.setLineWidth(5)
+    c.rect(1.5*cm, 1.5*cm, width - 3*cm, height - 3*cm)
+
+    c.setStrokeColor(colors.HexColor("#FFD700"))  # Light gold inner
+    c.setLineWidth(2)
+    c.rect(2*cm, 2*cm, width - 4*cm, height - 4*cm)
+    # -------------------------------
+    # Logo de l’école (à gauche)
+    # -------------------------------
+    logo_path = "static/images/logo.png"  # <-- ton logo
+    c.drawImage(
+        logo_path,
+        3*cm,                 # x : 2 cm du bord gauche
+        height - 4.5*cm,      # y : un peu en dessous du haut de la page
+        width=3*cm,           # largeur réduite
+        height=2*cm,          # hauteur réduite
+        mask='auto'
+    )
+
+    # Numéro unique du certificat
+    # -------------------------------
+    # Numéro unique du certificat (aligné à droite du logo)
+    cert_number = f"E3M-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000,9999)}"
+    c.setFont("Helvetica-Oblique", 12)
+    c.setFillColor(colors.gray)
+    c.drawRightString(width - 5*cm, height - 3.5*cm , f"Certificat N°: {cert_number}")
+
+    # -------------------------------
+    # Titre
+    # -------------------------------
+    c.setFont("Helvetica-Bold", 36)
+    c.setFillColor(colors.HexColor("#0d6efd"))
+    c.drawCentredString(width/2, height - 6.5*cm, "Certificat de Réussite")
+    # -------------------------------
+    # Nom de l’étudiant
+    # -------------------------------
+    c.setFont("Helvetica-Bold", 28)
+    c.setFillColor(colors.black)
+    c.drawCentredString(width/2, height - 10*cm, f"{resultat.nom_etudiant}")
+    # -------------------------------
+    # Message
+    # -------------------------------
+    c.setFont("Helvetica", 16)
+    c.drawCentredString(width/2, height - 12*cm, "A complété avec succès la certification :")
+
+    c.setFont("Helvetica-BoldOblique", 22)
+    c.setFillColor(colors.HexColor("#6610f2"))
+    c.drawCentredString(width/2, height - 14*cm, f"{certificat.titre}")
+    # -------------------------------
+    # Score et détails
+    # -------------------------------
+    c.setFont("Helvetica", 14)
+    total_questions = certificat.question_set.count()
+    c.drawCentredString(width/2, height - 16*cm, f"Score obtenu : {resultat.score} / {total_questions}")
+    # -------------------------------
+    # Signature de l'école (texte "GEM")
+    c.setFont("Helvetica-Bold", 16)
+    # c.drawString(3*cm, 4*cm, "Signature GEM")  # y = 4 cm au lieu de 3 cm
+    c.drawString(3*cm, 4*cm, "Signature GEM")
+    # -------------------------------
+    # Footer
+    # -------------------------------
+    c.setFont("Helvetica-Oblique", 10)
+    c.setFillColor(colors.gray)
+    c.drawCentredString(width/2, 3*cm, "Certificat généré automatiquement par E3M School")  # y = 3 cm au lieu de 2 cm
+    # Finaliser le PDF
+    c.showPage()
+    c.save()
+
+    return response
+
+def pdf_certificats(request):
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificats.pdf"'
+
+    pdf = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    y = height - 3*cm
+
+    pdf.setFont("Helvetica-Bold", 24)
+    pdf.setFillColor(colors.HexColor("#0d6efd"))
+    pdf.drawCentredString(width/2, y, "Liste des Certifications")
+    y -= 2*cm
+
+    certificats = Certificat.objects.all()
+
+    for cert in certificats:
+
+        pdf.setFont("Helvetica-Bold", 16)
+        pdf.setFillColor(colors.HexColor("#6610f2"))
+        pdf.drawString(3*cm, y, cert.titre)
+        y -= 1*cm
+
+        pdf.setFont("Helvetica", 12)
+        pdf.setFillColor(colors.black)
+
+        description = cert.description[:200] + ("..." if len(cert.description) > 200 else "")
+        pdf.drawString(3*cm, y, description)
+        y -= 1*cm
+
+        if cert.lien_passage:
+            pdf.setFont("Helvetica-Oblique", 11)
+            pdf.setFillColor(colors.darkgray)
+            pdf.drawString(3*cm, y, f"Lien : {cert.lien_passage}")
+            y -= 1*cm
+
+        y -= 1*cm
+
+        if y < 4*cm:
+            pdf.showPage()
+            y = height - 3*cm
+
+    pdf.save()
+
+    return response

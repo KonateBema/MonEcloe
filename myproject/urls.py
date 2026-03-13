@@ -68,8 +68,14 @@ urlpatterns = [
     path('annee-prepa/', views.prepa, name='formations_prepa'),
     path('e3m/licence/', views.licence, name='licence'),
     path('e3m/masters1/', views.masters1, name='masters1'),
-     path('inscription/', views.inscription_view, name='inscription'),
+    path('inscription/', views.inscription_view, name='inscription'),
+    # path('resultat/pdf/<int:resultat_id>/', views.generer_certificat_pdf, name='generer_certificat_pdf'),
 
+    # path('certificat/pdf/<int:resultat_id>/', views.telecharger_certificat, name='telecharger_certificat'),
+    # path("certificat/pdf/<int:certificat_id>/", views.generer_certificat_pdf, name="generer_certificat_pdf"),
+    # path('pdf/certificats/', views.pdf_certificats, name='pdf_certificats'),
+    path('certificat/<int:id>/', views.passer_certificat, name='passer_certificat'),
+    path('certificat/pdf/<int:resultat_id>/', views.telecharger_certificat, name='telecharger_certificat'),
 
 ]
 # permette de charger le fichier image dans django

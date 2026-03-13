@@ -6,42 +6,49 @@ Résultat - {{ home_data.site_name }}
 
 {% block content %}
 
-<div class="container py-5 text-center">
+<div class="container py-5 d-flex justify-content-center">
 
-    <div class="card shadow-lg border-0 rounded-4 p-5">
+    <div class="card shadow-lg border-0 rounded-4 p-5" style="max-width: 600px; width: 100%;">
 
-        <h1 class="mb-4">Résultat 🎉</h1>
+        <h1 class="mb-4 text-center">Résultat 🎉</h1>
 
-        <h2 class="fw-bold display-5 mb-4">
+        <h2 class="fw-bold display-5 mb-4 text-center">
             {{ score }} / {{ total }}
         </h2>
 
         {% if reussite %}
-            <div class="alert alert-success fs-5">
-                Félicitations 🎓<br>
-                Vous êtes certifié ✅
-            </div>
+        <div class="alert alert-success fs-5 text-center">
+            Félicitations 🎓<br>
+            Vous êtes certifié ✅
+        </div>
 
-            <a href="#" class="btn btn-success btn-lg mt-3">
-                Télécharger votre certificat
+        <!-- Bouton pour télécharger le certificat PDF -->
+        <div class="d-grid gap-2 mt-4">
+            <a href="{% url 'telecharger_certificat' resultat.id %}" 
+               class="btn btn-success btn-lg">
+               Télécharger votre certificat
             </a>
+        </div>
 
         {% else %}
-            <div class="alert alert-danger fs-5">
-                Échec ❌<br>
-                Vous pouvez retenter le test.
-            </div>
+        <div class="alert alert-danger fs-5 text-center">
+            Échec ❌<br>
+            Vous pouvez retenter le test.
+        </div>
 
-            <a href="javascript:history.back()"
-               class="btn btn-warning btn-lg mt-3">
+        <!-- Bouton pour repasser le test -->
+        <div class="d-grid gap-2 mt-4">
+            <a href="javascript:history.back()" 
+               class="btn btn-warning btn-lg">
                Repasser le test
             </a>
+        </div>
         {% endif %}
 
-        <div class="mt-4">
-            <a href="{% url 'home' %}"
-               class="btn btn-outline-primary">
-               ← Retour à l’accueil
+        <!-- Bouton pour retourner à l'accueil -->
+        <div class="mt-4 text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">
+                ← Retour à l’accueil
             </a>
         </div>
 

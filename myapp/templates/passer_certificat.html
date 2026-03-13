@@ -6,27 +6,47 @@ Passer le certificat - {{ certificat.titre }}
 
 {% block content %}
 
+<style>
+/* Timer en haut de page */
+.timer-box {
+    position: sticky;
+    top: 20px;
+    z-index: 1000;
+}
+
+.timer {
+    font-size: 28px;
+    font-weight: bold;
+    color: #dc3545;
+}
+</style>
+
 <div class="container py-5">
 
     <!-- Titre -->
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
         <h2 class="fw-bold text-primary">{{ certificat.titre }}</h2>
-        <p class="text-muted">Répondez aux questions ci-dessous pour obtenir votre certificat</p>
+        <p class="text-muted">
+            Répondez aux questions ci-dessous pour obtenir votre certificat
+        </p>
+    </div>
+
+    <!-- TIMER -->
+    <div class="alert alert-danger text-center timer-box">
+        ⏱ Temps restant : <span id="timer" class="timer"></span>
     </div>
 
     <!-- Formulaire -->
     <div class="card shadow-lg p-4 border-0 rounded-4">
-        <form method="post">
+
+        <form method="post" id="examForm">
             {% csrf_token %}
 
             <!-- Nom candidat -->
             <div class="mb-4">
                 <label class="form-label fw-semibold">Votre nom complet</label>
-                <input type="text"
-                       name="nom"
-                       class="form-control form-control-lg"
-                       placeholder="Entrez votre nom"
-                       required>
+                <input type="text" name="nom" class="form-control form-control-lg"
+                       placeholder="Entrez votre nom" required>
             </div>
 
             <hr class="mb-4">
@@ -34,50 +54,67 @@ Passer le certificat - {{ certificat.titre }}
             <!-- Questions -->
             {% for question in questions %}
             <div class="mb-4">
-
                 <h5 class="fw-semibold mb-3">
-                    Question {{ forloop.counter }} :
-                    {{ question.texte }}
+                    Question {{ forloop.counter }} : {{ question.texte }}
                 </h5>
 
                 {% for choix in question.choix_set.all %}
                 <div class="form-check mb-2">
-                    <input class="form-check-input"
-                           type="radio"
+                    <input class="form-check-input" type="radio"
                            name="question_{{ question.id }}"
                            value="{{ choix.id }}"
-                           id="choix{{ choix.id }}"
-                           required>
-
-                    <label class="form-check-label"
-                           for="choix{{ choix.id }}">
+                           id="choix{{ choix.id }}" required>
+                    <label class="form-check-label" for="choix{{ choix.id }}">
                         {{ choix.texte }}
                     </label>
                 </div>
                 {% endfor %}
-
             </div>
             {% endfor %}
 
-            <!-- Bouton -->
+            <!-- Bouton de soumission -->
             <div class="text-center mt-4">
-                <button type="submit"
-                        class="btn btn-primary btn-lg w-100 rounded-pill">
+                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">
                     Soumettre le test
                 </button>
             </div>
 
         </form>
+
     </div>
 
     <!-- Retour -->
     <div class="text-center mt-4">
-        <a href="{% url 'certificats' %}"
-           class="btn btn-outline-secondary">
-           ← Retour aux certificats
+        <a href="{% url 'certificats' %}" class="btn btn-outline-secondary">
+            ← Retour aux certificats
         </a>
     </div>
 
 </div>
+
+<script>
+// Timer en JS avec valeur par défaut sécurisée
+let minutes = Number("{{ certificat.duree|default:'10' }}");
+let seconds = minutes * 60;
+
+function updateTimer() {
+    let m = Math.floor(seconds / 60);
+    let s = seconds % 60;
+
+    if (s < 10) s = "0" + s;
+
+    document.getElementById("timer").innerHTML = m + ":" + s;
+
+    if (seconds <= 0) {
+        alert("Temps écoulé ! Le test va être soumis automatiquement.");
+        document.getElementById("examForm").submit();
+    }
+
+    seconds--;
+}
+
+// Lancer le timer toutes les secondes
+setInterval(updateTimer, 1000);
+</script>
 
 {% endblock %}
