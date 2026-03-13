@@ -41,6 +41,7 @@ import qrcode
 import io
 from datetime import datetime
 import random
+from io import BytesIO
 # =================== HOME ===================
 
 def home(request):
@@ -937,198 +938,285 @@ def generer_certificat_pdf(request, certificat_id):
 
     return response
 
-
 # def telecharger_certificat(request, resultat_id):
-    # Récupérer le résultat et le certificat
-    resultat = get_object_or_404(Resultat, id=resultat_id)
-    certificat = resultat.certificat
+#     # Récupérer le résultat et le certificat
+#     resultat = get_object_or_404(Resultat, id=resultat_id)
+#     certificat = resultat.certificat
 
-    # Créer la réponse HTTP PDF
-    response = HttpResponse(content_type='application/pdf')
-    filename = f"Certificat_{resultat.nom_etudiant}.pdf"
-    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+#     # Créer la réponse PDF
+#     response = HttpResponse(content_type='application/pdf')
+#     filename = f"Certificat_{resultat.nom_etudiant}.pdf"
+#     response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
-    # Canvas ReportLab
-    c = canvas.Canvas(response, pagesize=A4)
-    width, height = A4
+#     # Canvas
+#     # c = canvas.Canvas(response, pagesize=A4)
+#     # width, height = A4
+#     # Canvas
+#     c = canvas.Canvas(response, pagesize=landscape(A4))
+#     width, height = landscape(A4)  # largeur et hauteur ajustées pour paysage
+#     # -------------------------------
+#     # Fond très léger
+#     # -------------------------------
+#     c.setFillColor(colors.HexColor("#fffaf0"))
+#     c.rect(0, 0, width, height, fill=True, stroke=False)
 
-    # -------------------------------
-    # Fond dégradé
-    # -------------------------------
-    from reportlab.lib.colors import PCMYKColor
+#     # -------------------------------
+#     # Bordure décorative dorée
+#     # -------------------------------
+#     c.setStrokeColor(colors.HexColor("#DAA520"))  # Gold
+#     c.setLineWidth(5)
+#     c.rect(1.5*cm, 1.5*cm, width - 3*cm, height - 3*cm)
 
-    # Fond bleu clair → blanc
-    c.setFillColor(PCMYKColor(20, 0, 0, 0))
-    c.rect(0, 0, width, height, fill=True, stroke=False)
-    c.setFillColor(colors.white)
-    c.rect(1*cm, 1*cm, width - 2*cm, height - 2*cm, fill=True, stroke=False)
+#     c.setStrokeColor(colors.HexColor("#FFD700"))  # Light gold inner
+#     c.setLineWidth(2)
+#     c.rect(2*cm, 2*cm, width - 4*cm, height - 4*cm)
+#     # -------------------------------
+#     # Logo de l’école (à gauche)
+#     # -------------------------------
+#     logo_path = "static/images/logo.png"  # <-- ton logo
+#     c.drawImage(
+#         logo_path,
+#         3*cm,                 # x : 2 cm du bord gauche
+#         height - 4.5*cm,      # y : un peu en dessous du haut de la page
+#         width=3*cm,           # largeur réduite
+#         height=2*cm,          # hauteur réduite
+#         mask='auto'
+#     )
 
-    # -------------------------------
-    # Bordures décoratives
-    # -------------------------------
-    c.setStrokeColor(colors.HexColor("#0d6efd"))
-    c.setLineWidth(6)
-    c.rect(1.2*cm, 1.2*cm, width - 2.4*cm, height - 2.4*cm)
+#     # Numéro unique du certificat
+#     # -------------------------------
+#     # Numéro unique du certificat (aligné à droite du logo)
+#     cert_number = f"E3M-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000,9999)}"
+#     c.setFont("Helvetica-Oblique", 12)
+#     c.setFillColor(colors.gray)
+#     c.drawRightString(width - 5*cm, height - 3.5*cm , f"Certificat N°: {cert_number}")
 
-    c.setStrokeColor(colors.HexColor("#6610f2"))
-    c.setLineWidth(2)
-    c.rect(1.7*cm, 1.7*cm, width - 3.4*cm, height - 3.4*cm)
+#     # -------------------------------
+#     # Titre
+#     # -------------------------------
+#     c.setFont("Helvetica-Bold", 36)
+#     c.setFillColor(colors.HexColor("#0d6efd"))
+#     c.drawCentredString(width/2, height - 6.5*cm, "Certificat de Réussite")
+#     # -------------------------------
+#     # Nom de l’étudiant
+#     # -------------------------------
+#     c.setFont("Helvetica-Bold", 28)
+#     c.setFillColor(colors.black)
+#     c.drawCentredString(width/2, height - 10*cm, f"{resultat.nom_etudiant}")
+#     # -------------------------------
+#     # Message
+#     # -------------------------------
+#     c.setFont("Helvetica", 16)
+#     c.drawCentredString(width/2, height - 12*cm, "A complété avec succès la certification :")
 
-    # -------------------------------
-    # Titre principal
-    # -------------------------------
-    c.setFont("Helvetica-Bold", 36)
-    c.setFillColor(colors.HexColor("#0d6efd"))
-    c.drawCentredString(width/2, height - 6*cm, "Certificat de Réussite")
+#     c.setFont("Helvetica-BoldOblique", 22)
+#     c.setFillColor(colors.HexColor("#6610f2"))
+#     c.drawCentredString(width/2, height - 14*cm, f"{certificat.titre}")
+#     # -------------------------------
+#     # Score et détails
+#     # -------------------------------
+#     c.setFont("Helvetica", 14)
+#     total_questions = certificat.question_set.count()
+#     c.drawCentredString(width/2, height - 16*cm, f"Score obtenu : {resultat.score} / {total_questions}")
+#     # -------------------------------
+#     # Signature de l'école (texte "GEM")
+#     c.setFont("Helvetica-Bold", 16)
+#     # c.drawString(3*cm, 4*cm, "Signature GEM")  # y = 4 cm au lieu de 3 cm
+#     c.drawString(3*cm, 4*cm, "Signature GEM")
+#     # -------------------------------
+#     # Footer
+#     # -------------------------------
+#     c.setFont("Helvetica-Oblique", 10)
+#     c.setFillColor(colors.gray)
+#     c.drawCentredString(width/2, 3*cm, "Certificat généré automatiquement par E3M School")  # y = 3 cm au lieu de 2 cm
+#     # Finaliser le PDF
+#     c.showPage()
+#     c.save()
 
-    # -------------------------------
-    # Nom de l’étudiant
-    # -------------------------------
-    c.setFont("Helvetica-Bold", 28)
-    c.setFillColor(colors.black)
-    c.drawCentredString(width/2, height - 9*cm, f"{resultat.nom_etudiant}")
-
-    # -------------------------------
-    # Message de réussite
-    # -------------------------------
-    c.setFont("Helvetica", 16)
-    c.setFillColor(colors.black)
-    c.drawCentredString(width/2, height - 11*cm, "A complété avec succès la certification :")
-
-    c.setFont("Helvetica-BoldOblique", 22)
-    c.setFillColor(colors.HexColor("#6610f2"))
-    c.drawCentredString(width/2, height - 13*cm, f"{certificat.titre}")
-
-    # -------------------------------
-    # Score et détails
-    # -------------------------------
-    c.setFont("Helvetica", 14)
-    total_questions = certificat.question_set.count()
-    c.drawCentredString(width/2, height - 15*cm, f"Score obtenu : {resultat.score} / {total_questions}")
-
-    # -------------------------------
-    # Ligne décorative
-    # -------------------------------
-    c.setStrokeColor(colors.HexColor("#0d6efd"))
-    c.setLineWidth(1.5)
-    c.line(3*cm, height - 16*cm, width - 3*cm, height - 16*cm)
-
-    # -------------------------------
-    # Footer avec signature (optionnelle)
-    # -------------------------------
-    c.setFont("Helvetica-Oblique", 12)
-    c.setFillColor(colors.gray)
-    c.drawCentredString(width/2, 3*cm, "Certificat généré automatiquement par votre plateforme de formation")
-
-    # -------------------------------
-    # Logo (optionnel)
-    # -------------------------------
-    # c.drawImage("static/images/logo.png", width-6*cm, height-6*cm, width=4*cm, height=4*cm, mask='auto')
-
-    # Finaliser PDF
-    c.showPage()
-    c.save()
-
-    return response
-
+#     return response
 
 def telecharger_certificat(request, resultat_id):
-    # Récupérer le résultat et le certificat
+
+    # Récupérer résultat
     resultat = get_object_or_404(Resultat, id=resultat_id)
     certificat = resultat.certificat
 
-    # Créer la réponse PDF
+    # Réponse PDF
     response = HttpResponse(content_type='application/pdf')
     filename = f"Certificat_{resultat.nom_etudiant}.pdf"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
-    # Canvas
-    # c = canvas.Canvas(response, pagesize=A4)
-    # width, height = A4
-    # Canvas
+    # Page paysage
     c = canvas.Canvas(response, pagesize=landscape(A4))
-    width, height = landscape(A4)  # largeur et hauteur ajustées pour paysage
+    width, height = landscape(A4)
+
     # -------------------------------
-    # Fond très léger
+    # Fond
     # -------------------------------
     c.setFillColor(colors.HexColor("#fffaf0"))
     c.rect(0, 0, width, height, fill=True, stroke=False)
 
     # -------------------------------
-    # Bordure décorative dorée
+    # Bordure dorée
     # -------------------------------
-    c.setStrokeColor(colors.HexColor("#DAA520"))  # Gold
+    c.setStrokeColor(colors.HexColor("#DAA520"))
     c.setLineWidth(5)
     c.rect(1.5*cm, 1.5*cm, width - 3*cm, height - 3*cm)
 
-    c.setStrokeColor(colors.HexColor("#FFD700"))  # Light gold inner
+    c.setStrokeColor(colors.HexColor("#FFD700"))
     c.setLineWidth(2)
     c.rect(2*cm, 2*cm, width - 4*cm, height - 4*cm)
+
     # -------------------------------
-    # Logo de l’école (à gauche)
+    # Logo à gauche
     # -------------------------------
-    logo_path = "static/images/logo.png"  # <-- ton logo
+    logo_path = "static/images/logo.png"
+
     c.drawImage(
         logo_path,
-        3*cm,                 # x : 2 cm du bord gauche
-        height - 4.5*cm,      # y : un peu en dessous du haut de la page
-        width=3*cm,           # largeur réduite
-        height=2*cm,          # hauteur réduite
+        3*cm,
+        height - 4.5*cm, 
+        width=3*cm,  
+        height=2*cm, 
         mask='auto'
     )
 
-    # Numéro unique du certificat
+    # logo_path = "static/images/logo.png"  # <-- ton logo
+#     c.drawImage(
+#         logo_path,
+#         3*cm,                 # x : 2 cm du bord gauche
+#         height - 4.5*cm,      # y : un peu en dessous du haut de la page
+#         width=3*cm,           # largeur réduite
+#         height=2*cm,          # hauteur réduite
+#         mask='auto'
+#     )
+
+
     # -------------------------------
-    # Numéro unique du certificat (aligné à droite du logo)
+    # Numéro certificat à droite
+    # -------------------------------
     cert_number = f"E3M-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000,9999)}"
+
     c.setFont("Helvetica-Oblique", 12)
     c.setFillColor(colors.gray)
-    c.drawRightString(width - 5*cm, height - 3.5*cm , f"Certificat N°: {cert_number}")
+
+    c.drawRightString(
+        width - 3*cm,
+        height - 3*cm,
+        f"Certificat N°: {cert_number}"
+    )
 
     # -------------------------------
     # Titre
     # -------------------------------
-    c.setFont("Helvetica-Bold", 36)
+    c.setFont("Helvetica-Bold", 40)
     c.setFillColor(colors.HexColor("#0d6efd"))
-    c.drawCentredString(width/2, height - 6.5*cm, "Certificat de Réussite")
+
+    c.drawCentredString(
+        width/2,
+        height - 7*cm,
+        "CERTIFICAT DE RÉUSSITE"
+    )
+
     # -------------------------------
-    # Nom de l’étudiant
+    # Nom étudiant
     # -------------------------------
-    c.setFont("Helvetica-Bold", 28)
+    c.setFont("Helvetica-Bold", 32)
     c.setFillColor(colors.black)
-    c.drawCentredString(width/2, height - 10*cm, f"{resultat.nom_etudiant}")
+
+    c.drawCentredString(
+        width/2,
+        height - 10*cm,
+        resultat.nom_etudiant
+    )
+
     # -------------------------------
     # Message
     # -------------------------------
-    c.setFont("Helvetica", 16)
-    c.drawCentredString(width/2, height - 12*cm, "A complété avec succès la certification :")
+    c.setFont("Helvetica", 18)
 
-    c.setFont("Helvetica-BoldOblique", 22)
+    c.drawCentredString(
+        width/2,
+        height - 12*cm,
+        "A complété avec succès la certification :"
+    )
+
+    # -------------------------------
+    # Nom certification
+    # -------------------------------
+    c.setFont("Helvetica-BoldOblique", 24)
     c.setFillColor(colors.HexColor("#6610f2"))
-    c.drawCentredString(width/2, height - 14*cm, f"{certificat.titre}")
+
+    c.drawCentredString(
+        width/2,
+        height - 14*cm,
+        certificat.titre
+    )
+
     # -------------------------------
-    # Score et détails
+    # Score
     # -------------------------------
-    c.setFont("Helvetica", 14)
     total_questions = certificat.question_set.count()
-    c.drawCentredString(width/2, height - 16*cm, f"Score obtenu : {resultat.score} / {total_questions}")
+
+    c.setFont("Helvetica", 16)
+    c.setFillColor(colors.black)
+
+    c.drawCentredString(
+        width/2,
+        height - 16*cm,
+        f"Score obtenu : {resultat.score} / {total_questions}"
+    )
+# -------------------------------
+# QR CODE de vérification
+# -------------------------------
+
+    verification_url = f"http://127.0.0.1:8000/verifier-certificat/{resultat.id}/"
+
+    qr = qrcode.make(verification_url)
+
+    buffer = BytesIO()
+    qr.save(buffer)
+
+    qr_image = ImageReader(buffer)
+
+    c.drawImage(
+    qr_image,
+    width - 6*cm,
+    4*cm,
+    width=3*cm,
+    height=3*cm
+  )
+
+    c.setFont("Helvetica", 9)
+    c.drawRightString(width - 3*cm, 3.5*cm, "Scanner pour vérifier")
     # -------------------------------
-    # Signature de l'école (texte "GEM")
+    # Signature GEM
+    # -------------------------------
     c.setFont("Helvetica-Bold", 16)
-    # c.drawString(3*cm, 4*cm, "Signature GEM")  # y = 4 cm au lieu de 3 cm
-    c.drawString(3*cm, 4*cm, "Signature GEM")
+
+    c.drawString(
+        6*cm,
+        5*cm,
+        "Signature GEM"
+    )
+
     # -------------------------------
     # Footer
     # -------------------------------
-    c.setFont("Helvetica-Oblique", 10)
+    c.setFont("Helvetica-Oblique", 11)
     c.setFillColor(colors.gray)
-    c.drawCentredString(width/2, 3*cm, "Certificat généré automatiquement par E3M School")  # y = 3 cm au lieu de 2 cm
-    # Finaliser le PDF
+
+    c.drawCentredString(
+        width/2,
+        3*cm,
+        "Certificat généré automatiquement par E3M School"
+    )
+
+    # Finaliser
     c.showPage()
     c.save()
 
     return response
-
 def pdf_certificats(request):
 
     response = HttpResponse(content_type='application/pdf')
