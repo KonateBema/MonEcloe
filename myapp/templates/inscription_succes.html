@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5 text-center">
+
+    <div class="card shadow p-5" style="border-radius:15px; max-width:600px; margin:auto;">
+        
+        <h2 class="text-success mb-3">✅ Inscription envoyée avec succès</h2>
+        
+        <p>Merci <strong>{{ inscription.nom }} {{ inscription.prenom }}</strong></p>
+
+        <p>Votre identifiant : <strong>{{ inscription.identifiant }}</strong></p>
+
+        <hr>
+
+        <!-- Bouton PDF -->
+         <button class="btn btn-primary px-4" onclick="telechargerRecu()">
+            📄 Télécharger mon reçu
+        </button> 
+        <!-- <a href="{% url 'generer_recu_pdf' inscription.id %}" class="btn btn-primary px-4">
+            📄 Télécharger mon reçu
+        </a> -->
+        <br><br>
+
+        <a href="{% url 'inscription' %}" class="btn btn-outline-secondary">
+            Nouvelle inscription
+        </a>
+
+    </div>
+
+</div>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+function telechargerRecu() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = 15;
+
+    const logo = new Image();
+    const photo = new Image();
+
+    logo.src = "{% static 'images/logo.png' %}";
+    photo.src = "{{ inscription.photo.url }}";
+
+    Promise.all([
+        new Promise(resolve => logo.onload = resolve),
+        new Promise(resolve => photo.onload = resolve)
+    ]).then(() => {
+
+        // ================= HEADER =================
+        doc.addImage(logo, "PNG", 15, y, 30, 30);
+        doc.addImage(photo, "JPEG", pageWidth - 45, y, 30, 30);
+
+        doc.setFontSize(18);
+        doc.setFont("helvetica", "bold");
+        doc.text("REÇU D'INSCRIPTION", pageWidth / 2, y + 10, { align: "center" });
+
+        y += 40;
+
+        // Ligne séparation
+        doc.setDrawColor(0);
+        doc.line(15, y, pageWidth - 15, y);
+        y += 10;
+
+        // ================= FONCTIONS =================
+        function section(titre) {
+            doc.setFillColor(230, 230, 230);
+            doc.rect(15, y - 5, pageWidth - 30, 8, "F");
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text(titre, 20, y);
+
+            y += 10;
+        }
+
+        function ligne(label, valeur) {
+            doc.setFont("helvetica", "bold");
+            doc.text(label, 20, y);
+
+            doc.setFont("helvetica", "normal");
+            doc.text(valeur || "-", 90, y);
+
+            y += 8;
+        }
+
+        // ================= CONTENU =================
+
+        section("Informations personnelles");
+        ligne("Identifiant :", "{{ inscription.identifiant }}");
+        ligne("Nom :", "{{ inscription.nom }}");
+        ligne("Prénom :", "{{ inscription.prenom }}");
+        ligne("Email :", "{{ inscription.email }}");
+        ligne("Téléphone :", "{{ inscription.telephone }}");
+        ligne("Date naissance :", "{{ inscription.date_naissance }}");
+        ligne("Formation :", "{{ inscription.formation }}");
+        ligne("Commune :", "{{ inscription.commune }}");
+        ligne("Quartier :", "{{ inscription.quartier }}");
+
+        y += 5;
+
+        section("Informations académiques");
+        ligne("Nationalité :", "{{ inscription.nationalite }}");
+        ligne("Établissement :", "{{ inscription.etablissement_origine }}");
+        ligne("Diplôme :", "{{ inscription.diplome }}");
+        ligne("Année :", "{{ inscription.annee_obtention }}");
+
+        y += 5;
+
+        section("Informations parentales");
+        ligne("Nom père :", "{{ inscription.nom_pere }}");
+        ligne("Téléphone père :", "{{ inscription.telephone_pere }}");
+        ligne("Adresse :", "{{ inscription.adresse_parents }}");
+
+        y += 15;
+
+        // ================= SIGNATURE =================
+        doc.line(20, y, 80, y);
+        doc.text("Signature étudiant", 20, y + 5);
+
+        doc.line(pageWidth - 80, y, pageWidth - 20, y);
+        doc.text("Signature administration", pageWidth - 80, y + 5);
+
+        y += 20;
+
+        // ================= FOOTER =================
+        // doc.setFontSize(10);
+        // doc.setTextColor(100);
+        // doc.text("Document généré automatiquement", pageWidth / 2, y, { align: "center" });
+
+        // Bordure autour du document
+        doc.rect(10, 10, pageWidth - 20, doc.internal.pageSize.getHeight() - 20);
+
+        // DOWNLOAD
+        doc.save("recu_inscription.pdf");
+
+    }).catch(() => {
+        alert("Erreur lors du chargement des images");
+    });
+}
+</script>
+
+{% endblock %}

@@ -307,37 +307,59 @@ def contact(request):
         return redirect('home')
 
         
+# def preinscription_view(request):
+
+#     home_data = {
+#         'site_name': '',
+#         'email': 'groupeexpertmetier@gmail.com',
+#         'telephone': '+225 0150536686 / 2722204432'
+#     }
+
+#     # Pré-remplissage automatique de la formation si présent dans l'URL
+#     initial_data = {}
+#     if request.GET.get('formation'):
+#         initial_data['formation'] = request.GET.get('formation')
+
+#     if request.method == 'POST':
+#         # ✅ IMPORTANT : ajouter request.FILES
+#         form = PreinscriptionForm(request.POST, request.FILES)
+
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Votre demande a été envoyée avec succès !")
+#             return redirect('preinscription')
+
+#         else:
+#             messages.error(request, "Veuillez corriger les erreurs du formulaire.")
+
+#     else:
+#         form = PreinscriptionForm(initial=initial_data)
+
+#     return render(request, 'preinscription.html', {
+#         'form': form,
+#         'home_data': home_data
+#     })
+
+
 def preinscription_view(request):
-
-    home_data = {
-        'site_name': '',
-        'email': 'groupeexpertmetier@gmail.com',
-        'telephone': '+225 0150536686 / 2722204432'
-    }
-
-    # Pré-remplissage automatique de la formation si présent dans l'URL
-    initial_data = {}
-    if request.GET.get('formation'):
-        initial_data['formation'] = request.GET.get('formation')
-
     if request.method == 'POST':
-        # ✅ IMPORTANT : ajouter request.FILES
         form = PreinscriptionForm(request.POST, request.FILES)
-
         if form.is_valid():
-            form.save()
-            messages.success(request, "Votre demande a été envoyée avec succès !")
-            return redirect('preinscription')
+            inscription = form.save()  # 🔥 ENREGISTREMENT
 
-        else:
-            messages.error(request, "Veuillez corriger les erreurs du formulaire.")
-
+            # Redirection vers page succès avec ID
+            return redirect('succes_preinscription', inscription_id=inscription.id)
     else:
-        form = PreinscriptionForm(initial=initial_data)
+        form = PreinscriptionForm()
 
-    return render(request, 'preinscription.html', {
-        'form': form,
-        'home_data': home_data
+    return render(request, 'preinscription.html', {'form': form})
+
+
+def succes_preinscription(request, inscription_id):
+    inscription = Preinscription.objects.get(id=inscription_id)
+
+    return render(request, 'succes.html', {
+        'inscription': inscription
     })
 
 def telecharger_fiche(request, pk):
@@ -782,19 +804,49 @@ def cycle_ingenieur(request):
 # from .models import Preinscription  # ou un modèle Inscription si différent
 # from django.utils import timezone
 
+# def inscription_view(request):
+#     if request.method == "POST":
+#         form = InscriptionForm(request.POST, request.FILES)
+
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Votre inscription a été envoyée avec succès !")
+#             # return redirect('inscription_succes', pk=inscription.id)
+#             return redirect('inscription')
+#         else:
+#            messages.error(request, "Veuillez corriger les erreurs du formulaire.")
+#     else:
+#         form = InscriptionForm()
+
+#     derniers_inscrits = Inscription.objects.order_by('-date_inscription')[:5]
+
+#     context = {
+#         'form': form,
+#         'page_title': "Inscription en ligne",
+#         'derniers_inscrits': derniers_inscrits,
+#     }
+
+#     return render(request, 'inscription.html', context)
+
 def inscription_view(request):
     if request.method == "POST":
         form = InscriptionForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
-            messages.success(request, "Votre inscription a été envoyée avec succès !")
-            return redirect('inscription')
+            # ✅ Récupérer l'objet enregistré
+            inscription = form.save()
+
+            # messages.success(request, "Votre inscription a été envoyée avec succès !")
+
+            # ✅ Redirection vers page succès avec ID
+            return redirect('inscription_succes', pk=inscription.id)
+
         else:
-           messages.error(request, "Veuillez corriger les erreurs du formulaire.")
+            messages.error(request, "Veuillez corriger les erreurs du formulaire.")
     else:
         form = InscriptionForm()
 
+    # ✅ Toujours exécuté si GET ou erreur
     derniers_inscrits = Inscription.objects.order_by('-date_inscription')[:5]
 
     context = {
@@ -805,8 +857,11 @@ def inscription_view(request):
 
     return render(request, 'inscription.html', context)
 
-
-
+def inscription_succes(request, pk):
+    inscription = Inscription.objects.get(id=pk)
+    return render(request, 'inscription_succes.html', {
+        'inscription': inscription
+    })
 
 from .models import Certificat, Question, Choix, Resultat
 
@@ -1261,5 +1316,68 @@ def pdf_certificats(request):
             y = height - 3*cm
 
     pdf.save()
+
+    return response
+
+
+
+
+def generer_recu_pdf(request, pk):
+    inscription = get_object_or_404(Inscription, pk=pk)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="recu_{inscription.identifiant}.pdf"'
+
+    doc = SimpleDocTemplate(response)
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    # ================= LOGO =================
+    logo_path = os.path.join('static/images/logo.png')
+    if os.path.exists(logo_path):
+        elements.append(Image(logo_path, width=100, height=50))
+
+    elements.append(Spacer(1, 20))
+
+    # ================= TITRE =================
+    elements.append(Paragraph("<b>FICHE D'INSCRIPTION</b>", styles['Title']))
+    elements.append(Spacer(1, 20))
+
+    # ================= PHOTO =================
+    if inscription.photo:
+        photo_path = inscription.photo.path
+        if os.path.exists(photo_path):
+            elements.append(Image(photo_path, width=100, height=120))
+            elements.append(Spacer(1, 20))
+
+    # ================= TABLE =================
+    data = [
+        ["Identifiant", inscription.identifiant],
+        ["Nom", inscription.nom],
+        ["Prénom", inscription.prenom],
+        ["Email", inscription.email],
+        ["Téléphone", inscription.telephone],
+        ["Formation", inscription.formation],
+        ["Commune", inscription.commune],
+        ["Quartier", inscription.quartier],
+    ]
+
+    table = Table(data)
+    table.setStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.grey),
+        ('GRID', (0,0), (-1,-1), 1, colors.black),
+    ])
+
+    elements.append(table)
+
+    elements.append(Spacer(1, 30))
+
+    # ================= SIGNATURE =================
+    elements.append(Paragraph("Signature étudiant ____________________", styles['Normal']))
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph("Signature administration ____________________", styles['Normal']))
+
+    doc.build(elements)
 
     return response

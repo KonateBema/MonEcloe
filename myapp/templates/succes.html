@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5 text-center">
+
+    <div class="card shadow-lg p-5" style="border-radius:20px; max-width:750px; margin:auto;">
+
+        <h2 class="text-success mb-3">✅ Préinscription envoyée avec succès</h2>
+
+        <p class="fs-5">
+            Merci <strong>{{ inscription.nom }} {{ inscription.prenom }}</strong>
+        </p>
+
+        <p>
+            Votre identifiant :
+            <span class="badge bg-primary fs-6">{{ inscription.id }}</span>
+        </p>
+
+        <hr>
+
+        <!-- APERÇU DES PIÈCES -->
+        <h5 class="mb-3">📎 Pièces fournies</h5>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <p><strong>Recto</strong></p>
+                <img src="{{ inscription.piece_recto.url }}" class="img-fluid rounded shadow border">
+            </div>
+
+            <div class="col-md-6">
+                <p><strong>Verso</strong></p>
+                <img src="{{ inscription.piece_verso.url }}" class="img-fluid rounded shadow border">
+            </div>
+        </div>
+
+        <!-- BOUTONS -->
+        <button class="btn btn-primary px-4 me-2" onclick="telechargerRecu()">
+            📄 Télécharger mon reçu
+        </button>
+
+        <a href="{% url 'preinscription' %}" class="btn btn-outline-secondary">
+            Nouvelle préinscription
+        </a>
+
+    </div>
+
+</div>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+    function telechargerRecu() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        let y = 60;
+
+        // ===== IMAGES =====
+        const logo = new Image();
+        const ministere = new Image();
+        const recto = new Image();
+        const verso = new Image();
+
+        logo.src = "{% static 'images/logo.png' %}";
+        ministere.src = "{% static 'images/ministere.jpg' %}";
+        recto.src = "{{ inscription.piece_recto.url }}";
+        verso.src = "{{ inscription.piece_verso.url }}";
+
+        let loaded = 0;
+
+        function checkLoaded() {
+            loaded++;
+            if (loaded < 4) return;
+            generatePDF();
+        }
+
+        logo.onload = checkLoaded;
+        ministere.onload = checkLoaded;
+        recto.onload = checkLoaded;
+        verso.onload = checkLoaded;
+
+        function generatePDF() {
+
+            const primary = [0, 102, 204];
+            const lightGray = [240, 240, 240];
+
+            // ===== HEADER =====
+            doc.setFillColor(...primary);
+            doc.rect(0, 0, pageWidth, 20, "F");
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.text("RÉPUBLIQUE DE CÔTE D’IVOIRE", pageWidth / 2, 10, { align: "center" });
+
+            doc.setFontSize(10);
+            doc.text("Union – Discipline – Travail", pageWidth / 2, 16, { align: "center" });
+
+            // logos
+            doc.addImage(logo, "PNG", 10, 25, 25, 25);
+            doc.addImage(ministere, "PNG", pageWidth - 35, 25, 25, 25);
+
+            // ===== TITRE =====
+            doc.setTextColor(0);
+            doc.setFontSize(18);
+            doc.text("FICHE DE PRÉINSCRIPTION", pageWidth / 2, y, { align: "center" });
+
+            y += 15;
+
+            doc.setDrawColor(...primary);
+            doc.line(40, y, pageWidth - 40, y);
+
+            y += 15;
+
+            // ===== FONCTIONS =====
+            function section(title) {
+                doc.setFillColor(...lightGray);
+                doc.rect(15, y - 6, pageWidth - 30, 8, "F");
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text(title, 20, y);
+
+                y += 12;
+            }
+
+            function ligne(label, value) {
+                doc.setFont("helvetica", "bold");
+                doc.text(label, 20, y);
+
+                doc.setFont("helvetica", "normal");
+                doc.text(value || "-", 90, y);
+
+                y += 8;
+            }
+
+            // ===== DONNÉES =====
+            section("Informations personnelles");
+
+            ligne("Nom :", "{{ inscription.nom }}");
+            ligne("Prénom :", "{{ inscription.prenom }}");
+            ligne("Email :", "{{ inscription.email }}");
+            ligne("Téléphone :", "{{ inscription.telephone }}");
+            ligne("Date naissance :", "{{ inscription.date_naissance }}");
+            ligne("Formation :", "{{ inscription.formation }}");
+            ligne("Commune :", "{{ inscription.commune }}");
+            ligne("Quartier :", "{{ inscription.quartier }}");
+
+            y += 5;
+
+            section("Message");
+
+            const msg = doc.splitTextToSize("{{ inscription.message }}", pageWidth - 40);
+            doc.setFont("helvetica", "normal");
+            doc.text(msg, 20, y);
+
+            y += msg.length * 7 + 5;
+
+            // ===== IMAGES =====
+            section("Pièces fournies");
+
+            // doc.rect(20, y, 80, 55);
+            // doc.rect(110, y, 80, 55);
+
+            // doc.addImage(recto, "JPEG", 22, y + 2, 76, 50);
+            // doc.addImage(verso, "JPEG", 112, y + 2, 76, 50);
+
+            doc.addImage(recto, "JPEG", 25, y + 2, 60, 40);
+            doc.addImage(verso, "JPEG", 110, y + 2, 60, 40);
+
+            y += 65;
+
+            // ===== SIGNATURE =====
+            // doc.line(20, y, 80, y);
+            // doc.text("Signature étudiant", 20, y + 5);
+
+            // doc.line(pageWidth - 80, y, pageWidth - 20, y);
+            // doc.text("Signature administration", pageWidth - 80, y + 5);
+
+            // ===== FOOTER =====
+            doc.line(10, pageHeight - 20, pageWidth - 10, pageHeight - 20);
+
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+
+            doc.text(
+                "Groupe Expert Métier (GEM) | www.gem.ci | +225 0150536686",
+                pageWidth / 2,
+                pageHeight - 10,
+                { align: "center" }
+            );
+
+            doc.text("Page 1", pageWidth - 20, pageHeight - 10, { align: "right" });
+
+            // ===== CADRE =====
+            // doc.setDrawColor(180);
+            // doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+
+            // ===== CADRE =====
+            doc.setDrawColor(180);
+            // doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+
+            // ===== DOWNLOAD =====
+            doc.save("recu_preinscription.pdf");
+        }
+    }
+
+</script>
+
+{% endblock %}

@@ -27,10 +27,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from myapp.views import home , commande, commande_confirmation, generate_pdf
 from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnalisé
-from myapp.views import preinscription_view
+from myapp.views import preinscription_view, inscription_succes
 from myapp.views import contact_view
 from django.contrib.admin import AdminSite
 from myapp.views import evenements_view
+from myapp.views import generer_recu_pdf
 urlpatterns = [
     # Admin personnalisé
     # path('admin/', admin.site.urls),
@@ -76,6 +77,9 @@ urlpatterns = [
     # path('pdf/certificats/', views.pdf_certificats, name='pdf_certificats'),
     path('certificat/<int:id>/', views.passer_certificat, name='passer_certificat'),
     path('certificat/pdf/<int:resultat_id>/', views.telecharger_certificat, name='telecharger_certificat'),
+    path('inscription/succes/<int:pk>/', inscription_succes, name='inscription_succes'),
+    path('recu/<int:pk>/', generer_recu_pdf, name='generer_recu_pdf'),
+    path('succes/<int:inscription_id>/', views.succes_preinscription, name='succes_preinscription'),
 
 ]
 # permette de charger le fichier image dans django
