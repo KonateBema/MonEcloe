@@ -45,7 +45,6 @@ urlpatterns = [
     path('commande-confirmation-pdf/<int:commande_id>/', views.generate_pdf, name='generate_pdf'),
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
     path('evenementse/', evenements_view, name='evenements'),
-    # path('preinscription/', preinscription_view, name='preinscription'),
     path('fiche/<int:pk>/', views.telecharger_fiche, name='telecharger_fiche'),
     path('formations/', views.formations, name='formations'),
     path('programmes/', views.programmes_view, name='programmes'),  # <-- ici
@@ -71,9 +70,7 @@ urlpatterns = [
     path('e3m/masters1/', views.masters1, name='masters1'),
     path('inscription/', views.inscription_view, name='inscription'),
     # path('resultat/pdf/<int:resultat_id>/', views.generer_certificat_pdf, name='generer_certificat_pdf'),
-
     # path('certificat/pdf/<int:resultat_id>/', views.telecharger_certificat, name='telecharger_certificat'),
-    # path("certificat/pdf/<int:certificat_id>/", views.generer_certificat_pdf, name="generer_certificat_pdf"),
     # path('pdf/certificats/', views.pdf_certificats, name='pdf_certificats'),
     path('certificat/<int:id>/', views.passer_certificat, name='passer_certificat'),
     path('certificat/pdf/<int:resultat_id>/', views.telecharger_certificat, name='telecharger_certificat'),

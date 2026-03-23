@@ -477,8 +477,6 @@ def contact_view(request):
 
     return render(request, 'home.html')
 
-
-
 def programmes_view(request):
     home_data = HomeData.objects.first()  # récupère la première ligne de ton modèle HomeData
     programmes = Programme.objects.all()  # récupère tous les programmes
@@ -536,9 +534,6 @@ def certificats(request):
 #         "certificat": certificat,
 #         "questions": questions
 #     })
-
-
-# from .models import Certificat, Question, Choix, Resultat
 
 # def passer_certificat(request, id):
 #     certificat = get_object_or_404(Certificat, id=id)
@@ -650,15 +645,6 @@ def inscription_association(request, association_id):
         "association": association
     })
 
-# def formations(request):
-#     tertiaires = Formation.objects.filter(type_filiere='tertiaire')
-#     industrielles = Formation.objects.filter(type_filiere='industrielle')
-
-#     return render(request, 'formations.html', {
-#         'tertiaires': tertiaires,
-#         'industrielles': industrielles,
-#     })
-
 def formations(request):
 
     context = {
@@ -671,12 +657,6 @@ def formations(request):
     }
 
     return render(request, 'formations.html', context)
-
-
-
-
-
-
 
 @staff_member_required
 def admin_dashboard(request):
@@ -707,13 +687,7 @@ def evenements_view(request):
     evenements = Evenement_inst.objects.all().order_by('titre')  
     return render(request, 'evenements.html', {'evenements': evenements})
 
-# def e3m_school(request):
-#     return render(request, 'e3m_school.html')
 
-# def e3m_school(request):
-#     slides = Slide.objects.all()
-#     filieres = ['Génie Civil', 'Environnement Durable', 'IA & Big Data']
-#     return render(request, 'e3m_school.html', {'slides': slides, 'filieres': filieres})
 from .models import E3MSchool
 
 def e3m_school(request):
@@ -772,8 +746,6 @@ def licence(request):
     return render(request, 'licence.html', {'licences': licences})
 
 
-
-
 def masters1(request):
     master1_list = CycleIngenieur.objects.filter(type_cycle='master1')
     master2_list = CycleIngenieur.objects.filter(type_cycle='master2')
@@ -781,7 +753,6 @@ def masters1(request):
         'master1_list': master1_list,
         'master2_list': master2_list
     })
-
 
 
 def embs(request):
@@ -800,9 +771,6 @@ def cycle_ingenieur(request):
     }
     return render(request, 'licence.html', context)
 
-# from django.shortcuts import render, redirect
-# from .models import Preinscription  # ou un modèle Inscription si différent
-# from django.utils import timezone
 
 # def inscription_view(request):
 #     if request.method == "POST":
