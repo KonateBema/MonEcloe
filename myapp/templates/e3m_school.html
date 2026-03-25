@@ -14,8 +14,8 @@ Formations - {{ home_data.site_name }}
     /* HERO */
 
     .hero {
-        background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)),
-        url("{% static 'images/schoole.jpg' %}") center/cover no-repeat;
+        background: linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, .4)),
+        url("{% static 'images/ecole/fillegarc1.jpeg' %}") center/cover no-repeat;
 
         height: 70vh;
         display: flex;
@@ -23,6 +23,8 @@ Formations - {{ home_data.site_name }}
         justify-content: center;
         text-align: center;
         color: white;
+
+        image-rendering: crisp-edges;
     }
 
     .hero h1 {
@@ -502,9 +504,8 @@ Formations - {{ home_data.site_name }}
             <div class="col-md-6">
 
                 <div class="about-img">
-                    <img src="{% static 'images/schoole.jpg' %}">
+                    <img src="{% static 'images/ecole/ingerner.jpeg' %}">
                 </div>
-
             </div>
 
             <div class="col-md-6">
