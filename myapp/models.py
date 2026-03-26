@@ -464,4 +464,13 @@ class E3MSchool(models.Model):
     def __str__(self):
         return self.titre
     # Informations personnelles
-   
+
+
+class Galerie(models.Model):
+    titre = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='galerie/', blank=True, null=True)
+    video = models.FileField(upload_to='galerie/videos/', blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titre

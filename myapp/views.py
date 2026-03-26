@@ -45,7 +45,34 @@ from io import BytesIO
 # =================== HOME ===================
 
 def home(request):
-
+ # Liste de témoignages gérés dynamiquement
+    temoignages = [
+        {
+            'nom': 'Alice',
+            'photo': 'images/ecole/fille1.jpeg',
+            'commentaire': 'Super école, j’ai beaucoup appris'
+        },
+           {
+            'nom': 'Angelle',
+            'photo': 'images/ecole/fille11.jpeg',
+            'commentaire': ' formations structurées et motivantes'
+        },
+           {
+            'nom': 'Aminata',
+            'photo': 'images/ecole/fileVoilet.jpeg',
+            'commentaire': 'Une expérience très enrichissante.'
+        },
+        {
+            'nom': 'Bob',
+            'photo': 'images/ecole/rouge.jpeg',
+            'commentaire': 'Les profs sont incroyables '
+        },
+        {
+            'nom': 'Charlie',
+            'photo': 'images/ecole/ingerner.jpeg',
+            'commentaire': 'Excellente et formation de qualité'
+        },
+    ]
     if request.method == "POST":
         nom = request.POST.get("nom")
         prenom = request.POST.get("prenom")
@@ -83,6 +110,7 @@ def home(request):
         'slides': slides,
         'query': query,
         'ecoles': ecoles,
+        'temoignages': temoignages
            })
     
 # =================== COMMANDE ===================
@@ -1183,3 +1211,15 @@ def generer_recu_pdf(request, pk):
     doc.build(elements)
 
     return response
+
+
+from .models import Galerie
+
+def evenements_view(request):
+    evenements = Evenement.objects.all()
+    galeries = Galerie.objects.all()
+
+    return render(request, 'evenements.html', {
+        'evenements': evenements,
+        'galeries': galeries
+    })

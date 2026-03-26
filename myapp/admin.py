@@ -644,6 +644,30 @@ class E3MSchoolAdmin(admin.ModelAdmin):
     search_fields = ('titre',)
 
 
+from .models import Galerie  # ✅ IMPORT
+
+@admin.register(Galerie)
+class GalerieAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'media_preview', 'date')
+    search_fields = ('titre',)
+    list_filter = ('date',)
+    readonly_fields = ('media_preview',)
+
+    def media_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="80" style="border-radius:8px;" />',
+                obj.image.url
+            )
+        elif obj.video:
+            return format_html(
+                '<video width="100" height="70" controls>'
+                '<source src="{}" type="video/mp4"></video>',
+                obj.video.url
+            )
+        return "Aucun média"
+
+    media_preview.short_description = "Aperçu"
 
 
 # admin_site = MyAdminSite(name='admin')  # remplace l'admin standard
@@ -667,6 +691,7 @@ admin_site.register(Resultat)
 admin_site.register(Association, AssociationAdmin)
 admin_site.register(HomeSlide, HomeSlideAdmin)  # <-- nouveau modèle
 # Enregistrer Ecole sur l'admin personnalisé
+admin_site.register(Galerie, GalerieAdmin)
 admin_site.register(E3MSchool, E3MSchoolAdmin)
 admin_site.register(Ecole, EcoleAdmin)
 admin_site.register(Preinscription, PreinscriptionAdmin)

@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block content %}
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <style>
     /* ================= CAROUSEL ================= */
     #homeCarousel,
     #homeCarousel .carousel-item {
-        height: 350px;
+        height: 520px;
     }
 
     #homeCarousel .carousel-item img {
@@ -96,7 +96,7 @@
 </style>
 
 <!-- ================= CAROUSEL ================= -->
- {% if slides %}
+{% if slides %}
 <section class="container-fluid px-0 mb-4">
     <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -112,83 +112,171 @@
         </div>
     </div>
 </section>
-{% endif %} 
+{% endif %}
 
 <!-- ================= NOUVEAU BLOC A PROPOS ================= -->
 <section class="about-premium py-5">
     <div class="container">
         <div class="row align-items-center">
 
-            <!-- IMAGE -->
+            <!-- CÔTÉ IMAGE + Témoignages -->
             <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
-                <div class="about-img-box">
-                    <img src="{% static 'images/ecole/groupProf2.jpeg' %}">
-                    <div class="about-overlay">
-                        <h4>+10 ans d'excellence académique</h4>
+
+                <!-- Image principale avec overlay -->
+                <div class="about-img-box position-relative mb-4">
+                    <img src="{% static 'images/ecole/rouge.jpeg' %}" 
+                         class="img-fluid rounded shadow"
+                         style="width: 100%; height: auto; object-fit: cover;">
+                    <div class="about-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                         style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
+                        <h4 class="text-white text-center px-3" 
+                            style="font-size: 1.8rem; font-weight: bold; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); margin-top: 308px;">
+                            +10 ans d'excellence académique
+                        </h4>
                     </div>
                 </div>
+                <!-- <div class="about-img-box position-relative mb-4">
+                    <img src="{% static 'images/ecole/groupProf2.jpeg' %}" class="img-fluid rounded shadow">
+                    <div class="about-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                        style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
+                        <h4 class="text-white text-center px-3" style="margin-top: 308px;">+10 ans d'excellence académique</h4>
+                    </div>
+                </div> -->
+
+                <!-- Slider de témoignages -->
+                {% if temoignages %}
+                <div class="testimonial-section mt-5">
+                    <!-- Titre du slider -->
+                    <h3 class="text-center fw-bold mb-4">Témoignages de nos étudiants</h3>
+
+                    <div class="testimonial-slider-wrapper mt-3">
+                        <div class="swiper testimonial-swiper">
+                            <div class="swiper-wrapper">
+                                {% for temoignage in temoignages %}
+                                <div class="swiper-slide p-3">
+                                    <div class="testimonial-box text-center bg-white shadow-sm rounded p-3">
+                                        <img src="{% static temoignage.photo %}" alt="{{ temoignage.nom }}"
+                                            class="rounded-circle mb-2"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                        <p class="mb-1 fst-italic">“{{ temoignage.commentaire }}”</p>
+                                        <small class="fw-bold text-primary">{{ temoignage.nom }}</small>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+
+                            <!-- Pagination -->
+                            <div class="swiper-pagination mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
             </div>
 
-            <!-- TEXTE -->
+            <!-- CÔTÉ TEXTE -->
             <div class="col-md-6" data-aos="fade-left">
                 <h2 class="fw-bold display-6 mb-3 text-danger">
                     À propos du Groupe Expert Metier (GEM)
                 </h2>
-
                 <p class="text-muted">
-                    Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs
-                    compétents et innovants capables de répondre aux défis technologiques,
-                    environnementaux et industriels de demain.
+                    Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs compétents et innovants
+                    capables de répondre aux défis technologiques, environnementaux et industriels de demain.
                 </p>
 
                 <div class="mission-box my-4">
                     <h5 class="fw-bold">Notre Mission</h5>
                     <p>
-                        Former des leaders techniques dotés d’une expertise solide,
-                        d’un esprit critique et d’une forte capacité d’innovation.
+                        Former des leaders techniques dotés d’une expertise solide, d’un esprit critique et d’une forte
+                        capacité d’innovation.
                     </p>
                 </div>
 
                 <div class="row text-center mt-4">
-
                     <div class="col-4">
                         <h3 class="fw-bold text-primary">500+</h3>
                         <small>Étudiants</small>
                     </div>
-
                     <div class="col-4">
                         <h3 class="fw-bold text-primary">20+</h3>
                         <small>Événements / an</small>
                     </div>
-
                     <div class="col-4">
                         <h3 class="fw-bold text-primary">15+</h3>
                         <small>Partenaires</small>
                     </div>
-
                 </div>
 
-                <blockquote class="director-quote mt-4">
-                    “Notre ambition est de bâtir une génération d’ingénieurs
-                    capables d’impacter durablement le monde.”
+                <blockquote class="director-quote mt-4 fst-italic text-secondary">
+                    “Notre ambition est de bâtir une génération d’ingénieurs capables d’impacter durablement le monde.”
                     <br>
-                    <span>— Direction Générale</span>
+                    <span class="fw-bold text-primary">— Direction Générale</span>
                 </blockquote>
 
                 <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
                     Découvrir l’école
                 </a>
-
             </div>
 
         </div>
     </div>
 </section>
 
-
-
+<!-- SWIPER JS INIT -->
+<script>
+    var swiper = new Swiper('.testimonial-swiper', {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            576: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            992: { slidesPerView: 2 },
+        }
+    });
+</script>
 
 <style>
+    .about-img-box img {
+    filter: contrast(1.05) brightness(0.95);
+}
+    .testimonial-box {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .testimonial-box img {
+        border: 2px solid #dc3545;
+    }
+
+    .testimonial-slider-wrapper {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #dc3545;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #dc3545;
+    }
+
     /* WHY CHOOSE */
 
     .choose-card {
@@ -345,41 +433,221 @@
         color: #0d6efd;
     }
 </style>
-
+<script>
+    var swiper = new Swiper('.testimonial-swiper', {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            576: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            992: { slidesPerView: 2 },
+        }
+    });
+</script>
 <!-- N'oublie pas d'inclure Material Icons dans ton base.html -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!-- ================= A PROPOS ================= -->
 
 <!-- ================= ECOLES ================= -->
+
 <section class="container py-5 mb-5">
-    <div class="text-center mb-4">
-        <h2 class="fw-bold text-danger">Groupe Expert Metier (GEM)</h2>
-        <p class="text-muted mb-0">Découvrez nos établissements et formations</p>
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-danger">Groupe Expert Métier (GEM)</h2>
+        <p class="text-muted">Découvrez nos établissements et formations</p>
     </div>
 
     <div class="school-slider-wrapper position-relative">
-        <!-- Flèches de navigation -->
+
+        <!-- boutons -->
         <button class="slider-btn prev-btn">&#10094;</button>
         <button class="slider-btn next-btn">&#10095;</button>
 
-        <div class="school-slider">
+        <!-- slider -->
+        <div class="school-slider d-flex">
+
             {% for ecole in ecoles %}
-            <div class="school-card h-100 shadow-sm">
-                <img src="{{ ecole.image.url }}" class="school-img" alt="{{ ecole.nom }}">
-                <div class="card-body text-center">
-                    <h5 class="fw-bold mb-1">{{ ecole.nom }}</h5>
-                    <p class="text-muted mb-0">{{ ecole.description }}</p>
+            <div class="school-card">
+
+                {% if ecole.image %}
+                <div class="img-container">
+                    <img src="{{ ecole.image.url }}" alt="{{ ecole.nom }}">
                 </div>
-            </div>
-            {% empty %}
-            <div class="alert alert-warning text-center">
-                Aucune école disponible pour le moment.
+                {% endif %}
+
+                <div class="card-content text-center">
+                    <h5>{{ ecole.nom }}</h5>
+                    <p>{{ ecole.description|truncatechars:580 }}</p>
+                </div>
+
             </div>
             {% endfor %}
+
         </div>
+
+        <!-- DOTS -->
+        <div class="slider-dots text-center mt-3"></div>
+
     </div>
 </section>
+
+<style>
+    .school-slider {
+        gap: 20px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    /* CARTE */
+    .school-card {
+        min-width: 600px;
+        max-width: 600px;
+        min-height: 600px;
+        /* hauteur totale de la carte */
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.4s;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .school-card:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    /* IMAGE */
+    .img-container {
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+
+    .school-card:hover img {
+        transform: scale(1.1);
+    }
+
+    /* CONTENU */
+    .card-content {
+        padding: 20px;
+    }
+
+    .card-content h5 {
+        font-weight: 700;
+    }
+
+    .card-content p {
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* BOUTONS */
+    .slider-btn {
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        background: rgba(230, 57, 70, 0.9);
+        color: white;
+        border: none;
+        padding: 12px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .prev-btn {
+        left: -10px;
+    }
+
+    .next-btn {
+        right: -10px;
+    }
+
+    .slider-btn:hover {
+        background: #c1121f;
+    }
+
+    /* DOTS */
+    .slider-dots span {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 5px;
+        background: #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .slider-dots span.active {
+        background: #e63946;
+    }
+</style>
+<script>
+    const slider = document.querySelector('.school-slider');
+    const cards = document.querySelectorAll('.school-card');
+    const nextBtn = document.querySelector('.next-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    const dotsContainer = document.querySelector('.slider-dots');
+
+    let index = 0;
+    const cardWidth = 560;
+
+    // créer dots
+    cards.forEach((_, i) => {
+        const dot = document.createElement('span');
+        if (i === 0) dot.classList.add('active');
+
+        dot.addEventListener('click', () => {
+            index = i;
+            updateSlider();
+        });
+
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.slider-dots span');
+
+    function updateSlider() {
+        slider.scrollTo({
+            left: index * cardWidth,
+            behavior: 'smooth'
+        });
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+
+    // boutons
+    nextBtn.onclick = () => {
+        index = (index + 1) % cards.length;
+        updateSlider();
+    };
+
+    prevBtn.onclick = () => {
+        index = (index - 1 + cards.length) % cards.length;
+        updateSlider();
+    };
+
+    // auto slide
+    setInterval(() => {
+        index = (index + 1) % cards.length;
+        updateSlider();
+    }, 4000);
+</script>
 <!-- POURQUOI CHOISIR E3M -->
 
 <section class="container py-5">
@@ -453,7 +721,7 @@
                 <h5 class="fw-bold mt-3">Ouverture internationale</h5>
 
                 <p class="text-muted small">
-                    Partenariats académiques et stages à l’international.
+                    Partenariats académiques à l’international.
                 </p>
 
             </div>
@@ -484,6 +752,7 @@
     </div>
 
 </section>
+
 <style>
     /* ================= SLIDER HORIZONTAL ================= */
     .school-slider-wrapper {
@@ -607,9 +876,6 @@
         }, 5000);
     });
 </script>
-
-
-
 <!-- ================= FAQ + CONTACT ================= -->
 <section class="container py-4 mb-4">
     <div class="row g-3">
@@ -718,13 +984,11 @@
         <div class="col-md-7">
             <div class="card shadow p-3 border-0">
                 <h5 class="fw-bold mb-2">Besoin d'informations ? Contactez-nous</h5>
-
                 {% if messages %}
                 {% for message in messages %}
                 <div class="alert alert-success mb-2">{{ message }}</div>
                 {% endfor %}
                 {% endif %}
-
                 <form method="POST" action="{% url 'home' %}">
                     {% csrf_token %}
                     <input type="text" class="form-control mb-2" name="nom" placeholder="Nom" required>
@@ -745,7 +1009,37 @@
                 allowfullscreen loading="lazy"></iframe>
         </div>
     </div>
-
 </section>
+
+<!-- Swiper JS -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const swiper = new Swiper('.testimonial-swiper', {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {          // <-- Défilement automatique
+                delay: 5000,     // 5 secondes
+                disableOnInteraction: false
+            },
+            breakpoints: {
+                576: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                992: { slidesPerView: 3 },
+            }
+        });
+    });
+    </script>
 
 {% endblock %}

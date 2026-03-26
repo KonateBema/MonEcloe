@@ -58,9 +58,11 @@ Formations - {{ home_data.site_name }}
     /* STATS */
 
     .stats {
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        color: white;
-        padding: 60px 0;
+        background: linear-gradient(90deg, #4f4a66, #6610f2);
+        background-image: url("{% static 'images/ecole/ecole_image_amelioree.jpg' %}");
+        color: rgb(184, 7, 7);
+        /* padding: 60px 0; */
+        padding: 20px 0;
         text-align: center;
     }
 
@@ -180,7 +182,7 @@ Formations - {{ home_data.site_name }}
     <div class="container">
 
         <h1 class="display-5 mb-3" data-aos="fade-up">
-            Établissement privé d’enseignement supérieur agréé
+            École supérieure privée agréée
         </h1>
         <p class="lead" data-aos="fade-up" data-aos-delay="200">
             L’E3M School of Engineering propose des formations du
@@ -203,7 +205,8 @@ Formations - {{ home_data.site_name }}
         <div class="row">
 
             <div class="col-md-4 stat-box">
-                <div class="stat-number">{{ associations|length }}</div>
+                <!-- <div class="stat-number">{{ associations |length  }} || 15</div> -->
+                <div class="stat-number">{{ associations|length|default:15 }}</div>
                 <p>Partenariats</p>
             </div>
 

@@ -14,7 +14,8 @@ Vie Associative - {{ home_data.site_name }}
 
   .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("{% static 'images/club.jpg' %}") center/cover no-repeat;
+    /* url("{% static 'images/club.jpg' %}") center/cover no-repeat; */
+    url("{% static 'images/ecole/groupprof1.jpeg' %}") center/cover no-repeat;
     height: 75vh;
     display: flex;
     align-items: center;
@@ -22,6 +23,9 @@ Vie Associative - {{ home_data.site_name }}
     text-align: center;
     color: white;
     animation: heroZoom 20s ease-in-out infinite;
+    background-size: cover; /* conserve le cover pour remplir l'espace */
+    background-attachment: scroll; /* fixed peut créer un effet flou sur certains navigateurs */
+    image-rendering: auto; /* assure un rendu lissé */
   }
 
   @keyframes heroZoom {
