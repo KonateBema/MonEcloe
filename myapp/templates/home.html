@@ -519,12 +519,12 @@
     .school-card {
         min-width: 600px;
         max-width: 600px;
-        min-height: 600px;
+        min-height: 400px;
         /* hauteur totale de la carte */
         background: #fff;
         border-radius: 20px;
         overflow: hidden;
-        transition: 0.4s;
+        transition: 0.8s;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         position: relative;
     }
@@ -543,7 +543,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: 0.4s;
+        transition: 0.8s;
     }
 
     .school-card:hover img {
@@ -655,10 +655,9 @@
     setInterval(() => {
         index = (index + 1) % cards.length;
         updateSlider();
-    }, 4000);
+    }, 8000);
 </script>
 <!-- POURQUOI CHOISIR E3M -->
-
 <section class="container py-5">
 
     <div class="text-center mb-5">
@@ -882,8 +881,11 @@
             } else {
                 slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
             }
-        }, 5000);
+        }, 8000);
     });
+
+
+    
 </script>
 <!-- ================= FAQ + CONTACT ================= -->
 <section class="container py-4 mb-4">
