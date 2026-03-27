@@ -15,7 +15,9 @@
 
   /* HERO */
   .hero {
-    background: url("{% static 'images/ecole/rouge.jpeg' %}") center/cover no-repeat;
+    background: url("{% static 'images/ecole/bleuBlan.jpeg' %}") center/cover no-repeat;
+    /* background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+            url("{% static 'images/ecole/bleuBlan.jpeg' %}") center/cover no-repeat; */
     min-height: 400px;
     display: flex;
     align-items: center;
@@ -26,7 +28,8 @@
     border-radius: 15px;
     overflow: hidden;
     filter: contrast(1.05) saturate(1.1);
-    image-rendering: auto;
+    /* image-rendering: auto; */
+    image-rendering: crisp-edges; /* meilleur rendu */
   }
 
   .hero::before {

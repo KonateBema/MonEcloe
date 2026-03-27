@@ -93,6 +93,15 @@
     .infos-img:hover {
         transform: scale(1.03);
     }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        /* fond sombre */
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+    }
 </style>
 
 <!-- ================= CAROUSEL ================= -->
@@ -124,12 +133,11 @@
 
                 <!-- Image principale avec overlay -->
                 <div class="about-img-box position-relative mb-4">
-                    <img src="{% static 'images/ecole/rouge.jpeg' %}" 
-                         class="img-fluid rounded shadow"
-                         style="width: 100%; height: auto; object-fit: cover;">
+                    <img src="{% static 'images/ecole/rouge2.jpeg' %}" class="img-fluid rounded shadow"
+                        style="width: 100%; height: auto; object-fit: cover;">
                     <div class="about-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                         style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
-                        <h4 class="text-white text-center px-3" 
+                        style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
+                        <h4 class="text-white text-center px-3"
                             style="font-size: 1.8rem; font-weight: bold; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); margin-top: 308px;">
                             +10 ans d'excellence académique
                         </h4>
@@ -250,8 +258,9 @@
 
 <style>
     .about-img-box img {
-    filter: contrast(1.05) brightness(0.95);
-}
+        filter: contrast(1.05) brightness(0.95);
+    }
+
     .testimonial-box {
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         padding: 15px;
@@ -1040,6 +1049,6 @@
             }
         });
     });
-    </script>
+</script>
 
 {% endblock %}

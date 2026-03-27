@@ -23,14 +23,19 @@ Préinscription - {{ home_data.site_name }}
   }
 
   .hero {
-    background: url("{% static 'images/ecole/etudCrav.jpeg' %}") center center / cover no-repeat;
+    background: url("{% static 'images/ecole/classBlanc.jpeg' %}") center center / cover no-repeat;
     min-height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 60px 20px;
+    image-rendering: crisp-edges; /* meilleur rendu */
+
   }
+
+
+  
 
   .hero::before {
     content: "";

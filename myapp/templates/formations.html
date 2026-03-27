@@ -16,7 +16,9 @@
 
     .modern-hero {
         height: 70vh;
-        background-image: url("{% static 'images/ecole/ecole_image_amelioree.jpg' %}");
+        max-height: 600px;
+
+        background-image: url("{% static 'images/ecole/chaise.jpeg' %}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -28,22 +30,25 @@
         text-align: center;
         color: white;
         overflow: hidden;
-    }
-    .modern-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
 
-.modern-hero > * {
-    position: relative;
-    z-index: 2;
-}
+        transform: translateZ(0);
+    }
+
+    .modern-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    .modern-hero>* {
+        position: relative;
+        z-index: 2;
+    }
 
 
     .hero-content {
@@ -124,7 +129,7 @@
     /* ================= STATS ================= */
 
     .stats {
-        
+
         background: #111;
         color: white;
     }
@@ -234,21 +239,26 @@
 </section>
 
 <style>
-.glass-stats {
-    background: rgba(13, 29, 243, 0.144); /* noir semi-transparent */
-    backdrop-filter: blur(10px); /* flou derrière */
-    -webkit-backdrop-filter: blur(10px); /* pour Safari */
-    border-radius: 15px;
-    padding: 50px 0;
-    color: rgb(28, 12, 46);
-}
-.glass-stats h2 {
-    font-weight: 700;
-    font-size: 2.5rem;
-}
-.glass-stats p {
-    font-size: 1rem;
-}
+    .glass-stats {
+        background: rgba(13, 29, 243, 0.144);
+        /* noir semi-transparent */
+        backdrop-filter: blur(10px);
+        /* flou derrière */
+        -webkit-backdrop-filter: blur(10px);
+        /* pour Safari */
+        border-radius: 15px;
+        padding: 50px 0;
+        color: rgb(28, 12, 46);
+    }
+
+    .glass-stats h2 {
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+
+    .glass-stats p {
+        font-size: 1rem;
+    }
 </style>
 
 

@@ -54,7 +54,7 @@ def home(request):
         },
            {
             'nom': 'Angelle',
-            'photo': 'images/ecole/fille11.jpeg',
+            'photo': 'images/ecole/filleNoir.jpeg',
             'commentaire': ' formations structurées et motivantes'
         },
            {
