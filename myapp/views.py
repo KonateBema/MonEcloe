@@ -45,7 +45,34 @@ from io import BytesIO
 # =================== HOME ===================
 
 def home(request):
-
+ # Liste de témoignages gérés dynamiquement
+    temoignages = [
+        {
+            'nom': 'Alice',
+            'photo': 'images/ecole/fille1.jpeg',
+            'commentaire': 'Super école, j’ai beaucoup appris'
+        },
+           {
+            'nom': 'Angelle',
+            'photo': 'images/ecole/filleNoir.jpeg',
+            'commentaire': ' formations structurées et motivantes'
+        },
+           {
+            'nom': 'Aminata',
+            'photo': 'images/ecole/fileVoilet.jpeg',
+            'commentaire': 'Une expérience très enrichissante.'
+        },
+        {
+            'nom': 'Bob',
+            'photo': 'images/ecole/rouge.jpeg',
+            'commentaire': 'Les profs sont incroyables '
+        },
+        {
+            'nom': 'Charlie',
+            'photo': 'images/ecole/ingerner.jpeg',
+            'commentaire': 'Excellente et formation de qualité'
+        },
+    ]
     if request.method == "POST":
         nom = request.POST.get("nom")
         prenom = request.POST.get("prenom")
@@ -83,6 +110,7 @@ def home(request):
         'slides': slides,
         'query': query,
         'ecoles': ecoles,
+        'temoignages': temoignages
            })
     
 # =================== COMMANDE ===================
@@ -109,13 +137,6 @@ def commande(request, product_id):
         'product': product,
         'form': form
     })
-
-
-def commande_confirmation(request, commande_id):
-    commande = get_object_or_404(Commande, id=commande_id)
-    return render(request, 'commande_confirmation.html', {'commande': commande})
-
-
 # =================== GENERATION PDF ===================
 def generate_pdf(request, commande_id):
     commande = get_object_or_404(Commande, id=commande_id)
@@ -159,69 +180,86 @@ def generate_pdf(request, commande_id):
 
     return response
 
-
-# def dashboard_view(self, request):
-#     # 5 dernières commandes
-#     if request.user.has_perm('myapp.view_commande'):
-#         commandes = Commande.objects.order_by('-created_at')[:5]
-#     else:
-#         commandes = []
-       
-#     # Stats mensuelles
-#     monthly_orders = (
-#         Commande.objects
-#         .annotate(month=TruncMonth("created_at"))
-#         .values("month")
-#         .annotate(
-#             total=Count("id"),
-#             delivered_count=Count("id", filter=Q(is_delivered=True)),
-#             pending_count=Count("id", filter=Q(is_delivered=False)),
-#         )
-#         .order_by("month")
-#     )
-# # Statistiques globales
-#     orders_pending_count = Commande.objects.filter(is_delivered=False).count()
-#     orders_delivered_count = Commande.objects.filter(is_delivered=True).count()
-#     context = dict(
-#         self.each_context(request),
-#         products_count=Product.objects.count(),
-#         orders_pending=Commande.objects.filter(is_delivered=False).count(),
-#         orders_delivered=Commande.objects.filter(is_delivered=True).count(),
-#         commande=last_commands,
-#         monthly_orders=monthly_orders,
-#     )
-
-#     return TemplateResponse(request, "admin/dashboard.html", context)
 from django.shortcuts import render
 from django.db.models import Count
 from myapp.models import Preinscription
 from django.db.models.functions import TruncMonth
 
+# def dashboard_view(request):
+#     """
+#     Vue pour le tableau de bord des étudiants
+#     """
+
+#     # 🔹 Statistiques globales
+#     total_etudiants = Preinscription.objects.count()
+#     total_formations = Preinscription.objects.values('formation').distinct().count()
+#     total_evenements = 5  # à remplacer par le vrai calcul
+#     total_certificats = 3  # à remplacer par le vrai calcul
+
+#     # 🔹 5 derniers étudiants inscrits
+#     derniers_etudiants = Preinscription.objects.order_by('-date_inscription')[:5]
+
+#     # 🔹 Nombre d'étudiants par formation
+#     etudiants_par_formation = (
+#         Preinscription.objects
+#         .values('formation')
+#         .annotate(total=Count('id'))
+#         .order_by('formation')
+#     )
+#     # convertir en dictionnaire pour le template
+#     etudiants_par_formation_dict = {item['formation']: item['total'] for item in etudiants_par_formation}
+
+#     # 🔹 Données pour le graphique mensuel (exemple : inscriptions par mois)
+#     monthly_inscriptions = (
+#         Preinscription.objects
+#         .annotate(month=TruncMonth('date_inscription'))
+#         .values('month')
+#         .annotate(total=Count('id'))
+#         .order_by('month')
+#     )
+
+#     mois = [entry['month'].strftime("%b %Y") for entry in monthly_inscriptions]
+#     totals = [entry['total'] for entry in monthly_inscriptions]
+
+#     # 🔹 Contexte pour le template
+#     context = {
+#         'total_etudiants': total_etudiants,
+#         'total_formations': total_formations,
+#         'total_evenements': total_evenements,
+#         'total_certificats': total_certificats,
+#         'derniers_etudiants': derniers_etudiants,
+#         'etudiants_par_formation': etudiants_par_formation_dict,
+#         'mois': mois,
+#         'totals': totals,
+#     }
+
+#     return render(request, 'admin/dashboard.html', context)
+
+
 def dashboard_view(request):
     """
-    Vue pour le tableau de bord des étudiants
+    Vue pour le tableau de bord admin.
     """
-
-    # 🔹 Statistiques globales
+    
+    # --- Statistiques globales ---
     total_etudiants = Preinscription.objects.count()
     total_formations = Preinscription.objects.values('formation').distinct().count()
-    total_evenements = 5  # à remplacer par le vrai calcul
-    total_certificats = 3  # à remplacer par le vrai calcul
+    total_evenements = 5      # Remplacer par ton modèle réel si disponible
+    total_certificats = 3      # Remplacer par ton modèle réel si disponible
 
-    # 🔹 5 derniers étudiants inscrits
+    # --- Derniers étudiants inscrits ---
     derniers_etudiants = Preinscription.objects.order_by('-date_inscription')[:5]
 
-    # 🔹 Nombre d'étudiants par formation
+    # --- Étudiants par formation ---
     etudiants_par_formation = (
         Preinscription.objects
         .values('formation')
         .annotate(total=Count('id'))
         .order_by('formation')
     )
-    # convertir en dictionnaire pour le template
     etudiants_par_formation_dict = {item['formation']: item['total'] for item in etudiants_par_formation}
 
-    # 🔹 Données pour le graphique mensuel (exemple : inscriptions par mois)
+    # --- Inscriptions par mois pour Chart.js ---
     monthly_inscriptions = (
         Preinscription.objects
         .annotate(month=TruncMonth('date_inscription'))
@@ -229,11 +267,9 @@ def dashboard_view(request):
         .annotate(total=Count('id'))
         .order_by('month')
     )
-
     mois = [entry['month'].strftime("%b %Y") for entry in monthly_inscriptions]
     totals = [entry['total'] for entry in monthly_inscriptions]
 
-    # 🔹 Contexte pour le template
     context = {
         'total_etudiants': total_etudiants,
         'total_formations': total_formations,
@@ -243,9 +279,16 @@ def dashboard_view(request):
         'etudiants_par_formation': etudiants_par_formation_dict,
         'mois': mois,
         'totals': totals,
+        'formations_labels': list(etudiants_par_formation_dict.keys()),
+        'formations_totals': list(etudiants_par_formation_dict.values()),
     }
 
     return render(request, 'admin/dashboard.html', context)
+
+
+
+
+
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
   
@@ -1183,3 +1226,15 @@ def generer_recu_pdf(request, pk):
     doc.build(elements)
 
     return response
+
+
+from .models import Galerie
+
+def evenements_view(request):
+    evenements = Evenement.objects.all()
+    galeries = Galerie.objects.all()
+
+    return render(request, 'evenements.html', {
+        'evenements': evenements,
+        'galeries': galeries
+    })

@@ -11,17 +11,24 @@ Vie Associative - {{ home_data.site_name }}
 
 <style>
   /* ================= HERO ================= */
-
   .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("{% static 'images/club.jpg' %}") center/cover no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("{% static 'images/ecole/groupprof111.jpeg' %}") center/cover no-repeat;
+
     height: 75vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    animation: heroZoom 20s ease-in-out infinite;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    animation: none;
+    /* important */
+    /* animation: heroZoom 20s ease-in-out infinite; */
   }
 
   @keyframes heroZoom {
@@ -268,9 +275,8 @@ Vie Associative - {{ home_data.site_name }}
   <h2 class="fw-bold" style="color: #0d6efd;">
     Envie de rejoindre une association ?
   </h2>
-  <a href="{% url 'preinscription' %}" 
-     class="btn btn-lg rounded-pill mt-3 px-4" 
-     style="background-color: #0d6efd; color: #f0f0f0; border: none;">
+  <a href="{% url 'preinscription' %}" class="btn btn-lg rounded-pill mt-3 px-4"
+    style="background-color: #0d6efd; color: #f0f0f0; border: none;">
     S'inscrire maintenant
   </a>
 </section>
@@ -301,7 +307,7 @@ Vie Associative - {{ home_data.site_name }}
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-  animateValue("countAssociations", 0, {{ associations| length }}, 1000);
+    animateValue("countAssociations", 0, {{ associations| length }}, 1000);
   animateValue("countStudents", 0, 500, 1200);
   animateValue("countEvents", 0, 20, 1000);
 });

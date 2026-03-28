@@ -25,7 +25,7 @@ from django.urls import path
 from myapp import views
 from django.conf import settings
 from django.conf.urls.static import static
-from myapp.views import home , commande, commande_confirmation, generate_pdf
+from myapp.views import home , commande, generate_pdf
 from myapp.admin import admin_site  # <- IMPORTANT, on importe l'admin personnalisé
 from myapp.views import preinscription_view, inscription_succes
 from myapp.views import contact_view
@@ -41,7 +41,7 @@ urlpatterns = [
     # Pages du site
     path('', views.home, name='home'),
     path('commande/<int:product_id>/', views.commande, name='commande'),
-    path('commande-confirmation/<int:commande_id>/', views.commande_confirmation, name='commande_confirmation'),
+    # path('commande-confirmation/<int:commande_id>/', views.commande_confirmation, name='commande_confirmation'),
     path('commande-confirmation-pdf/<int:commande_id>/', views.generate_pdf, name='generate_pdf'),
     path('produit/<int:id>/', views.product_detail, name='product_detail'),
     path('evenementse/', evenements_view, name='evenements'),

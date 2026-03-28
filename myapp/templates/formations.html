@@ -16,7 +16,9 @@
 
     .modern-hero {
         height: 70vh;
-        background-image: url("{% static 'images/ecole/ecole_image_amelioree.jpg' %}");
+        max-height: 600px;
+
+        background-image: url("{% static 'images/ecole/chaise.jpeg' %}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -28,22 +30,26 @@
         text-align: center;
         color: white;
         overflow: hidden;
-    }
-    .modern-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
 
-.modern-hero > * {
-    position: relative;
-    z-index: 2;
-}
+        transform: translateZ(0);
+    }
+
+    .modern-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    .modern-hero>* {
+        position: relative;
+        z-index: 2;
+    }
+
 
     .hero-content {
         position: relative;
@@ -123,6 +129,7 @@
     /* ================= STATS ================= */
 
     .stats {
+
         background: #111;
         color: white;
     }
@@ -154,31 +161,23 @@
 <!-- ================= HERO ================= -->
 
 <header class="modern-hero">
-
     <div class="hero-content" data-aos="zoom-in">
-
         <h1 class="fw-bold display-5 mb-3">
             Étudiez dans l'excellence
         </h1>
-
         <p class="lead mb-3">Cours disponibles :</p>
-
         <div class="hero-tags mb-4">
             <span>🎓 Présentiel</span>
             <span>💻 Distanciel</span>
             <span>🔁 Hybride</span>
         </div>
-
         <a href="#formations" class="btn btn-primary btn-lg rounded-pill px-4 me-2">
             Voir les formations
         </a>
-
         <a href="{% url 'preinscription' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
             Préinscription
         </a>
-
     </div>
-
 </header>
 
 
@@ -189,7 +188,8 @@
     <div class="row align-items-center g-4">
 
         <div class="col-lg-6" data-aos="fade-right">
-            <img src="{% static 'images/gem.jpeg' %}" class="img-fluid rounded shadow">
+            <!-- <img src="{% static 'images/gem.jpeg' %}" class="img-fluid rounded shadow"> -->
+            <img src="{% static 'images/ecole/fille11.jpeg' %}" class="img-fluid rounded shadow">
         </div>
 
         <div class="col-lg-6" data-aos="fade-left">
@@ -197,17 +197,13 @@
             <h2 class="section-title">
                 🏫 Historique de l’E3M School
             </h2>
-
             <p class="text-muted fs-5">
-
                 L’E3M School of Engineering est un établissement d’enseignement supérieur privé
                 de référence en Côte d’Ivoire. Depuis sa création, l'école forme des ingénieurs
                 et professionnels dans les domaines du Génie Civil, de l’Environnement Durable
                 et de l’Intelligence Artificielle.
-
                 Sa mission est d’allier excellence académique et innovation pour préparer
                 les étudiants aux défis technologiques et environnementaux du XXIe siècle.
-
             </p>
 
         </div>
@@ -219,37 +215,58 @@
 
 <!-- ================= STATS ================= -->
 
-<section class="stats py-5 text-center">
-
+<section class="stats py-5 text-center glass-stats">
     <div class="container">
-
         <div class="row">
-
             <div class="col-md-3">
                 <h2>500+</h2>
                 <p>Étudiants formés</p>
             </div>
-
             <div class="col-md-3">
                 <h2>20+</h2>
                 <p>Formations</p>
             </div>
-
             <div class="col-md-3">
                 <h2>10+</h2>
                 <p>Années d'expérience</p>
             </div>
-
             <div class="col-md-3">
                 <h2>95%</h2>
                 <p>Taux d'insertion</p>
             </div>
-
         </div>
-
     </div>
-
 </section>
+
+<style>
+    .glass-stats {
+        /* background: rgba(13, 29, 243, 0.144); */
+        background: url("{% static 'images/ecole/filleBleu.jpeg' %}") center center / cover no-repeat;
+        padding: 80px 0;
+        /* color: rgb(248, 240, 240); */
+        color: #e0f2fe;
+        overflow: hidden;
+        /* noir semi-transparent */
+        backdrop-filter: blur(10px);
+        /* flou derrière */
+        -webkit-backdrop-filter: blur(10px);
+        /* pour Safari */
+        border-radius: 15px;
+        padding: 50px 0;
+        /* color: rgb(28, 12, 46); */
+    }
+
+    .glass-stats h2 {
+        font-weight: 700;
+        font-size: 2.5rem;
+        color: #ffd700;
+    }
+
+    .glass-stats p {
+        font-size: 1rem;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+    }
+</style>
 
 
 <!-- ================= BTS ================= -->
