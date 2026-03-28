@@ -6,172 +6,178 @@
 {% block content %}
 
 <!-- Swiper -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 <!-- AOS -->
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <style>
+    /* ================= HERO ================= */
 
-/* ================= HERO ================= */
+    .modern-hero {
+        height: 70vh;
+        background-image: url("{% static 'images/ecole/ecole_image_amelioree.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
 
-.modern-hero{
-height:70vh;
-background:url("{% static 'images/e3mscool.jpg' %}") center/cover no-repeat fixed;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-color:white;
-overflow:hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        overflow: hidden;
+    }
+    .modern-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }
 
-.modern-hero::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(120deg,rgba(0,0,0,0.7),rgba(0,0,0,0.4));
-z-index:1;
+.modern-hero > * {
+    position: relative;
+    z-index: 2;
 }
 
-.hero-content{
-position:relative;
-z-index:2;
-backdrop-filter:blur(10px);
-background:rgba(255,255,255,0.08);
-padding:40px;
-border-radius:15px;
-}
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.08);
+        padding: 40px;
+        border-radius: 15px;
+    }
 
-.hero-tags span{
-background:rgba(255,255,255,0.2);
-padding:8px 16px;
-border-radius:20px;
-margin:4px;
-display:inline-block;
-font-size:14px;
-}
+    .hero-tags span {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 20px;
+        margin: 4px;
+        display: inline-block;
+        font-size: 14px;
+    }
 
-/* ================= SECTIONS ================= */
+    /* ================= SECTIONS ================= */
 
-.section-title{
-font-weight:700;
-font-size:32px;
-margin-bottom:30px;
-background:linear-gradient(90deg,#0d6efd,#6610f2);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
+    .section-title {
+        font-weight: 700;
+        font-size: 32px;
+        margin-bottom: 30px;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
-/* ================= CARDS ================= */
+    /* ================= CARDS ================= */
 
-.formation-card{
-border:none;
-border-radius:18px;
-overflow:hidden;
-transition:all .35s ease;
-position:relative;
-}
+    .formation-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: all .35s ease;
+        position: relative;
+    }
 
-.formation-card img{
-height:200px;
-object-fit:cover;
-}
+    .formation-card img {
+        height: 200px;
+        object-fit: cover;
+    }
 
-.formation-card:hover{
-transform:translateY(-10px) scale(1.02);
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
-}
+    .formation-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
 
-.badge-level{
-position:absolute;
-top:15px;
-left:15px;
-background:#0d6efd;
-color:white;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-}
+    .badge-level {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #0d6efd;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
 
-/* ================= PROGRAM BLOCK ================= */
+    /* ================= PROGRAM BLOCK ================= */
 
-.program-block{
-border:1px solid #ddd;
-border-radius:15px;
-padding:20px;
-transition:0.3s;
-background:white;
-}
+    .program-block {
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        padding: 20px;
+        transition: 0.3s;
+        background: white;
+    }
 
-.program-block:hover{
-transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
+    .program-block:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
 
-/* ================= STATS ================= */
+    /* ================= STATS ================= */
 
-.stats{
-background:#111;
-color:white;
-}
+    .stats {
+        background: #111;
+        color: white;
+    }
 
-.stats h2{
-font-size:36px;
-font-weight:bold;
-}
+    .stats h2 {
+        font-size: 36px;
+        font-weight: bold;
+    }
 
-/* ================= MOBILE ================= */
+    /* ================= MOBILE ================= */
 
-@media(max-width:768px){
+    @media(max-width:768px) {
 
-.hero-content{
-padding:25px;
-}
+        .hero-content {
+            padding: 25px;
+        }
 
-.hero-content h1{
-font-size:28px;
-}
+        .hero-content h1 {
+            font-size: 28px;
+        }
 
-.section-title{
-font-size:24px;
-}
+        .section-title {
+            font-size: 24px;
+        }
 
-}
-
+    }
 </style>
 
 <!-- ================= HERO ================= -->
 
 <header class="modern-hero">
 
-<div class="hero-content" data-aos="zoom-in">
+    <div class="hero-content" data-aos="zoom-in">
 
-<h1 class="fw-bold display-5 mb-3">
-Étudiez dans l'excellence
-</h1>
+        <h1 class="fw-bold display-5 mb-3">
+            Étudiez dans l'excellence
+        </h1>
 
-<p class="lead mb-3">Cours disponibles :</p>
+        <p class="lead mb-3">Cours disponibles :</p>
 
-<div class="hero-tags mb-4">
-<span>🎓 Présentiel</span>
-<span>💻 Distanciel</span>
-<span>🔁 Hybride</span>
-</div>
+        <div class="hero-tags mb-4">
+            <span>🎓 Présentiel</span>
+            <span>💻 Distanciel</span>
+            <span>🔁 Hybride</span>
+        </div>
 
-<a href="#formations" class="btn btn-primary btn-lg rounded-pill px-4 me-2">
-Voir les formations
-</a>
+        <a href="#formations" class="btn btn-primary btn-lg rounded-pill px-4 me-2">
+            Voir les formations
+        </a>
 
-<a href="{% url 'preinscription' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
-Préinscription
-</a>
+        <a href="{% url 'preinscription' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+            Préinscription
+        </a>
 
-</div>
+    </div>
 
 </header>
 
@@ -180,33 +186,33 @@ Préinscription
 
 <section class="container py-5">
 
-<div class="row align-items-center g-4">
+    <div class="row align-items-center g-4">
 
-<div class="col-lg-6" data-aos="fade-right">
-<img src="{% static 'images/gem.jpeg' %}" class="img-fluid rounded shadow">
-</div>
+        <div class="col-lg-6" data-aos="fade-right">
+            <img src="{% static 'images/gem.jpeg' %}" class="img-fluid rounded shadow">
+        </div>
 
-<div class="col-lg-6" data-aos="fade-left">
+        <div class="col-lg-6" data-aos="fade-left">
 
-<h2 class="section-title">
-🏫 Historique de l’E3M School
-</h2>
+            <h2 class="section-title">
+                🏫 Historique de l’E3M School
+            </h2>
 
-<p class="text-muted fs-5">
+            <p class="text-muted fs-5">
 
-L’E3M School of Engineering est un établissement d’enseignement supérieur privé
-de référence en Côte d’Ivoire. Depuis sa création, l'école forme des ingénieurs
-et professionnels dans les domaines du Génie Civil, de l’Environnement Durable
-et de l’Intelligence Artificielle.
+                L’E3M School of Engineering est un établissement d’enseignement supérieur privé
+                de référence en Côte d’Ivoire. Depuis sa création, l'école forme des ingénieurs
+                et professionnels dans les domaines du Génie Civil, de l’Environnement Durable
+                et de l’Intelligence Artificielle.
 
-Sa mission est d’allier excellence académique et innovation pour préparer
-les étudiants aux défis technologiques et environnementaux du XXIe siècle.
+                Sa mission est d’allier excellence académique et innovation pour préparer
+                les étudiants aux défis technologiques et environnementaux du XXIe siècle.
 
-</p>
+            </p>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </section>
 
@@ -215,33 +221,33 @@ les étudiants aux défis technologiques et environnementaux du XXIe siècle.
 
 <section class="stats py-5 text-center">
 
-<div class="container">
+    <div class="container">
 
-<div class="row">
+        <div class="row">
 
-<div class="col-md-3">
-<h2>500+</h2>
-<p>Étudiants formés</p>
-</div>
+            <div class="col-md-3">
+                <h2>500+</h2>
+                <p>Étudiants formés</p>
+            </div>
 
-<div class="col-md-3">
-<h2>20+</h2>
-<p>Formations</p>
-</div>
+            <div class="col-md-3">
+                <h2>20+</h2>
+                <p>Formations</p>
+            </div>
 
-<div class="col-md-3">
-<h2>10+</h2>
-<p>Années d'expérience</p>
-</div>
+            <div class="col-md-3">
+                <h2>10+</h2>
+                <p>Années d'expérience</p>
+            </div>
 
-<div class="col-md-3">
-<h2>95%</h2>
-<p>Taux d'insertion</p>
-</div>
+            <div class="col-md-3">
+                <h2>95%</h2>
+                <p>Taux d'insertion</p>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </section>
 
@@ -250,58 +256,58 @@ les étudiants aux défis technologiques et environnementaux du XXIe siècle.
 
 <section class="container py-5" id="formations">
 
-<div class="text-center">
-<h2 class="section-title">🎓 BTS (BAC+2)</h2>
-</div>
+    <div class="text-center">
+        <h2 class="section-title">🎓 BTS (BAC+2)</h2>
+    </div>
 
-<div class="swiper btsSwiper">
+    <div class="swiper btsSwiper">
 
-<div class="swiper-wrapper">
+        <div class="swiper-wrapper">
 
-{% for formation in bts %}
+            {% for formation in bts %}
 
-<div class="swiper-slide">
+            <div class="swiper-slide">
 
-<div class="card formation-card shadow-sm">
+                <div class="card formation-card shadow-sm">
 
-<div class="badge-level">BTS</div>
+                    <div class="badge-level">BTS</div>
 
-{% if formation.image %}
-<img src="{{ formation.image.url }}">
-{% else %}
-<img src="{% static 'images/formation.jpg' %}">
-{% endif %}
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
 
-<div class="card-body text-center d-flex flex-column">
+                    <div class="card-body text-center d-flex flex-column">
 
-<h5 class="fw-bold text-primary">
-{{ formation.titre }}
-</h5>
+                        <h5 class="fw-bold text-primary">
+                            {{ formation.titre }}
+                        </h5>
 
-<p class="text-muted small">
-{{ formation.description|truncatechars:120 }}
-</p>
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:120 }}
+                        </p>
 
-<a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-class="btn btn-outline-primary rounded-pill mt-auto">
+                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                            class="btn btn-outline-primary rounded-pill mt-auto">
 
-S'inscrire
+                            S'inscrire
 
-</a>
+                        </a>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-{% endfor %}
+            {% endfor %}
 
-</div>
+        </div>
 
-<div class="swiper-pagination"></div>
+        <div class="swiper-pagination"></div>
 
-</div>
+    </div>
 
 </section>
 
@@ -310,58 +316,58 @@ S'inscrire
 
 <section class="container py-5 bg-light rounded">
 
-<div class="text-center">
-<h2 class="section-title">📘 Licence (BAC+3)</h2>
-</div>
+    <div class="text-center">
+        <h2 class="section-title">📘 Licence (BAC+3)</h2>
+    </div>
 
-<div class="swiper licenceSwiper">
+    <div class="swiper licenceSwiper">
 
-<div class="swiper-wrapper">
+        <div class="swiper-wrapper">
 
-{% for formation in licence %}
+            {% for formation in licence %}
 
-<div class="swiper-slide">
+            <div class="swiper-slide">
 
-<div class="card formation-card shadow-sm">
+                <div class="card formation-card shadow-sm">
 
-<div class="badge-level">Licence</div>
+                    <div class="badge-level">Licence</div>
 
-{% if formation.image %}
-<img src="{{ formation.image.url }}">
-{% else %}
-<img src="{% static 'images/formation.jpg' %}">
-{% endif %}
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
 
-<div class="card-body text-center d-flex flex-column">
+                    <div class="card-body text-center d-flex flex-column">
 
-<h5 class="fw-bold text-success">
-{{ formation.titre }}
-</h5>
+                        <h5 class="fw-bold text-success">
+                            {{ formation.titre }}
+                        </h5>
 
-<p class="text-muted small">
-{{ formation.description|truncatechars:120 }}
-</p>
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:120 }}
+                        </p>
 
-<a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-class="btn btn-outline-success rounded-pill mt-auto">
+                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                            class="btn btn-outline-success rounded-pill mt-auto">
 
-S'inscrire
+                            S'inscrire
 
-</a>
+                        </a>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-{% endfor %}
+            {% endfor %}
 
-</div>
+        </div>
 
-<div class="swiper-pagination"></div>
+        <div class="swiper-pagination"></div>
 
-</div>
+    </div>
 
 </section>
 
@@ -370,58 +376,58 @@ S'inscrire
 
 <section class="container py-5">
 
-<div class="text-center">
-<h2 class="section-title">🎓 Master (BAC+5)</h2>
-</div>
+    <div class="text-center">
+        <h2 class="section-title">🎓 Master (BAC+5)</h2>
+    </div>
 
-<div class="swiper masterSwiper">
+    <div class="swiper masterSwiper">
 
-<div class="swiper-wrapper">
+        <div class="swiper-wrapper">
 
-{% for formation in master %}
+            {% for formation in master %}
 
-<div class="swiper-slide">
+            <div class="swiper-slide">
 
-<div class="card formation-card shadow-sm">
+                <div class="card formation-card shadow-sm">
 
-<div class="badge-level">Master</div>
+                    <div class="badge-level">Master</div>
 
-{% if formation.image %}
-<img src="{{ formation.image.url }}">
-{% else %}
-<img src="{% static 'images/formation.jpg' %}">
-{% endif %}
+                    {% if formation.image %}
+                    <img src="{{ formation.image.url }}">
+                    {% else %}
+                    <img src="{% static 'images/formation.jpg' %}">
+                    {% endif %}
 
-<div class="card-body text-center d-flex flex-column">
+                    <div class="card-body text-center d-flex flex-column">
 
-<h5 class="fw-bold text-danger">
-{{ formation.titre }}
-</h5>
+                        <h5 class="fw-bold text-danger">
+                            {{ formation.titre }}
+                        </h5>
 
-<p class="text-muted small">
-{{ formation.description|truncatechars:120 }}
-</p>
+                        <p class="text-muted small">
+                            {{ formation.description|truncatechars:120 }}
+                        </p>
 
-<a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-class="btn btn-outline-danger rounded-pill mt-auto">
+                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                            class="btn btn-outline-danger rounded-pill mt-auto">
 
-S'inscrire
+                            S'inscrire
 
-</a>
+                        </a>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-{% endfor %}
+            {% endfor %}
 
-</div>
+        </div>
 
-<div class="swiper-pagination"></div>
+        <div class="swiper-pagination"></div>
 
-</div>
+    </div>
 
 </section>
 
@@ -430,46 +436,46 @@ S'inscrire
 
 <section class="container py-5 bg-light rounded">
 
-<div class="text-center">
-<h2 class="section-title">📚 Année Préparatoire</h2>
-</div>
+    <div class="text-center">
+        <h2 class="section-title">📚 Année Préparatoire</h2>
+    </div>
 
-<div class="swiper preparatoireSwiper">
+    <div class="swiper preparatoireSwiper">
 
-<div class="swiper-wrapper">
+        <div class="swiper-wrapper">
 
-{% for formation in preparatoire %}
+            {% for formation in preparatoire %}
 
-<div class="swiper-slide">
+            <div class="swiper-slide">
 
-<div class="program-block text-center">
+                <div class="program-block text-center">
 
-<h5 class="fw-bold">
-{{ formation.titre }}
-</h5>
+                    <h5 class="fw-bold">
+                        {{ formation.titre }}
+                    </h5>
 
-<p class="text-muted small">
-Année de préparation académique
-</p>
+                    <p class="text-muted small">
+                        Année de préparation académique
+                    </p>
 
-<a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-class="btn btn-outline-dark rounded-pill btn-sm mt-3">
+                    <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                        class="btn btn-outline-dark rounded-pill btn-sm mt-3">
 
-S'inscrire
+                        S'inscrire
 
-</a>
+                    </a>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-{% endfor %}
+            {% endfor %}
 
-</div>
+        </div>
 
-<div class="swiper-pagination"></div>
+        <div class="swiper-pagination"></div>
 
-</div>
+    </div>
 
 </section>
 
@@ -481,42 +487,42 @@ S'inscrire
 
 <script>
 
-AOS.init({duration:1200});
+    AOS.init({ duration: 1200 });
 
-function initSwiper(className,delay){
+    function initSwiper(className, delay) {
 
-return new Swiper(className,{
+        return new Swiper(className, {
 
-slidesPerView:3,
-spaceBetween:20,
-loop:true,
+            slidesPerView: 3,
+            spaceBetween: 20,
+            loop: true,
 
-autoplay:{
-delay:delay,
-disableOnInteraction:false
-},
+            autoplay: {
+                delay: delay,
+                disableOnInteraction: false
+            },
 
-pagination:{
-el:className+" .swiper-pagination",
-clickable:true
-},
+            pagination: {
+                el: className + " .swiper-pagination",
+                clickable: true
+            },
 
-breakpoints:{
+            breakpoints: {
 
-320:{slidesPerView:1},
-768:{slidesPerView:2},
-1024:{slidesPerView:3}
+                320: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
 
-}
+            }
 
-})
+        })
 
-}
+    }
 
-initSwiper(".btsSwiper",3000)
-initSwiper(".licenceSwiper",3500)
-initSwiper(".masterSwiper",4000)
-initSwiper(".preparatoireSwiper",3000)
+    initSwiper(".btsSwiper", 3000)
+    initSwiper(".licenceSwiper", 3500)
+    initSwiper(".masterSwiper", 4000)
+    initSwiper(".preparatoireSwiper", 3000)
 
 </script>
 

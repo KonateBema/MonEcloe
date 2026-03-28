@@ -15,7 +15,7 @@
 
   /* HERO */
   .hero {
-    background: url("{% static 'images/inscription.jpg' %}") center/cover no-repeat;
+    background: url("{% static 'images/ecole/rouge.jpeg' %}") center/cover no-repeat;
     min-height: 400px;
     display: flex;
     align-items: center;
@@ -25,6 +25,8 @@
     position: relative;
     border-radius: 15px;
     overflow: hidden;
+    filter: contrast(1.05) saturate(1.1);
+    image-rendering: auto;
   }
 
   .hero::before {
