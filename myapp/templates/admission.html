@@ -7,195 +7,507 @@ Admission - {{ home_data.site_name }}
 
 {% block content %}
 
+<style>
+    .gem-section {
+        padding: 5rem 0;
+    }
+
+    .gem-title {
+        font-weight: 800;
+        letter-spacing: -.02em;
+        font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+        line-height: 1.15;
+    }
+
+    .gem-lead {
+        color: var(--gem-muted);
+        font-size: 1.05rem;
+    }
+
+    .gem-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .85rem 1.8rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 8px 20px rgba(193, 18, 31, .35);
+        transition: transform .25s ease, box-shadow .25s ease;
+        text-decoration: none;
+    }
+
+    .gem-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(193, 18, 31, .42);
+    }
+
+    /* ================= HERO ================= */
+    .adm-hero {
+        position: relative;
+        min-height: 56vh;
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background:
+            linear-gradient(100deg, rgba(10, 12, 20, .88) 0%, rgba(10, 12, 20, .6) 55%, rgba(10, 12, 20, .3) 100%),
+            url("{% static 'images/ecole/groupG.jpeg' %}") center/cover no-repeat;
+    }
+
+    .adm-hero h1 {
+        font-size: clamp(2rem, 4.6vw, 3.3rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1.1;
+    }
+
+    .adm-hero p {
+        max-width: 620px;
+        font-size: 1.1rem;
+        opacity: .92;
+    }
+
+    .adm-hero .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem 1rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        margin-bottom: 1.2rem;
+    }
+
+    /* ================= SOMMAIRE ================= */
+    .adm-quicknav {
+        margin-top: -2.2rem;
+        position: relative;
+        z-index: 5;
+    }
+
+    .adm-quicknav .bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: .4rem;
+        background: #fff;
+        border-radius: 999px;
+        padding: .5rem;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+    }
+
+    .adm-quicknav a {
+        padding: .65rem 1.4rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .92rem;
+        color: var(--gem-ink);
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+
+    .adm-quicknav a:hover {
+        background: rgba(193, 18, 31, .08);
+        color: var(--gem-primary);
+    }
+
+    #conditions,
+    #procedure,
+    #frais {
+        scroll-margin-top: 90px;
+    }
+
+    /* ================= CONDITIONS ================= */
+    .doc-card {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.3rem 1.4rem;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        border: 1px solid transparent;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+    .doc-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .14);
+        border-color: rgba(193, 18, 31, .25);
+    }
+
+    .doc-ico {
+        flex: 0 0 52px;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-accent), #6a78d1);
+    }
+
+    .doc-card h5 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .doc-card small {
+        color: var(--gem-muted);
+    }
+
+    /* ================= PROCEDURE ================= */
+    .adm-steps-wrap {
+        background: #fff;
+    }
+
+    .steps {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .steps::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 12%;
+        right: 12%;
+        height: 2px;
+        background: repeating-linear-gradient(90deg, #d7dae6 0 8px, transparent 8px 16px);
+    }
+
+    .step {
+        position: relative;
+        text-align: center;
+        padding: 0 .5rem;
+    }
+
+    .step .num {
+        position: relative;
+        z-index: 1;
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 1.2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 0 0 6px #fff, 0 10px 22px rgba(193, 18, 31, .35);
+    }
+
+    .step h5 {
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+
+    .step p {
+        color: var(--gem-muted);
+        font-size: .92rem;
+        margin: 0;
+    }
+
+    @media (max-width: 991.98px) {
+        .steps {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding-left: 1rem;
+        }
+
+        .steps::before {
+            top: 0;
+            bottom: 0;
+            left: 28px;
+            right: auto;
+            width: 2px;
+            height: auto;
+            background: repeating-linear-gradient(180deg, #d7dae6 0 8px, transparent 8px 16px);
+        }
+
+        .step {
+            text-align: left;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0;
+        }
+
+        .step .num {
+            margin: 0;
+            flex: 0 0 56px;
+        }
+    }
+
+    /* ================= FRAIS ================= */
+    .fee-card {
+        position: relative;
+        height: 100%;
+        background: #fff;
+        border-radius: 24px;
+        padding: 2.2rem 1.6rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        border: 1px solid transparent;
+        overflow: hidden;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+    .fee-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--gem-primary), var(--gem-accent));
+    }
+
+    .fee-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+    }
+
+    .fee-card .label {
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--gem-muted);
+    }
+
+    .fee-card .amount {
+        margin: .6rem 0 .2rem;
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .fee-card .amount small {
+        font-size: .95rem;
+        font-weight: 700;
+    }
+
+    .fee-card .note {
+        color: var(--gem-muted);
+        font-size: .9rem;
+        margin: 0;
+    }
+
+    .fee-card.is-other .amount {
+        font-size: 1.3rem;
+        line-height: 1.3;
+        padding-top: .4rem;
+    }
+
+    /* ================= CTA ================= */
+    .cta-band {
+        border-radius: 28px;
+        padding: 3rem 2rem;
+        color: #fff;
+        text-align: center;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .2);
+    }
+
+    .cta-band h3 {
+        font-weight: 800;
+        letter-spacing: -.02em;
+    }
+
+    .cta-band p {
+        opacity: .8;
+    }
+
+    @media (max-width: 768px) {
+        .gem-section {
+            padding: 3.5rem 0;
+        }
+
+        .adm-hero {
+            min-height: 50vh;
+        }
+
+        .adm-quicknav .bar {
+            border-radius: 22px;
+        }
+    }
+</style>
+
+
 <!-- ================= HERO ================= -->
-<section class="hero text-center py-5">
-  <div class="container">
-    <h1 class="display-4 fw-bold">Admission à E3M School of Engineering</h1>
-    <p class="lead mt-3">Découvrez les conditions, la procédure, les frais et inscrivez-vous facilement.</p>
-    <a href="{% url 'preinscription' %}" class="btn btn-lg rounded-pill px-4 mt-4"
-      style="background-color:#0d6efd; color:white; border:none;">
-      Accéder au formulaire de préinscription
-    </a>
-  </div>
-
-  <!-- Styles d'animation -->
-  <style>
-    .hero {
-      position: relative;
-      color: white;
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      url('{% static "images/ecole/groupG.jpeg" %}') center/cover no-repeat;
-      height: 55vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      animation: heroZoom 15s ease-in-out infinite; 
-
-    }
-
-    @keyframes heroZoom {
-      0% {
-        background-size: 100% 100%;
-        transform: scale(1);
-      }
-
-      25% {
-        background-size: 105% 105%;
-        transform: scale(1.02);
-      }
-
-      50% {
-        background-size: 110% 110%;
-        transform: scale(1.05);
-      }
-
-      75% {
-        background-size: 105% 105%;
-        transform: scale(1.02);
-      }
-
-      100% {
-        background-size: 100% 100%;
-        transform: scale(1);
-      }
-    }
-  </style>
+<section class="adm-hero">
+    <div class="container">
+        <div class="hero-tag" data-aos="fade-up"><i class="fas fa-user-check"></i> Admission</div>
+        <h1 data-aos="fade-up" data-aos-delay="100">Admission à E3M School of Engineering</h1>
+        <p class="mt-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+            Découvrez les conditions, la procédure, les frais et inscrivez-vous facilement.
+        </p>
+        <a href="{% url 'preinscription' %}" class="gem-btn" data-aos="zoom-in" data-aos-delay="300">
+            Accéder au formulaire de préinscription <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
 </section>
+
+
+<!-- ================= SOMMAIRE ================= -->
+<div class="adm-quicknav">
+    <div class="container">
+        <nav class="bar">
+            <a href="#conditions"><i class="fas fa-clipboard-check me-1"></i> Conditions</a>
+            <a href="#procedure"><i class="fas fa-list-ol me-1"></i> Procédure</a>
+            <a href="#frais"><i class="fas fa-wallet me-1"></i> Frais de scolarité</a>
+        </nav>
+    </div>
+</div>
+
 
 <!-- ================= CONDITIONS ================= -->
-<section class="container py-5">
-  <h2 class="text-primary section-title text-center text-danger">Conditions d’Admission</h2>
-  <div class="row g-4">
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
-        <h5 class="fw-bold">Baccalauréat ou équivalent</h5>
-      </div>
+<section class="gem-section" id="conditions">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Étape préalable</span>
+            <h2 class="gem-title">Conditions d’admission</h2>
+            <p class="gem-lead mx-auto" style="max-width:600px;">
+                Les pièces à réunir pour constituer votre dossier de candidature.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up">
+                <div class="doc-card">
+                    <div class="doc-ico"><i class="fas fa-award"></i></div>
+                    <h5>Baccalauréat ou équivalent</h5>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="doc-card">
+                    <div class="doc-ico"><i class="fas fa-file-lines"></i></div>
+                    <h5>Relevé de notes</h5>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="doc-card">
+                    <div class="doc-ico"><i class="fas fa-id-card"></i></div>
+                    <h5>Copie CNI</h5>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="doc-card">
+                    <div class="doc-ico"><i class="fas fa-camera"></i></div>
+                    <h5>Photos d’identité</h5>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
-        <h5 class="fw-bold">Relevé de notes</h5>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
-        <h5 class="fw-bold">Copie CNI</h5>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-        <i class="bi bi-check-circle display-4 text-primary mb-2"></i>
-        <h5 class="fw-bold">Photos d’identité</h5>
-      </div>
-    </div>
-  </div>
 </section>
+
 
 <!-- ================= PROCEDURE ================= -->
-<section class="bg-light py-5">
-  <div class="container">
-    <h2 class="text-primary section-title text-center text-danger">Procédure d’Admission</h2>
-    <div class="row g-4">
-      <div class="col-md-6 col-lg-3">
-        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-          <div class="display-4 text-primary mb-2">1</div>
-          <h5 class="fw-bold">Remplir le formulaire</h5>
-          <p class="text-muted">Accédez au formulaire de préinscription et remplissez toutes les informations demandées.
-          </p>
+<section class="gem-section adm-steps-wrap" id="procedure">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">En 4 étapes</span>
+            <h2 class="gem-title">Procédure d’admission</h2>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-          <div class="display-4 text-primary mb-2">2</div>
-          <h5 class="fw-bold">Fournir les documents</h5>
-          <p class="text-muted">Préparez vos pièces justificatives : diplômes, relevés, CNI, photos d’identité.</p>
+
+        <div class="steps">
+            <div class="step" data-aos="fade-up">
+                <div class="num">1</div>
+                <div>
+                    <h5>Remplir le formulaire</h5>
+                    <p>Accédez au formulaire de préinscription et remplissez toutes les informations demandées.</p>
+                </div>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="100">
+                <div class="num">2</div>
+                <div>
+                    <h5>Fournir les documents</h5>
+                    <p>Préparez vos pièces justificatives : diplômes, relevés, CNI, photos d’identité.</p>
+                </div>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="200">
+                <div class="num">3</div>
+                <div>
+                    <h5>Validation du dossier</h5>
+                    <p>Notre équipe vérifie votre candidature et vous informe de la conformité du dossier.</p>
+                </div>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="300">
+                <div class="num">4</div>
+                <div>
+                    <h5>Réception de l’admission</h5>
+                    <p>Vous recevez votre notification d’admission et les instructions pour finaliser votre
+                        inscription.</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-          <div class="display-4 text-primary mb-2">3</div>
-          <h5 class="fw-bold">Validation du dossier</h5>
-          <p class="text-muted">Notre équipe vérifie votre candidature et vous informe de la conformité du dossier.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="card shadow-sm border-0 text-center p-3 hover-shadow">
-          <div class="display-4 text-primary mb-2">4</div>
-          <h5 class="fw-bold">Réception de l’admission</h5>
-          <p class="text-muted">Vous recevez votre notification d’admission et les instructions pour finaliser votre
-            inscription.</p>
-        </div>
-      </div>
     </div>
-  </div>
 </section>
+
 
 <!-- ================= FRAIS ================= -->
-<section class="container py-5">
-  <h2 class="text-primary section-title text-center text-danger">Frais de Scolarité</h2>
-  <div class="row g-4 justify-content-center">
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
-        <h5 class="fw-bold">Frais d’inscription</h5>
-        <p class="text-muted">50 000 FCFA</p>
-      </div>
+<section class="gem-section" id="frais">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Tarifs</span>
+            <h2 class="gem-title">Frais de scolarité</h2>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                <div class="fee-card">
+                    <div class="label">Frais d’inscription</div>
+                    <div class="amount">50 000 <small>FCFA</small></div>
+                    <p class="note">À régler une seule fois</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="fee-card">
+                    <div class="label">Frais semestriels</div>
+                    <div class="amount">250 000 <small>FCFA</small></div>
+                    <p class="note">Par semestre</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="fee-card is-other">
+                    <div class="label">Autres frais</div>
+                    <div class="amount">Matériel pédagogique, visites, etc.</div>
+                    <p class="note">Selon votre parcours</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
-        <h5 class="fw-bold">Frais semestriels</h5>
-        <p class="text-muted">250 000 FCFA</p>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-sm border-0 text-center p-4 hover-shadow">
-        <h5 class="fw-bold">Autres frais</h5>
-        <p class="text-muted">Matériel pédagogique, visites, etc.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ================= APERÇU FORMULAIRE ================= -->
 
-<!-- ================= ddddfdSTYLES ================= -->
-<style>
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 50px;
-    position: relative;
-  }
-
-  .section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: #0d6efd;
-    margin: 10px auto 0;
-    border-radius: 2px;
-  }
-
-  .hover-shadow:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-  }
-
-  form .form-control {
-    border-radius: 10px;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  form .form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 10px rgba(13, 110, 253, 0.15);
-  }
-</style>
+<!-- ================= CTA FINAL ================= -->
+<section class="container pb-5 mb-4">
+    <div class="cta-band" data-aos="zoom-in">
+        <h3 class="mb-2">Prêt à déposer votre candidature ?</h3>
+        <p class="mb-4">Lancez votre préinscription en quelques minutes.</p>
+        <a href="{% url 'preinscription' %}" class="gem-btn">Je me préinscris <i class="fas fa-arrow-right"></i></a>
+    </div>
+</section>
 
 {% endblock %}

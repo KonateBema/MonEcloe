@@ -1,79 +1,288 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Événements et galerie - {{ home_data.site_name }}
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h2 class="mb-4 fw-bold text-white bg-danger p-3 rounded text-center">
-        Événements institutionnels
-    </h2>
 
-    {% if evenements %}
-    <div class="row g-4 mt-3">
-        {% for evenement in evenements %}
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-
-                    <h5 class="card-title">{{ evenement.titre }}</h5>
-
-                    {% if evenement.description %}
-                    <p class="card-text">
-                        {{ evenement.description|truncatechars:100 }}
-                    </p>
-                    {% endif %}
-
-                    <!-- IMAGE -->
-                    {% if evenement.image %}
-                    <a href="{{ evenement.image.url }}" data-lightbox="evenement-{{ evenement.id }}"
-                        data-title="{{ evenement.titre }}">
-                        <img src="{{ evenement.image.url }}" class="card-img-top mb-2" alt="{{ evenement.titre }}">
-                    </a>
-                    {% endif %}
-
-                    <!-- VIDEO -->
-                    {% if evenement.video %}
-                    <video class="w-100 mb-2 rounded" controls>
-                        <source src="{{ evenement.video.url }}" type="video/mp4">
-                        Votre navigateur ne supporte pas la vidéo.
-                    </video>
-                    {% endif %}
-
-                    {% if evenement.date_event %}
-                    <small class="text-muted mt-auto">
-                        Date: {{ evenement.date_event }}
-                    </small>
-                    {% endif %}
-
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p class="text-center mt-4">Aucun événement pour le moment.</p>
-    {% endif %}
-</div>
-
-<!-- STYLE GALERIE -->
 <style>
-    /* .gallery-item {
+    .gem-section {
+        padding: 5rem 0;
+    }
+
+    .gem-title {
+        font-weight: 800;
+        letter-spacing: -.02em;
+        font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+        line-height: 1.15;
+    }
+
+    .gem-lead {
+        color: var(--gem-muted);
+        font-size: 1.05rem;
+    }
+
+    /* ================= HERO ================= */
+    .evt-hero {
+        position: relative;
+        padding: 5.5rem 0 7rem;
+        color: #fff;
         overflow: hidden;
-        border-radius: 10px;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
     }
 
-    .gallery-item img,
-    .gallery-item video {
-        transition: transform 0.3s ease;
+    .evt-hero::before,
+    .evt-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: .45;
     }
 
-    .gallery-item:hover img,
-    .gallery-item:hover video {
-        transform: scale(1.05);
-    } */
+    .evt-hero::before {
+        width: 360px;
+        height: 360px;
+        background: var(--gem-primary);
+        top: -140px;
+        right: -80px;
+    }
+
+    .evt-hero::after {
+        width: 300px;
+        height: 300px;
+        background: var(--gem-accent);
+        bottom: -160px;
+        left: -60px;
+    }
+
+    .evt-hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .evt-hero h1 {
+        font-size: clamp(2.1rem, 5vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1.08;
+    }
+
+    .evt-hero p {
+        max-width: 560px;
+        font-size: 1.1rem;
+        opacity: .85;
+    }
+
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem 1rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        margin-bottom: 1.2rem;
+    }
+
+    .evt-nav {
+        margin-top: -2.2rem;
+        position: relative;
+        z-index: 5;
+    }
+
+    .evt-nav .bar {
+        display: flex;
+        justify-content: center;
+        gap: .4rem;
+        width: fit-content;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 999px;
+        padding: .5rem;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+    }
+
+    .evt-nav a {
+        padding: .65rem 1.4rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .92rem;
+        color: var(--gem-ink);
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+
+    .evt-nav a:hover {
+        background: rgba(193, 18, 31, .08);
+        color: var(--gem-primary);
+    }
+
+    #evenements,
+    #galerie {
+        scroll-margin-top: 90px;
+    }
+
+    /* ================= EVENT CARDS ================= */
+    .event-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .4s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 24px 55px rgba(20, 22, 31, .18);
+    }
+
+    .event-card .media {
+        position: relative;
+        height: 230px;
+        overflow: hidden;
+        background: #14161f;
+    }
+
+    .event-card .media a {
+        display: block;
+        height: 100%;
+    }
+
+    .event-card .media img,
+    .event-card .media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .8s ease;
+    }
+
+    .event-card:hover .media img {
+        transform: scale(1.08);
+    }
+
+    .event-card .media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 55%, rgba(10, 12, 20, .4));
+        pointer-events: none;
+    }
+
+    .event-card .no-media {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.4rem;
+        color: rgba(255, 255, 255, .5);
+        background: linear-gradient(135deg, var(--gem-accent), var(--gem-primary));
+    }
+
+    .event-date {
+        position: absolute;
+        z-index: 2;
+        top: 14px;
+        left: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .35rem .9rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+        color: var(--gem-primary);
+        background: rgba(255, 255, 255, .94);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
+    }
+
+    .event-card .body {
+        flex: 1;
+        padding: 1.5rem;
+    }
+
+    .event-card h5 {
+        font-weight: 700;
+        margin-bottom: .6rem;
+    }
+
+    .event-card p {
+        color: var(--gem-muted);
+        font-size: .93rem;
+        margin: 0;
+    }
+
+    .event-card .extra-video {
+        margin-top: 1rem;
+    }
+
+    .event-card .extra-video video {
+        width: 100%;
+        border-radius: 14px;
+    }
+
+    /* ================= GALERIE ================= */
+    .gal-wrap {
+        background: #fff;
+    }
+
+    .gal-filters {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .gal-filters button {
+        border: 0;
+        padding: .6rem 1.3rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .9rem;
+        color: var(--gem-ink);
+        background: var(--gem-bg);
+        transition: all .25s ease;
+    }
+
+    .gal-filters button:hover {
+        background: rgba(193, 18, 31, .08);
+        color: var(--gem-primary);
+    }
+
+    .gal-filters button.active {
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 8px 20px rgba(193, 18, 31, .3);
+    }
+
     .gallery-item {
+        position: relative;
         height: 250px;
-        /* même hauteur pour tous */
         overflow: hidden;
-        border-radius: 10px;
+        border-radius: 20px;
+        background: #14161f;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .1);
+        transition: transform .35s ease, box-shadow .35s ease, opacity .35s ease;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 45px rgba(20, 22, 31, .22);
+    }
+
+    .gallery-item a {
+        display: block;
+        height: 100%;
     }
 
     .gallery-item img,
@@ -81,44 +290,245 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* remplit sans déformer */
-        border-radius: 10px;
+        transition: transform .8s ease;
     }
 
-    .gallery-item:hover img,
-    .gallery-item:hover video {
-        transform: scale(1.05);
-        transition: 0.4s;
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .gallery-item .overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: .6rem;
+        padding: 1rem;
+        color: #fff;
+        font-weight: 600;
+        font-size: .9rem;
+        background: linear-gradient(180deg, transparent 45%, rgba(10, 12, 20, .78));
+        opacity: 0;
+        transition: opacity .35s ease;
+        pointer-events: none;
+    }
+
+    .gallery-item:hover .overlay {
+        opacity: 1;
+    }
+
+    .gallery-item .overlay i {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .2);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    .gallery-item .tag-video {
+        position: absolute;
+        z-index: 2;
+        top: 12px;
+        right: 12px;
+        padding: .25rem .7rem;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(20, 22, 31, .65);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        pointer-events: none;
+    }
+
+    .gallery-item.is-hidden {
+        display: none;
+    }
+
+    .empty-state {
+        padding: 3rem 1rem;
+        border-radius: 22px;
+        background: #fff;
+        color: var(--gem-muted);
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .06);
+    }
+
+    .gal-wrap .empty-state {
+        background: var(--gem-bg);
+        box-shadow: none;
+    }
+
+    @media (max-width: 768px) {
+        .gem-section {
+            padding: 3.5rem 0;
+        }
+
+        .evt-hero {
+            padding: 4rem 0 6rem;
+        }
+
+        .gallery-item {
+            height: 210px;
+        }
     }
 </style>
-<!-- GALERIE -->
-<div class="container py-5">
-    <h2 class="mb-4 fw-bold text-white bg-primary p-3 rounded text-center">
-        Galerie de photos et de vidéos
-    </h2>
-    {% if galeries %}
-    <div class="row g-3">
-        {% for item in galeries %}
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="gallery-item">
-                <!-- IMAGE -->
-                {% if item.image %}
-                <a href="{{ item.image.url }}" data-lightbox="galerie" data-title="{{ item.titre }}">
-                    <img src="{{ item.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ item.titre }}">
-                </a>
-                {% endif %}
-                <!-- VIDEO -->
-                {% if item.video %}
-                <video class="w-100 rounded shadow-sm" controls>
-                    <source src="{{ item.video.url }}" type="video/mp4">
-                </video>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
+
+
+<!-- ================= HERO ================= -->
+<section class="evt-hero">
+    <div class="container">
+        <div class="hero-tag" data-aos="fade-up"><i class="fas fa-calendar-days"></i> Vie du campus</div>
+        <h1 data-aos="fade-up" data-aos-delay="100">Événements &amp; galerie</h1>
+        <p class="mb-0" data-aos="fade-up" data-aos-delay="200">
+            Revivez les moments forts de notre établissement en photos et en vidéos.
+        </p>
     </div>
-    {% else %}
-    <p class="text-center mt-4">Aucun média disponible.</p>
-    {% endif %}
+</section>
+
+<div class="evt-nav">
+    <div class="container">
+        <nav class="bar">
+            <a href="#evenements"><i class="fas fa-calendar-check me-1"></i> Événements</a>
+            <a href="#galerie"><i class="fas fa-images me-1"></i> Galerie</a>
+        </nav>
+    </div>
 </div>
+
+
+<!-- ================= EVENEMENTS ================= -->
+<section class="gem-section" id="evenements">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Agenda</span>
+            <h2 class="gem-title">Événements institutionnels</h2>
+        </div>
+
+        {% if evenements %}
+        <div class="row g-4">
+            {% for evenement in evenements %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 60 %}">
+                <article class="event-card">
+
+                    <div class="media">
+                        {% if evenement.date_event %}
+                        <span class="event-date"><i class="far fa-calendar"></i> {{ evenement.date_event }}</span>
+                        {% endif %}
+
+                        {% if evenement.image %}
+                        <a href="{{ evenement.image.url }}" data-lightbox="evenement-{{ evenement.id }}"
+                            data-title="{{ evenement.titre }}">
+                            <img src="{{ evenement.image.url }}" alt="{{ evenement.titre }}" loading="lazy">
+                        </a>
+                        {% elif evenement.video %}
+                        <video controls preload="metadata">
+                            <source src="{{ evenement.video.url }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la vidéo.
+                        </video>
+                        {% else %}
+                        <div class="no-media"><i class="fas fa-calendar-star"></i></div>
+                        {% endif %}
+                    </div>
+
+                    <div class="body">
+                        <h5>{{ evenement.titre }}</h5>
+                        {% if evenement.description %}
+                        <p>{{ evenement.description|truncatechars:100 }}</p>
+                        {% endif %}
+
+                        {% if evenement.image and evenement.video %}
+                        <div class="extra-video">
+                            <video controls preload="metadata">
+                                <source src="{{ evenement.video.url }}" type="video/mp4">
+                                Votre navigateur ne supporte pas la vidéo.
+                            </video>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">Aucun événement pour le moment.</div>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- ================= GALERIE ================= -->
+<section class="gem-section gal-wrap" id="galerie">
+    <div class="container">
+        <div class="text-center mb-4">
+            <span class="gem-eyebrow">Galerie</span>
+            <h2 class="gem-title">Photos &amp; vidéos</h2>
+        </div>
+
+        {% if galeries %}
+        <div class="gal-filters" id="galFilters">
+            <button type="button" class="active" data-filter="all">Tout</button>
+            <button type="button" data-filter="photo"><i class="far fa-image me-1"></i> Photos</button>
+            <button type="button" data-filter="video"><i class="fas fa-play me-1"></i> Vidéos</button>
+        </div>
+
+        <div class="row g-3" id="galGrid">
+            {% for item in galeries %}
+            <div class="col-lg-3 col-md-4 col-sm-6 gal-col" data-type="{% if item.video %}video{% else %}photo{% endif %}"
+                data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 4 80 %}">
+                <div class="gallery-item">
+                    {% if item.image %}
+                    <a href="{{ item.image.url }}" data-lightbox="galerie" data-title="{{ item.titre }}">
+                        <img src="{{ item.image.url }}" alt="{{ item.titre }}" loading="lazy">
+                        <div class="overlay">
+                            <span>{{ item.titre }}</span>
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                    {% elif item.video %}
+                    <span class="tag-video"><i class="fas fa-play me-1"></i> Vidéo</span>
+                    <video controls preload="metadata">
+                        <source src="{{ item.video.url }}" type="video/mp4">
+                    </video>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">Aucun média disponible.</div>
+        {% endif %}
+    </div>
+</section>
+
+
+<script>
+    /* Filtres de la galerie */
+    document.addEventListener("DOMContentLoaded", function () {
+        const filters = document.getElementById("galFilters");
+        if (!filters) return;
+        const cols = document.querySelectorAll(".gal-col");
+
+        filters.addEventListener("click", function (e) {
+            const btn = e.target.closest("button[data-filter]");
+            if (!btn) return;
+
+            filters.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const f = btn.dataset.filter;
+            cols.forEach(c => {
+                c.style.display = (f === "all" || c.dataset.type === f) ? "" : "none";
+            });
+            if (typeof AOS !== "undefined") AOS.refresh();
+        });
+    });
+</script>
+
 {% endblock %}

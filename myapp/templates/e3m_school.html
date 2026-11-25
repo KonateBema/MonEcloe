@@ -7,601 +7,741 @@ Formations - {{ home_data.site_name }}
 
 {% block content %}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
 <style>
-    /* HERO */
+    /* ================= TOKENS PAGE ================= */
+    .lvl-bts {
+        --lvl: #4b5cb8;
+        --lvl-soft: rgba(75, 92, 184, .1);
+    }
 
-    /* .hero {
-        background: linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, .4)),
-        url("{% static 'images/ecole/Engener1.jpeg' %}") center/cover no-repeat;
-        height: 70vh;
-        display: flex;
+    .lvl-licence {
+        --lvl: #16a34a;
+        --lvl-soft: rgba(22, 163, 74, .1);
+    }
+
+    .lvl-master {
+        --lvl: #c1121f;
+        --lvl-soft: rgba(193, 18, 31, .1);
+    }
+
+    .gem-section {
+        padding: 5rem 0;
+    }
+
+    .gem-title {
+        font-weight: 800;
+        letter-spacing: -.02em;
+        font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+        line-height: 1.15;
+    }
+
+    .gem-lead {
+        color: var(--gem-muted);
+        font-size: 1.05rem;
+    }
+
+    .gem-btn {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
+        gap: .5rem;
+        padding: .85rem 1.8rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 8px 20px rgba(193, 18, 31, .35);
+        transition: transform .25s ease, box-shadow .25s ease;
+        text-decoration: none;
+    }
 
-        image-rendering: crisp-edges;
-    } */
+    .gem-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(193, 18, 31, .42);
+    }
+
+    /* ================= HERO ================= */
     .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-        url("{% static 'images/ecole/Engener1.jpeg' %}") center/cover no-repeat;
-
-        height: 75vh;
+        position: relative;
+        min-height: 72vh;
         display: flex;
         align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
+        color: #fff;
+        background:
+            linear-gradient(100deg, rgba(10, 12, 20, .85) 0%, rgba(10, 12, 20, .55) 55%, rgba(10, 12, 20, .25) 100%),
+            url("{% static 'images/ecole/Engener1.jpeg' %}") center/cover no-repeat;
+    }
 
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        animation: none;
-        /* important */
+    .hero .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem 1rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        margin-bottom: 1.2rem;
     }
 
     .hero h1 {
+        font-size: clamp(2rem, 5vw, 3.6rem);
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: -.02em;
+        line-height: 1.08;
     }
 
     .hero p {
-        max-width: 700px;
-        margin: auto;
+        max-width: 640px;
+        font-size: 1.12rem;
+        opacity: .92;
     }
 
-    .hero-btn {
-        margin-top: 20px;
-        padding: 12px 28px;
-        font-weight: 600;
-        border-radius: 30px;
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        margin: 1.4rem 0 2rem;
     }
 
-    /* SECTION */
-
-    .section {
-        padding: 70px 0;
+    .hero-pills span {
+        padding: .4rem .9rem;
+        border-radius: 999px;
+        font-size: .85rem;
+        font-weight: 500;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .2);
     }
 
-    .section-title {
-        font-weight: 700;
-        margin-bottom: 40px;
+    /* ================= STATS ================= */
+    .gem-stats {
+        margin-top: -3.2rem;
+        position: relative;
+        z-index: 5;
     }
 
-    /* STATS */
+    .gem-stats-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+        padding: 1.6rem 1rem;
+    }
 
-    .stats {
-        background: linear-gradient(90deg, #4f4a66, #6610f2);
-        background-image: url("{% static 'images/ecole/ecole_image_amelioree.jpg' %}");
-        color: rgb(184, 7, 7);
-        
-        padding: 20px 0;
+    .gem-stat {
         text-align: center;
+        padding: .5rem 1rem;
     }
-    .stat-number {
-        font-size: 2.5rem;
+
+    .gem-stat+.gem-stat {
+        border-left: 1px solid #eceef4;
+    }
+
+    .gem-stat strong {
+        display: block;
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
         font-weight: 800;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
-    .stat-box {
-        padding: 15px;
+    .gem-stat span {
+        color: var(--gem-muted);
+        font-size: .92rem;
     }
 
-    /* SWIPER */
-
-    .formation-slider {
-        padding: 20px 0 60px 0;
+    @media (max-width: 767.98px) {
+        .gem-stat+.gem-stat {
+            border-left: 0;
+            border-top: 1px solid #eceef4;
+            margin-top: .6rem;
+            padding-top: 1rem;
+        }
     }
 
-    .swiper {
-        padding-bottom: 40px;
+    /* ================= FORMATIONS ================= */
+    .level-head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
     }
 
-    /* CARD */
+    .level-head .level-ico {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #fff;
+        background: var(--lvl);
+        box-shadow: 0 10px 22px var(--lvl-soft);
+    }
+
+    .level-head h2 {
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        font-size: clamp(1.4rem, 2.6vw, 2rem);
+    }
+
+    .level-head small {
+        display: block;
+        color: var(--gem-muted);
+        font-weight: 500;
+        font-size: .9rem;
+    }
+
+    .formation-swiper {
+        padding: .5rem .5rem 3.2rem;
+    }
+
+    .formation-swiper .swiper-slide {
+        height: auto;
+    }
 
     .formation-card {
-        border: none;
-        border-radius: 16px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 22px;
         overflow: hidden;
-        transition: all .35s;
-        background: white;
-    }
-
-    .formation-card img {
-        height: 210px;
-        object-fit: cover;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        transition: transform .35s ease, box-shadow .35s ease;
     }
 
     .formation-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
     }
 
-    /* BADGE */
+    .formation-card .thumb {
+        position: relative;
+        height: 210px;
+        overflow: hidden;
+    }
+
+    .formation-card .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .8s ease;
+    }
+
+    .formation-card:hover .thumb img {
+        transform: scale(1.08);
+    }
+
+    .formation-card .thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 55%, rgba(10, 12, 20, .35));
+    }
 
     .level-badge {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: .8rem;
+        z-index: 2;
+        top: 14px;
+        left: 14px;
+        padding: .35rem .9rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        color: #fff;
+        background: var(--lvl);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, .2);
+    }
+
+    .formation-card .body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 1.4rem 1.4rem 1.6rem;
+    }
+
+    .formation-card h5 {
+        font-weight: 700;
+        margin-bottom: .6rem;
+        color: var(--gem-ink);
+    }
+
+    .formation-card p {
+        color: var(--gem-muted);
+        font-size: .92rem;
+        flex: 1;
+    }
+
+    .formation-card .cta {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .55rem 1.2rem;
+        border-radius: 999px;
         font-weight: 600;
-        color: white;
+        font-size: .9rem;
+        text-decoration: none;
+        color: var(--lvl);
+        background: var(--lvl-soft);
+        transition: all .25s ease;
     }
 
-    /* ABOUT */
-
-    .about-section {
-        background: #f8f9fa;
-        padding: 80px 0;
+    .formation-card .cta:hover {
+        color: #fff;
+        background: var(--lvl);
     }
 
-    .about-img img {
-        width: 100%;
-        height: 380px;
-        object-fit: cover;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    .formation-card .cta i {
+        transition: transform .25s ease;
     }
 
-    .mission-box {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    .formation-card .cta:hover i {
+        transform: translateX(4px);
     }
 
-    .director-quote {
-        border-left: 5px solid #0d6efd;
-        padding-left: 15px;
-        font-style: italic;
-        font-size: 1.05rem;
+    .formation-swiper .swiper-pagination-bullet-active {
+        background: var(--lvl);
     }
 
-    /* WHY CHOOSE */
-
+    /* ================= WHY CHOOSE ================= */
     .choose-card {
-        background: white;
-        border-radius: 14px;
-        transition: 0.3s;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        background: #fff;
+        border-radius: 22px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        border: 1px solid transparent;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
     }
 
     .choose-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+        border-color: rgba(193, 18, 31, .25);
     }
 
     .icon-box {
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 1.2rem;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: auto;
-        color: white;
-        font-size: 26px;
+        color: #fff;
+        font-size: 1.6rem;
+        transform: rotate(-6deg);
+        transition: transform .3s ease;
+    }
+
+    .choose-card:hover .icon-box {
+        transform: rotate(0) scale(1.08);
+    }
+
+    .ib-1 {
+        background: linear-gradient(135deg, #4b5cb8, #6a78d1);
+    }
+
+    .ib-2 {
+        background: linear-gradient(135deg, #16a34a, #4ade80);
+    }
+
+    .ib-3 {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+
+    .ib-4 {
+        background: linear-gradient(135deg, #c1121f, #ef4444);
+    }
+
+    /* ================= ABOUT ================= */
+    .about-img {
+        position: relative;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+    }
+
+    .about-img img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        transition: transform .8s ease;
+    }
+
+    .about-img:hover img {
+        transform: scale(1.06);
+    }
+
+    .mission-box {
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.4rem 1.6rem;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        border-left: 4px solid var(--gem-primary);
+    }
+
+    .director-quote {
+        position: relative;
+        font-style: italic;
+        color: #3b3f4e;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.4rem 1.6rem;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+    }
+
+    .director-quote::before {
+        content: "“";
+        position: absolute;
+        top: -.2rem;
+        left: 1rem;
+        font-size: 4rem;
+        line-height: 1;
+        font-family: Georgia, serif;
+        color: rgba(193, 18, 31, .18);
+    }
+
+    /* ================= CTA FINAL ================= */
+    .cta-band {
+        border-radius: 28px;
+        padding: 3rem 2rem;
+        color: #fff;
+        text-align: center;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .2);
+    }
+
+    .cta-band h3 {
+        font-weight: 800;
+        letter-spacing: -.02em;
+    }
+
+    .cta-band p {
+        opacity: .8;
+    }
+
+    @media (max-width: 768px) {
+        .gem-section {
+            padding: 3.5rem 0;
+        }
+
+        .about-img img {
+            height: 300px;
+        }
+
+        .hero {
+            min-height: 62vh;
+        }
     }
 </style>
 
 
-<!-- HERO -->
-
+<!-- ================= HERO ================= -->
 <section class="hero">
-
     <div class="container">
-
-        <h1 class="display-5 mb-3" data-aos="fade-up">
-            École supérieure privée agréée
-        </h1>
-        <p class="lead" data-aos="fade-up" data-aos-delay="200">
-            L’E3M School of Engineering propose des formations du
-            <strong>Bac+2 au Bac+5</strong> en Génie Civil,
+        <div class="hero-tag" data-aos="fade-up"><i class="fas fa-award"></i> École supérieure privée agréée</div>
+        <h1 data-aos="fade-up" data-aos-delay="100">Construisez votre avenir d'ingénieur</h1>
+        <p data-aos="fade-up" data-aos-delay="200">
+            L’E3M School of Engineering propose des formations du <strong>Bac+2 au Bac+5</strong> en Génie Civil,
             Environnement Durable et Intelligence Artificielle.
         </p>
-        <a href="{% url 'preinscription' %}" class="btn btn-primary hero-btn" data-aos="zoom-in" data-aos-delay="400">
-            S'inscrire maintenant
+        <div class="hero-pills" data-aos="fade-up" data-aos-delay="300">
+            <span><i class="fas fa-hard-hat me-1"></i> Génie Civil</span>
+            <span><i class="fas fa-leaf me-1"></i> Environnement Durable</span>
+            <span><i class="fas fa-microchip me-1"></i> Intelligence Artificielle</span>
+        </div>
+        <a href="{% url 'preinscription' %}" class="gem-btn" data-aos="zoom-in" data-aos-delay="400">
+            S'inscrire maintenant <i class="fas fa-arrow-right"></i>
         </a>
     </div>
 </section>
 
 
-<!-- STATS -->
-
-<section class="stats">
-
+<!-- ================= STATS ================= -->
+<section class="gem-stats">
     <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-4 stat-box">
-                <!-- <div class="stat-number">{{ associations |length  }} || 15</div> -->
-                <div class="stat-number">{{ associations|length|default:15 }}</div>
-                <p>Partenariats</p>
+        <div class="gem-stats-card">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-4 gem-stat">
+                    <strong>{{ associations|length|default:15 }}</strong>
+                    <span>Partenariats</span>
+                </div>
+                <div class="col-md-4 gem-stat">
+                    <strong>500+</strong>
+                    <span>Étudiants</span>
+                </div>
+                <div class="col-md-4 gem-stat">
+                    <strong>20+</strong>
+                    <span>Événements / an</span>
+                </div>
             </div>
-
-            <div class="col-md-4 stat-box">
-                <div class="stat-number">500+</div>
-                <p>Étudiants</p>
-            </div>
-
-            <div class="col-md-4 stat-box">
-                <div class="stat-number">20+</div>
-                <p>Événements / an</p>
-            </div>
-
         </div>
-
     </div>
-
 </section>
 
 
-
-<!-- BTS -->
-
-<section class="section container formation-slider">
-
-    <h2 class="text-center text-primary section-title">🎓 BTS (BAC+2)</h2>
-
-    <div class="swiper btsSwiper">
-
-        <div class="swiper-wrapper">
-
-            {% for formation in bts %}
-
-            <div class="swiper-slide">
-
-                <div class="card formation-card shadow-sm position-relative">
-
-                    <span class="level-badge bg-primary">BTS</span>
-
-                    {% if formation.image %}
-                    <img src="{{ formation.image.url }}">
-                    {% else %}
-                    <img src="{% static 'images/formation.jpg' %}">
-                    {% endif %}
-
-                    <div class="card-body text-center">
-
-                        <h5 class="fw-bold text-primary">{{ formation.titre }}</h5>
-
-                        <p class="text-muted small">
-                            {{ formation.description|truncatechars:110 }}
-                        </p>
-
-                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-primary rounded-pill px-4">
-                            S'inscrire
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        <div class="swiper-pagination"></div>
-
-    </div>
-
-</section>
-
-
-
-<!-- LICENCE -->
-
-<section class="section container formation-slider">
-
-    <h2 class="text-center text-success section-title">📘 Licence (BAC+3)</h2>
-
-    <div class="swiper licenceSwiper">
-
-        <div class="swiper-wrapper">
-
-            {% for formation in licence %}
-
-            <div class="swiper-slide">
-
-                <div class="card formation-card shadow-sm position-relative">
-
-                    <span class="level-badge bg-success">Licence</span>
-
-                    {% if formation.image %}
-                    <img src="{{ formation.image.url }}">
-                    {% else %}
-                    <img src="{% static 'images/formation.jpg' %}">
-                    {% endif %}
-
-                    <div class="card-body text-center">
-
-                        <h5 class="fw-bold text-success">{{ formation.titre }}</h5>
-
-                        <p class="text-muted small">
-                            {{ formation.description|truncatechars:110 }}
-                        </p>
-
-                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-success rounded-pill px-4">
-                            S'inscrire
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        <div class="swiper-pagination"></div>
-
-    </div>
-
-</section>
-
-
-
-<!-- MASTER -->
-
-<section class="section container formation-slider">
-
-    <h2 class="text-center text-danger section-title">🎓 Master (BAC+5)</h2>
-
-    <div class="swiper masterSwiper">
-
-        <div class="swiper-wrapper">
-
-            {% for formation in master %}
-
-            <div class="swiper-slide">
-
-                <div class="card formation-card shadow-sm position-relative">
-
-                    <span class="level-badge bg-danger">Master</span>
-
-                    {% if formation.image %}
-                    <img src="{{ formation.image.url }}">
-                    {% else %}
-                    <img src="{% static 'images/formation.jpg' %}">
-                    {% endif %}
-
-                    <div class="card-body text-center">
-
-                        <h5 class="fw-bold text-danger">{{ formation.titre }}</h5>
-
-                        <p class="text-muted small">
-                            {{ formation.description|truncatechars:110 }}
-                        </p>
-
-                        <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
-                            class="btn btn-outline-danger rounded-pill px-4">
-                            S'inscrire
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        <div class="swiper-pagination"></div>
-
-    </div>
-
-</section>
-
-
-<!-- POURQUOI CHOISIR E3M -->
-
-<section class="container py-5">
-
-    <div class="text-center mb-5">
-
-        <h2 class="fw-bold text-primary">
-            Pourquoi choisir E3M School of Engineering ?
-        </h2>
-
-        <p class="text-muted">
-            Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
-        </p>
-
-    </div>
-
-    <div class="row g-4">
-
-        <!-- CARD 1 -->
-
-        <div class="col-md-3" data-aos="fade-up">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-primary">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Formation de qualité</h5>
-
-                <p class="text-muted small">
-                    Des programmes adaptés aux besoins du marché et aux technologies modernes.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 2 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-success">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Experts enseignants</h5>
-
-                <p class="text-muted small">
-                    Des enseignants expérimentés issus du monde académique et professionnel.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 3 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-warning">
-                    <i class="fas fa-globe-africa"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Ouverture internationale</h5>
-
-                <p class="text-muted small">
-                    Partenariats académiques et stages à l’international.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 4 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-danger">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Insertion professionnelle</h5>
-
-                <p class="text-muted small">
-                    Des formations orientées vers l'emploi et l’entrepreneuriat.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-<!-- ABOUT -->
-
-<section class="about-section">
-
+<!-- ================= BTS ================= -->
+{% if bts %}
+<section class="gem-section pb-0 lvl-bts">
     <div class="container">
+        <div class="level-head" data-aos="fade-up">
+            <div class="level-ico"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+                <h2>BTS</h2>
+                <small>BAC+2</small>
+            </div>
+        </div>
 
+        <div class="swiper formation-swiper btsSwiper">
+            <div class="swiper-wrapper">
+                {% for formation in bts %}
+                <div class="swiper-slide">
+                    <article class="formation-card">
+                        <div class="thumb">
+                            <span class="level-badge">BTS</span>
+                            {% if formation.image %}
+                            <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" loading="lazy">
+                            {% else %}
+                            <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="body">
+                            <h5>{{ formation.titre }}</h5>
+                            <p>{{ formation.description|truncatechars:110 }}</p>
+                            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                                class="cta">S'inscrire <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- ================= LICENCE ================= -->
+{% if licence %}
+<section class="gem-section pb-0 lvl-licence">
+    <div class="container">
+        <div class="level-head" data-aos="fade-up">
+            <div class="level-ico"><i class="fas fa-book-open"></i></div>
+            <div>
+                <h2>Licence</h2>
+                <small>BAC+3</small>
+            </div>
+        </div>
+
+        <div class="swiper formation-swiper licenceSwiper">
+            <div class="swiper-wrapper">
+                {% for formation in licence %}
+                <div class="swiper-slide">
+                    <article class="formation-card">
+                        <div class="thumb">
+                            <span class="level-badge">Licence</span>
+                            {% if formation.image %}
+                            <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" loading="lazy">
+                            {% else %}
+                            <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="body">
+                            <h5>{{ formation.titre }}</h5>
+                            <p>{{ formation.description|truncatechars:110 }}</p>
+                            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                                class="cta">S'inscrire <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- ================= MASTER ================= -->
+{% if master %}
+<section class="gem-section pb-0 lvl-master">
+    <div class="container">
+        <div class="level-head" data-aos="fade-up">
+            <div class="level-ico"><i class="fas fa-user-graduate"></i></div>
+            <div>
+                <h2>Master</h2>
+                <small>BAC+5</small>
+            </div>
+        </div>
+
+        <div class="swiper formation-swiper masterSwiper">
+            <div class="swiper-wrapper">
+                {% for formation in master %}
+                <div class="swiper-slide">
+                    <article class="formation-card">
+                        <div class="thumb">
+                            <span class="level-badge">Master</span>
+                            {% if formation.image %}
+                            <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" loading="lazy">
+                            {% else %}
+                            <img src="{% static 'images/formation.jpg' %}" alt="{{ formation.titre }}" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="body">
+                            <h5>{{ formation.titre }}</h5>
+                            <p>{{ formation.description|truncatechars:110 }}</p>
+                            <a href="{% url 'preinscription' %}?formation={{ formation.titre|urlencode }}"
+                                class="cta">S'inscrire <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- ================= POURQUOI CHOISIR E3M ================= -->
+<section class="gem-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Nos atouts</span>
+            <h2 class="gem-title">Pourquoi choisir E3M School of Engineering ?</h2>
+            <p class="gem-lead mx-auto" style="max-width:640px;">
+                Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up">
+                <div class="choose-card">
+                    <div class="icon-box ib-1"><i class="fas fa-graduation-cap"></i></div>
+                    <h5 class="fw-bold">Formation de qualité</h5>
+                    <p class="text-muted small mb-0">Des programmes adaptés aux besoins du marché et aux technologies
+                        modernes.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="choose-card">
+                    <div class="icon-box ib-2"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h5 class="fw-bold">Experts enseignants</h5>
+                    <p class="text-muted small mb-0">Des enseignants expérimentés issus du monde académique et
+                        professionnel.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="choose-card">
+                    <div class="icon-box ib-3"><i class="fas fa-globe-africa"></i></div>
+                    <h5 class="fw-bold">Ouverture internationale</h5>
+                    <p class="text-muted small mb-0">Partenariats académiques et stages à l’international.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="choose-card">
+                    <div class="icon-box ib-4"><i class="fas fa-briefcase"></i></div>
+                    <h5 class="fw-bold">Insertion professionnelle</h5>
+                    <p class="text-muted small mb-0">Des formations orientées vers l'emploi et l’entrepreneuriat.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= A PROPOS ================= -->
+<section class="gem-section pt-0">
+    <div class="container">
         <div class="row align-items-center g-5">
 
-            <div class="col-md-6">
-
+            <div class="col-lg-6" data-aos="fade-right">
                 <div class="about-img">
-                    <!-- <img src="{% static 'images/ecole/ingerner.jpeg' %}"> -->
-                    <img src="{% static 'images/ecole/ordi1.jpeg' %}">
+                    <img src="{% static 'images/ecole/ordi1.jpeg' %}" alt="E3M School of Engineering">
                 </div>
             </div>
 
-            <div class="col-md-6">
-
-                <h2 class="fw-bold mb-3 text-danger">
-                    À propos de l’E3M School of Engineering
-                </h2>
-
-                <p class="text-muted">
-                    E3M forme des ingénieurs capables de répondre aux défis technologiques et environnementaux modernes
-                    grâce à une formation de qualité.
+            <div class="col-lg-6" data-aos="fade-left">
+                <span class="gem-eyebrow">À propos</span>
+                <h2 class="gem-title mb-3">À propos de l’E3M <span style="color:var(--gem-primary)">School of
+                        Engineering</span></h2>
+                <p class="gem-lead">
+                    E3M forme des ingénieurs capables de répondre aux défis technologiques et environnementaux
+                    modernes grâce à une formation de qualité.
                 </p>
 
-                <div class="mission-box my-3">
-
-                    <h5 class="fw-bold">Notre mission</h5>
-
-                    <p>
+                <div class="mission-box my-4">
+                    <h5 class="fw-bold mb-1">Notre mission</h5>
+                    <p class="mb-0 text-muted">
                         Former des leaders techniques capables d’innover et de contribuer au développement durable.
                     </p>
-
                 </div>
 
-                <blockquote class="director-quote">
+                <blockquote class="director-quote mb-0">
                     Notre ambition est de bâtir une génération d’ingénieurs capables d’impacter durablement le monde.
                 </blockquote>
-
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 
+<!-- ================= CTA FINAL ================= -->
+<section class="container pb-5 mb-4">
+    <div class="cta-band" data-aos="zoom-in">
+        <h3 class="mb-2">Prêt à rejoindre l'aventure E3M ?</h3>
+        <p class="mb-4">Lancez votre préinscription en quelques minutes.</p>
+        <a href="{% url 'preinscription' %}" class="gem-btn">Je me préinscris <i class="fas fa-arrow-right"></i></a>
+    </div>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
+<!-- Swiper et AOS sont chargés et initialisés dans base.html -->
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof Swiper === "undefined") return;
 
-    AOS.init();
+        function initSwiper(selector, delay) {
+            const el = document.querySelector(selector);
+            if (!el) return;
+            const count = el.querySelectorAll(".swiper-slide").length;
 
-    function initSwiper(className, delay) {
+            new Swiper(selector, {
+                slidesPerView: 1,
+                spaceBetween: 24,
+                loop: count > 3,
+                autoplay: { delay: delay, disableOnInteraction: false, pauseOnMouseEnter: true },
+                pagination: { el: selector + " .swiper-pagination", clickable: true },
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1100: { slidesPerView: 3 }
+                }
+            });
+        }
 
-        return new Swiper(className, {
-
-            slidesPerView: 3,
-            spaceBetween: 20,
-            loop: true,
-
-            autoplay: {
-                delay: delay,
-                disableOnInteraction: false
-            },
-
-            pagination: {
-                el: className + " .swiper-pagination",
-                clickable: true
-            },
-
-            breakpoints: {
-                320: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 }
-            }
-
-        });
-
-    }
-
-    initSwiper(".btsSwiper", 3000);
-    initSwiper(".licenceSwiper", 3500);
-    initSwiper(".masterSwiper", 4000);
-
+        initSwiper(".btsSwiper", 3000);
+        initSwiper(".licenceSwiper", 3500);
+        initSwiper(".masterSwiper", 4000);
+    });
 </script>
 
 {% endblock %}

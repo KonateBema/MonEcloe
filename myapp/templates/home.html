@@ -1,1054 +1,1065 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-{{ home_data.site_name }}
-{% endblock %}
+{% block title %}{{ home_data.site_name }} | Votre avenir commence ici{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 <style>
-    /* ================= CAROUSEL ================= */
-    #homeCarousel,
-    #homeCarousel .carousel-item {
-        height: 520px;
-    }
-
-    #homeCarousel .carousel-item img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
-
-    @media (max-width: 768px) {
-
-        #homeCarousel,
-        #homeCarousel .carousel-item {
-            height: 200px;
-        }
-    }
-
-    /* ================= GENERAL ================= */
-    .map-container {
-        width: 100%;
-        height: 300px;
-        border-radius: 12px;
+    /* =========================================================
+       GEM — PAGE D'ACCUEIL (design 2026)
+       Polices, Bootstrap, Swiper et AOS sont chargés par base.html
+    ========================================================= */
+    .gem-page {
+        --gem-primary: #c1121f;
+        --gem-primary-dark: #8b0d16;
+        --gem-gold: #e4b04a;
+        --gem-ink: #14161f;
+        --gem-muted: #667085;
+        --gem-bg: #f6f7fb;
+        --gem-card: #fff;
+        --gem-radius: 24px;
+        --gem-shadow: 0 14px 38px rgba(20, 22, 31, .08);
+        --gem-shadow-lg: 0 26px 70px rgba(20, 22, 31, .16);
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--gem-ink);
+        background: var(--gem-bg);
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .map-container iframe {
-        width: 100%;
-        height: 100%;
-        border: 0;
-    }
+    .gem-section { padding: clamp(3.8rem, 7vw, 6.5rem) 0; }
 
-    .experience-badge {
-        background: #4b5cb8;
-        color: white;
-        padding: 8px 16px;
-        display: inline-block;
-        border-radius: 8px;
-    }
-
-    .experience-badge .years {
-        font-size: 1.8rem;
-        font-weight: bold;
-    }
-
-    .fee-card {
-        border-radius: 15px;
-        background: #fff;
-        transition: 0.3s ease;
-    }
-
-    .fee-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .icon-circle {
-        width: 60px;
-        height: 60px;
-        margin: auto;
-        border-radius: 50%;
-        background: #e8f0ff;
-        color: #8b0000;
-        font-size: 28px;
-        display: flex;
+    .gem-eyebrow {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-    }
-
-    .infos-img {
-        width: 100%;
-        max-width: 650px;
-        display: block;
-        margin: auto;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-        transition: 0.4s;
-    }
-
-    .infos-img:hover {
-        transform: scale(1.03);
-    }
-
-    .carousel-caption {
-        background: rgba(0, 0, 0, 0.5);
-        /* fond sombre */
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 600px;
-        margin: auto;
-    }
-</style>
-
-<!-- ================= CAROUSEL ================= -->
-{% if slides %}
-<section class="container-fluid px-0 mb-4">
-    <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            {% for slide in slides %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ slide.image.url }}" class="d-block w-100">
-                <div class="carousel-caption">
-                    <h2 class="fw-bold">{{ slide.title }}</h2>
-                    <p>{{ slide.message|safe }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- ================= NOUVEAU BLOC A PROPOS ================= -->
-<section class="about-premium py-5">
-    <div class="container">
-        <div class="row align-items-center">
-
-            <!-- CÔTÉ IMAGE + Témoignages -->
-            <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right">
-
-                <!-- Image principale avec overlay -->
-                <div class="about-img-box position-relative mb-4">
-                    <img src="{% static 'images/ecole/rouge2.jpeg' %}" class="img-fluid rounded shadow"
-                        style="width: 100%; height: auto; object-fit: cover;">
-                    <div class="about-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                        style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
-                        <h4 class="text-white text-center px-3"
-                            style="font-size: 1.8rem; font-weight: bold; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); margin-top: 308px;">
-                            +10 ans d'excellence académique
-                        </h4>
-                    </div>
-                </div>
-                <!-- <div class="about-img-box position-relative mb-4">
-                    <img src="{% static 'images/ecole/groupProf2.jpeg' %}" class="img-fluid rounded shadow">
-                    <div class="about-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                        style="background: rgba(0,0,0,0.35); border-radius: .5rem;">
-                        <h4 class="text-white text-center px-3" style="margin-top: 308px;">+10 ans d'excellence académique</h4>
-                    </div>
-                </div> -->
-
-                <!-- Slider de témoignages -->
-                {% if temoignages %}
-                <div class="testimonial-section mt-5">
-                    <!-- Titre du slider -->
-                    <h3 class="text-center fw-bold mb-4">Témoignages de nos étudiants</h3>
-
-                    <div class="testimonial-slider-wrapper mt-3">
-                        <div class="swiper testimonial-swiper">
-                            <div class="swiper-wrapper">
-                                {% for temoignage in temoignages %}
-                                <div class="swiper-slide p-3">
-                                    <div class="testimonial-box text-center bg-white shadow-sm rounded p-3">
-                                        <img src="{% static temoignage.photo %}" alt="{{ temoignage.nom }}"
-                                            class="rounded-circle mb-2"
-                                            style="width: 60px; height: 60px; object-fit: cover;">
-                                        <p class="mb-1 fst-italic">“{{ temoignage.commentaire }}”</p>
-                                        <small class="fw-bold text-primary">{{ temoignage.nom }}</small>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-
-                            <!-- Navigation -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-
-                            <!-- Pagination -->
-                            <div class="swiper-pagination mt-2"></div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-            </div>
-
-            <!-- CÔTÉ TEXTE -->
-            <div class="col-md-6" data-aos="fade-left">
-                <h2 class="fw-bold display-6 mb-3 text-danger">
-                    À propos du Groupe Expert Metier (GEM)
-                </h2>
-                <p class="text-muted">
-                    Établissement privé d’enseignement supérieur agréé, E3M forme des ingénieurs compétents et innovants
-                    capables de répondre aux défis technologiques, environnementaux et industriels de demain.
-                </p>
-
-                <div class="mission-box my-4">
-                    <h5 class="fw-bold">Notre Mission</h5>
-                    <p>
-                        Former des leaders techniques dotés d’une expertise solide, d’un esprit critique et d’une forte
-                        capacité d’innovation.
-                    </p>
-                </div>
-
-                <div class="row text-center mt-4">
-                    <div class="col-4">
-                        <h3 class="fw-bold text-primary">500+</h3>
-                        <small>Étudiants</small>
-                    </div>
-                    <div class="col-4">
-                        <h3 class="fw-bold text-primary">20+</h3>
-                        <small>Événements / an</small>
-                    </div>
-                    <div class="col-4">
-                        <h3 class="fw-bold text-primary">15+</h3>
-                        <small>Partenaires</small>
-                    </div>
-                </div>
-
-                <blockquote class="director-quote mt-4 fst-italic text-secondary">
-                    “Notre ambition est de bâtir une génération d’ingénieurs capables d’impacter durablement le monde.”
-                    <br>
-                    <span class="fw-bold text-primary">— Direction Générale</span>
-                </blockquote>
-
-                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">
-                    Découvrir l’école
-                </a>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- SWIPER JS INIT -->
-<script>
-    var swiper = new Swiper('.testimonial-swiper', {
-        loop: true,
-        slidesPerView: 1,
-        spaceBetween: 20,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        breakpoints: {
-            576: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            992: { slidesPerView: 2 },
-        }
-    });
-</script>
-
-<style>
-    .about-img-box img {
-        filter: contrast(1.05) brightness(0.95);
-    }
-
-    .testimonial-box {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        padding: 15px;
-        border-radius: 10px;
-        background-color: #fff;
-    }
-
-    .testimonial-box img {
-        border: 2px solid #dc3545;
-    }
-
-    .testimonial-slider-wrapper {
-        max-width: 90%;
-        margin: 0 auto;
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-        color: #dc3545;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #dc3545;
-    }
-
-    /* WHY CHOOSE */
-
-    .choose-card {
-        background: white;
-        border-radius: 14px;
-        transition: 0.3s;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
-
-    .choose-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    }
-
-    .icon-box {
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
-        color: white;
-        font-size: 26px;
-    }
-
-    /* ================= IMAGE FONDATEUR HOVER ================= */
-    .founder-img {
-        transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    .founder-img:hover {
-        transform: scale(1.05);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    /* ================= BADGE ANIME ================= */
-    .experience-badge {
-        background: linear-gradient(135deg, #4b5cb8, #6a78d1);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 12px;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .experience-badge .years {
-        display: block;
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .pulse-badge {
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.08);
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    /* ================= BOUTON GRADIENT ================= */
-    .btn-gradient {
-        background: linear-gradient(135deg, #4b5cb8, #6a78d1);
-        border: none;
-        padding: 10px 22px;
-        border-radius: 10px;
-        color: white;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-gradient:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        background: linear-gradient(135deg, #6a78d1, #4b5cb8);
-    }
-
-    /* ================= CITATION ================= */
-    .quote {
-        font-style: italic;
-        font-size: 1.5rem;
-        line-height: 1.4;
-    }
-
-    /* ================= ICONES ================= */
-    .material-icons {
-        font-size: 28px;
-        line-height: 1;
-    }
-
-    /* ================= A PROPOS PREMIUM ================= */
-
-    .about-premium {
-        background: #f8f9fa;
-    }
-
-    .about-img-box {
-        position: relative;
-        overflow: hidden;
-        border-radius: 20px;
-    }
-
-    .about-img-box img {
-        width: 100%;
-        height: 450px;
-        object-fit: cover;
-        transition: transform 0.6s ease;
-    }
-
-    .about-img-box:hover img {
-        transform: scale(1.1);
-    }
-
-    .about-overlay {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        background: linear-gradient(45deg, #0d6efd, #6610f2);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 50px;
-        font-weight: bold;
-    }
-
-    .mission-box {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    }
-
-    .director-quote {
-        font-style: italic;
-        background: white;
-        padding: 20px;
-        border-left: 5px solid #0d6efd;
-        border-radius: 10px;
-    }
-
-    .director-quote span {
-        display: block;
-        margin-top: 8px;
-        font-weight: bold;
-        color: #0d6efd;
-    }
-</style>
-<script>
-    var swiper = new Swiper('.testimonial-swiper', {
-        loop: true,
-        slidesPerView: 1,
-        spaceBetween: 20,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        breakpoints: {
-            576: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            992: { slidesPerView: 2 },
-        }
-    });
-</script>
-<!-- N'oublie pas d'inclure Material Icons dans ton base.html -->
-
-<!-- ================= A PROPOS ================= -->
-
-<!-- ================= ECOLES ================= -->
-
-<section class="container py-5 mb-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold text-danger">Groupe Expert Métier (GEM)</h2>
-        <p class="text-muted">Découvrez nos établissements et formations</p>
-    </div>
-
-    <div class="school-slider-wrapper position-relative">
-
-        <!-- boutons -->
-        <button class="slider-btn prev-btn">&#10094;</button>
-        <button class="slider-btn next-btn">&#10095;</button>
-
-        <!-- slider -->
-        <div class="school-slider d-flex">
-
-            {% for ecole in ecoles %}
-            <div class="school-card">
-
-                {% if ecole.image %}
-                <div class="img-container">
-                    <img src="{{ ecole.image.url }}" alt="{{ ecole.nom }}">
-                </div>
-                {% endif %}
-
-                <div class="card-content text-center">
-                    <h5>{{ ecole.nom }}</h5>
-                    <p>{{ ecole.description|truncatechars:580 }}</p>
-                </div>
-
-            </div>
-            {% endfor %}
-
-        </div>
-
-        <!-- DOTS -->
-        <div class="slider-dots text-center mt-3"></div>
-
-    </div>
-</section>
-
-<style>
-    .school-slider {
-        gap: 20px;
-        overflow-x: hidden;
-        scroll-behavior: smooth;
-    }
-
-    /* CARTE */
-    .school-card {
-        min-width: 600px;
-        max-width: 600px;
-        min-height: 400px;
-        /* hauteur totale de la carte */
-        background: #fff;
-        border-radius: 20px;
-        overflow: hidden;
-        transition: 0.8s;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
-
-    .school-card:hover {
-        transform: translateY(-10px) scale(1.02);
-    }
-
-    /* IMAGE */
-    .img-container {
-        height: 220px;
-        overflow: hidden;
-    }
-
-    .img-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: 0.8s;
-    }
-
-    .school-card:hover img {
-        transform: scale(1.1);
-    }
-
-    /* CONTENU */
-    .card-content {
-        padding: 20px;
-    }
-
-    .card-content h5 {
+        gap: .5rem;
+        font-size: .7rem;
         font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gem-primary);
+        background: rgba(193, 18, 31, .08);
+        border: 1px solid rgba(193, 18, 31, .14);
+        padding: .5rem 1rem;
+        border-radius: 999px;
+        margin-bottom: 1.1rem;
     }
 
-    .card-content p {
-        font-size: 14px;
-        color: #666;
-    }
-
-    /* BOUTONS */
-    .slider-btn {
-        position: absolute;
-        top: 40%;
-        transform: translateY(-50%);
-        background: rgba(230, 57, 70, 0.9);
-        color: white;
-        border: none;
-        padding: 12px 15px;
+    .gem-eyebrow::before {
+        content: "";
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
-        cursor: pointer;
-        z-index: 10;
+        background: var(--gem-primary);
     }
 
-    .prev-btn {
-        left: -10px;
+    .gem-title {
+        font-weight: 800;
+        letter-spacing: -.045em;
+        line-height: 1.07;
+        font-size: clamp(2rem, 4.2vw, 3.2rem);
     }
 
-    .next-btn {
-        right: -10px;
+    .gem-title .hl {
+        background: linear-gradient(120deg, var(--gem-primary), #ef4444 60%, var(--gem-gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
-    .slider-btn:hover {
-        background: #c1121f;
+    .gem-lead { color: var(--gem-muted); font-size: 1.05rem; line-height: 1.8; max-width: 640px; }
+
+    .gem-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .6rem;
+        padding: .95rem 1.7rem;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: .93rem;
+        color: #fff;
+        text-decoration: none;
+        background: linear-gradient(120deg, #d4192b, var(--gem-primary-dark));
+        box-shadow: 0 12px 28px rgba(193, 18, 31, .3);
+        transition: transform .25s ease, box-shadow .25s ease;
     }
 
-    /* DOTS */
-    .slider-dots span {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin: 5px;
-        background: #ccc;
-        border-radius: 50%;
-        cursor: pointer;
+    .gem-btn:hover { color: #fff; transform: translateY(-3px); box-shadow: 0 18px 36px rgba(193, 18, 31, .4); }
+    .gem-btn i { transition: transform .25s ease; }
+    .gem-btn:hover i { transform: translateX(4px); }
+
+    .gem-btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: .6rem;
+        padding: .95rem 1.7rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .93rem;
+        color: #fff;
+        text-decoration: none;
+        border: 1.5px solid rgba(255, 255, 255, .55);
+        backdrop-filter: blur(6px);
+        transition: all .25s ease;
     }
 
-    .slider-dots span.active {
-        background: #e63946;
-    }
-</style>
-<script>
-    const slider = document.querySelector('.school-slider');
-    const cards = document.querySelectorAll('.school-card');
-    const nextBtn = document.querySelector('.next-btn');
-    const prevBtn = document.querySelector('.prev-btn');
-    const dotsContainer = document.querySelector('.slider-dots');
+    .gem-btn-ghost:hover { color: var(--gem-ink); background: #fff; border-color: #fff; }
 
-    let index = 0;
-    const cardWidth = 560;
-
-    // créer dots
-    cards.forEach((_, i) => {
-        const dot = document.createElement('span');
-        if (i === 0) dot.classList.add('active');
-
-        dot.addEventListener('click', () => {
-            index = i;
-            updateSlider();
-        });
-
-        dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll('.slider-dots span');
-
-    function updateSlider() {
-        slider.scrollTo({
-            left: index * cardWidth,
-            behavior: 'smooth'
-        });
-
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[index].classList.add('active');
+    /* ================= HERO ================= */
+    #homeCarousel, #homeCarousel .carousel-item, .gem-hero-static {
+        height: min(720px, 78vh);
+        min-height: 520px;
     }
 
-    // boutons
-    nextBtn.onclick = () => {
-        index = (index + 1) % cards.length;
-        updateSlider();
-    };
+    #homeCarousel { background: var(--gem-ink); }
 
-    prevBtn.onclick = () => {
-        index = (index - 1 + cards.length) % cards.length;
-        updateSlider();
-    };
+    #homeCarousel .carousel-item img { height: 100%; width: 100%; object-fit: cover; }
 
-    // auto slide
-    setInterval(() => {
-        index = (index + 1) % cards.length;
-        updateSlider();
-    }, 8000);
-</script>
-<!-- POURQUOI CHOISIR E3M -->
-<section class="container py-5">
-
-    <div class="text-center mb-5">
-
-        <h2 class="fw-bold text-primary">
-            Pourquoi choisir GEM ?
-        </h2>
-
-        <p class="text-muted">
-            Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
-        </p>
-
-    </div>
-
-    <div class="row g-4">
-
-        <!-- CARD 1 -->
-
-        <div class="col-md-3" data-aos="fade-up">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-primary">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Formation de qualité</h5>
-
-                <p class="text-muted small">
-                    Des programmes adaptés aux besoins du marché et aux technologies modernes.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 2 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-success">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Experts enseignants</h5>
-
-                <p class="text-muted small">
-                    Des enseignants expérimentés issus du monde académique et professionnel.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 3 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-warning">
-                    <i class="fas fa-globe-africa"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Ouverture internationale</h5>
-
-                <p class="text-muted small">
-                    Partenariats académiques à l’international.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 4 -->
-
-        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
-
-            <div class="choose-card text-center p-4 h-100">
-
-                <div class="icon-box bg-danger">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-
-                <h5 class="fw-bold mt-3">Insertion professionnelle</h5>
-
-                <p class="text-muted small">
-                    Des formations orientées vers l'emploi et l’entrepreneuriat.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<style>
-    /* ================= SLIDER HORIZONTAL ================= */
-    .school-slider-wrapper {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .school-slider {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        padding: 10px 0;
-    }
-
-    .school-slider::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .school-slider::-webkit-scrollbar-thumb {
-        background: #4b5cb8;
-        border-radius: 4px;
-    }
-
-    .school-card {
-        flex: 0 0 300px;
-        border-radius: 15px;
-        overflow: hidden;
-        background: #fff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-
-    .school-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    }
-
-    .school-img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .school-img:hover {
-        transform: scale(1.05);
-    }
-
-    .card-body h5 {
-        font-size: 1.2rem;
-    }
-
-    .card-body p {
-        font-size: 0.95rem;
-    }
-
-    /* ================= BOUTONS ================= */
-    .slider-btn {
+    #homeCarousel .carousel-item::after, .gem-hero-static::after {
+        content: "";
         position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(95deg, rgba(10, 12, 20, .92) 0%, rgba(10, 12, 20, .65) 45%, rgba(10, 12, 20, .15) 100%),
+            linear-gradient(0deg, rgba(10, 12, 20, .45), transparent 40%);
+    }
+
+    #homeCarousel .carousel-caption {
+        z-index: 2;
+        left: max(6%, calc((100vw - 1180px) / 2));
+        right: auto;
+        bottom: auto;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(75, 92, 184, 0.8);
-        color: white;
-        border: none;
-        font-size: 2rem;
-        padding: 0 12px;
+        text-align: left;
+        max-width: 720px;
+        padding: 0;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .5rem 1rem;
+        margin-bottom: 1.3rem;
+        border-radius: 999px;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: #fff;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .28);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-badge i { color: var(--gem-gold); }
+
+    #homeCarousel .carousel-caption h2, .gem-hero-static h1 {
+        font-size: clamp(2.3rem, 5.8vw, 4.8rem);
+        font-weight: 850;
+        line-height: 1.02;
+        letter-spacing: -.06em;
+        margin-bottom: 1.2rem;
+        text-shadow: 0 6px 30px rgba(0, 0, 0, .3);
+    }
+
+    #homeCarousel .carousel-caption p, .gem-hero-static p {
+        max-width: 580px;
+        font-size: clamp(1rem, 1.5vw, 1.2rem);
+        line-height: 1.75;
+        color: rgba(255, 255, 255, .88);
+        margin-bottom: 1.8rem;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+
+    #homeCarousel .carousel-item.active .hero-badge,
+    #homeCarousel .carousel-item.active h2,
+    #homeCarousel .carousel-item.active p,
+    #homeCarousel .carousel-item.active .hero-actions { animation: heroUp .8s ease both; }
+    #homeCarousel .carousel-item.active h2 { animation-delay: .12s; }
+    #homeCarousel .carousel-item.active p { animation-delay: .24s; }
+    #homeCarousel .carousel-item.active .hero-actions { animation-delay: .36s; }
+
+    @keyframes heroUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+    #homeCarousel .carousel-indicators { margin-bottom: 4.2rem; }
+    #homeCarousel .carousel-indicators [data-bs-target] {
+        width: 28px; height: 5px; border: 0; border-radius: 99px; opacity: .45;
+        transition: width .25s ease, opacity .25s ease;
+    }
+    #homeCarousel .carousel-indicators .active { width: 52px; opacity: 1; background: var(--gem-gold); }
+    #homeCarousel .carousel-control-prev, #homeCarousel .carousel-control-next { width: 6%; opacity: .7; }
+
+    .gem-hero-static {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(120deg, #14161f, #3a0d14 60%, var(--gem-primary-dark));
+    }
+    .gem-hero-static .container { position: relative; z-index: 2; color: #fff; }
+
+    /* ================= BANDEAU SLOGAN ================= */
+    .gem-marquee {
+        background: var(--gem-ink);
+        color: #fff;
+        overflow: hidden;
+        padding: 1.1rem 0;
+        position: relative;
+        z-index: 3;
+    }
+
+    .gem-marquee-track {
+        display: flex;
+        gap: 3rem;
+        width: max-content;
+        animation: marquee 28s linear infinite;
+        font-weight: 800;
+        font-size: clamp(1rem, 2vw, 1.35rem);
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .gem-marquee-track span { display: inline-flex; align-items: center; gap: 3rem; }
+    .gem-marquee-track span::after { content: "✦"; color: var(--gem-gold); }
+    .gem-marquee-track em { font-style: normal; color: var(--gem-gold); }
+
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ================= CHIFFRES ================= */
+    .gem-stats { margin-top: -3rem; position: relative; z-index: 5; padding-bottom: 1rem; }
+
+    .gem-stats-card {
+        background: rgba(255, 255, 255, .97);
+        border: 1px solid #fff;
+        border-radius: 28px;
+        box-shadow: var(--gem-shadow-lg);
+        padding: 1.8rem 1rem;
+    }
+
+    .gem-stat { text-align: center; padding: .8rem 1rem; }
+    .gem-stat + .gem-stat { border-left: 1px solid #eceef4; }
+
+    .gem-stat strong {
+        display: block;
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 850;
+        letter-spacing: -.04em;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .gem-stat span { display: block; margin-top: .2rem; color: var(--gem-muted); font-weight: 600; font-size: .85rem; }
+
+    /* ================= À PROPOS ================= */
+    .gem-about-visual { position: relative; padding: 0 0 2.5rem 2.5rem; }
+
+    .gem-about-img {
+        position: relative;
+        border-radius: 32px;
+        overflow: hidden;
+        box-shadow: var(--gem-shadow-lg);
+    }
+
+    .gem-about-img img { width: 100%; height: min(540px, 50vw); min-height: 360px; object-fit: cover; transition: transform .9s ease; }
+    .gem-about-img:hover img { transform: scale(1.06); }
+
+    .gem-about-visual::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 55%;
+        height: 55%;
+        border-radius: 32px;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-gold));
+        opacity: .9;
+        z-index: 0;
+    }
+
+    .gem-about-img { z-index: 1; }
+
+    .gem-float-card {
+        position: absolute;
+        z-index: 2;
+        right: -14px;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        padding: 1rem 1.3rem;
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: var(--gem-shadow-lg);
+        animation: floaty 5s ease-in-out infinite;
+    }
+
+    .gem-float-card .ic {
+        width: 48px; height: 48px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 1.2rem;
+        background: linear-gradient(135deg, var(--gem-primary), #ef4444);
+    }
+
+    .gem-float-card b { display: block; font-size: 1.05rem; line-height: 1.1; }
+    .gem-float-card small { color: var(--gem-muted); }
+
+    @keyframes floaty { 50% { transform: translateY(-10px); } }
+
+    .gem-mission {
+        background: linear-gradient(135deg, #fff, #fffafa);
+        border: 1px solid #f1e4e5;
+        border-left: 4px solid var(--gem-primary);
+        border-radius: 18px;
+        padding: 1.4rem 1.6rem;
+        box-shadow: var(--gem-shadow);
+    }
+
+    .gem-quote {
+        position: relative;
+        font-style: italic;
+        line-height: 1.8;
+        color: #3b3f4e;
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 18px;
+        padding: 1.5rem 1.7rem 1.3rem 2.6rem;
+        box-shadow: var(--gem-shadow);
+    }
+
+    .gem-quote::before {
+        content: "“";
+        position: absolute;
+        top: -.1rem;
+        left: .9rem;
+        font-size: 4rem;
+        line-height: 1;
+        font-family: Georgia, serif;
+        color: rgba(193, 18, 31, .2);
+    }
+
+    .gem-quote cite { display: block; margin-top: .6rem; font-weight: 700; font-style: normal; color: var(--gem-primary); }
+
+    /* ================= PARCOURS ================= */
+    .gem-steps { background: var(--gem-ink); color: #fff; position: relative; overflow: hidden; }
+
+    .gem-steps::before {
+        content: "";
+        position: absolute;
+        width: 520px; height: 520px;
+        right: -160px; top: -200px;
         border-radius: 50%;
-        cursor: pointer;
-        z-index: 10;
-        transition: background 0.3s;
+        background: radial-gradient(circle, rgba(193, 18, 31, .55), transparent 70%);
     }
 
-    .slider-btn:hover {
-        background: rgba(75, 92, 184, 1);
+    .gem-steps .gem-eyebrow { color: var(--gem-gold); background: rgba(255, 255, 255, .07); border-color: rgba(255, 255, 255, .15); }
+    .gem-steps .gem-eyebrow::before { background: var(--gem-gold); }
+    .gem-steps .gem-lead { color: rgba(255, 255, 255, .7); }
+
+    .step-card {
+        position: relative;
+        height: 100%;
+        padding: 2.2rem 1.8rem;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, .05);
+        border: 1px solid rgba(255, 255, 255, .1);
+        backdrop-filter: blur(8px);
+        transition: transform .3s ease, background .3s ease, border-color .3s ease;
     }
 
-    .prev-btn {
-        left: 5px;
+    .step-card:hover { transform: translateY(-8px); background: rgba(255, 255, 255, .09); border-color: rgba(228, 176, 74, .5); }
+
+    .step-num {
+        font-size: 3.6rem;
+        font-weight: 850;
+        letter-spacing: -.06em;
+        line-height: 1;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--gem-gold), #ef4444);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
-    .next-btn {
-        right: 5px;
+    .step-card h5 { font-weight: 700; letter-spacing: -.02em; }
+    .step-card p { color: rgba(255, 255, 255, .68); line-height: 1.7; margin: 0; font-size: .95rem; }
+
+    /* ================= TÉMOIGNAGES ================= */
+    .testimonial-swiper { padding: .7rem .7rem 3.6rem; }
+
+    .gem-testimonial {
+        position: relative;
+        height: 100%;
+        padding: 2.2rem 1.8rem 1.8rem;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 24px;
+        box-shadow: var(--gem-shadow);
+        transition: transform .3s ease, box-shadow .3s ease;
     }
 
+    .gem-testimonial::before {
+        content: "“";
+        position: absolute;
+        top: .2rem;
+        right: 1.4rem;
+        font-family: Georgia, serif;
+        font-size: 5rem;
+        line-height: 1;
+        color: rgba(193, 18, 31, .12);
+    }
+
+    .gem-testimonial:hover { transform: translateY(-6px); box-shadow: var(--gem-shadow-lg); }
+
+    .gem-testimonial img {
+        width: 76px; height: 76px; object-fit: cover; border-radius: 50%;
+        border: 3px solid #fff; box-shadow: 0 0 0 3px var(--gem-primary);
+        margin-bottom: 1rem;
+    }
+
+    .gem-testimonial p { color: #3b3f4e; line-height: 1.8; font-size: .95rem; }
+    .gem-testimonial small { font-weight: 700; color: var(--gem-primary); }
+
+    .swiper-button-next, .swiper-button-prev { color: var(--gem-primary); transform: scale(.7); }
+    .swiper-pagination-bullet-active { background: var(--gem-primary); }
+
+    /* ================= ÉTABLISSEMENTS ================= */
+    .gem-schools-wrap { position: relative; }
+
+    .gem-schools {
+        display: flex;
+        gap: 1.6rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        padding: .6rem .3rem 1.6rem;
+        scrollbar-width: none;
+    }
+
+    .gem-schools::-webkit-scrollbar { display: none; }
+
+    .school-card {
+        flex: 0 0 min(580px, 88%);
+        scroll-snap-align: start;
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--gem-shadow);
+        transition: transform .4s ease, box-shadow .4s ease;
+    }
+
+    .school-card:hover { transform: translateY(-8px); box-shadow: var(--gem-shadow-lg); }
+
+    .school-card .img-container { position: relative; height: 270px; overflow: hidden; }
+    .school-card .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s ease; }
+    .school-card:hover .img-container img { transform: scale(1.08); }
+
+    .school-card .img-container::after {
+        content: ""; position: absolute; inset: 45% 0 0;
+        background: linear-gradient(0deg, rgba(15, 18, 28, .35), transparent);
+        pointer-events: none;
+    }
+
+    .school-card .card-content { padding: 1.7rem 1.8rem 1.9rem; }
+    .school-card h5 { font-weight: 750; font-size: 1.25rem; letter-spacing: -.03em; }
+    .school-card p { color: var(--gem-muted); line-height: 1.75; font-size: .95rem; margin: 0; }
+
+    .slider-btn {
+        position: absolute; top: 42%; transform: translateY(-50%); z-index: 10;
+        width: 50px; height: 50px; border-radius: 50%;
+        border: 1px solid #edf0f5; background: rgba(255, 255, 255, .97);
+        color: var(--gem-primary); font-size: 1.05rem;
+        box-shadow: var(--gem-shadow-lg); transition: all .25s ease;
+    }
+
+    .slider-btn:hover { background: var(--gem-primary); color: #fff; }
+    .prev-btn { left: -14px; }
+    .next-btn { right: -14px; }
+
+    .slider-dots span {
+        display: inline-block; width: 8px; height: 8px; margin: 4px;
+        border-radius: 999px; background: #d2d5df; cursor: pointer; transition: all .3s ease;
+    }
+
+    .slider-dots span.active { width: 28px; background: var(--gem-primary); }
+
+    /* ================= ATOUTS ================= */
+    .choose-card {
+        position: relative;
+        height: 100%;
+        padding: 2.3rem 1.6rem;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 24px;
+        box-shadow: var(--gem-shadow);
+        overflow: hidden;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+    .choose-card::after {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; bottom: 0; height: 4px;
+        background: linear-gradient(90deg, var(--gem-primary), var(--gem-gold));
+        transform: scaleX(0);
+        transition: transform .35s ease;
+    }
+
+    .choose-card:hover { transform: translateY(-8px); box-shadow: var(--gem-shadow-lg); border-color: rgba(193, 18, 31, .2); }
+    .choose-card:hover::after { transform: scaleX(1); }
+
+    .icon-box {
+        width: 74px; height: 74px; margin: 0 auto 1.3rem; border-radius: 22px;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 1.6rem;
+        box-shadow: 0 14px 26px rgba(20, 22, 31, .14);
+        transition: transform .3s ease;
+    }
+
+    .choose-card:hover .icon-box { transform: translateY(-4px) scale(1.06) rotate(-4deg); }
+    .ib-1 { background: linear-gradient(135deg, #4b5cb8, #6a78d1); }
+    .ib-2 { background: linear-gradient(135deg, #16a34a, #4ade80); }
+    .ib-3 { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .ib-4 { background: linear-gradient(135deg, #c1121f, #ef4444); }
+
+    .choose-card h5 { font-weight: 750; font-size: 1.08rem; letter-spacing: -.025em; }
+    .choose-card p { line-height: 1.75; }
+
+    /* ================= FAQ + CONTACT ================= */
+    .gem-faq .accordion-item {
+        border: 1px solid #edf0f5;
+        border-radius: 17px !important;
+        margin-bottom: .8rem;
+        overflow: hidden;
+        box-shadow: 0 7px 22px rgba(20, 22, 31, .05);
+    }
+
+    .gem-faq .accordion-button { min-height: 62px; font-weight: 600; font-size: .95rem; padding: 1.1rem 1.3rem; background: #fff; }
+    .gem-faq .accordion-button:not(.collapsed) { color: var(--gem-primary); background: rgba(193, 18, 31, .05); box-shadow: none; }
+    .gem-faq .accordion-button:focus { box-shadow: none; }
+
+    .gem-contact {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(1.5rem, 3vw, 2.6rem);
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 28px;
+        box-shadow: var(--gem-shadow-lg);
+    }
+
+    .gem-contact::before {
+        content: "";
+        position: absolute; width: 260px; height: 260px; right: -110px; top: -110px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(193, 18, 31, .14), transparent 70%);
+    }
+
+    .gem-contact h4 { font-weight: 800; font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -.04em; }
+
+    .gem-contact .form-control {
+        min-height: 52px; padding: .85rem 1rem;
+        border: 1px solid #e6e8ef; border-radius: 14px;
+        background: #f9fafc; font-size: .93rem;
+    }
+
+    .gem-contact textarea.form-control { min-height: 130px; }
+    .gem-contact .form-control:focus { border-color: rgba(193, 18, 31, .55); box-shadow: 0 0 0 .22rem rgba(193, 18, 31, .09); background: #fff; }
+
+    .map-container {
+        height: 400px; border: 1px solid #e9ebf1; border-radius: 28px;
+        overflow: hidden; box-shadow: var(--gem-shadow-lg);
+    }
+
+    .map-container iframe { width: 100%; height: 100%; border: 0; }
+
+    /* ================= RESPONSIVE ================= */
     @media (max-width: 768px) {
-        .school-card {
-            flex: 0 0 250px;
-        }
+        #homeCarousel, #homeCarousel .carousel-item, .gem-hero-static { height: 560px; min-height: 560px; }
+        #homeCarousel .carousel-caption { left: 7%; right: 7%; }
+        #homeCarousel .carousel-indicators { margin-bottom: 3.6rem; }
+        .gem-stats { margin-top: -2rem; }
+        .gem-stat + .gem-stat { border-left: 0; }
+        .gem-stat:nth-child(odd) { border-right: 1px solid #edf0f5; }
+        .gem-stat:nth-child(-n+2) { border-bottom: 1px solid #edf0f5; }
+        .gem-about-visual { padding: 0 0 2rem 1.2rem; }
+        .gem-about-img img { height: 340px; min-height: 0; }
+        .gem-float-card { right: 6px; }
+        .school-card .img-container { height: 215px; }
+        .prev-btn { left: 0; }
+        .next-btn { right: 0; }
+        .map-container { height: 300px; }
+    }
 
-        .slider-btn {
-            font-size: 1.5rem;
-            padding: 0 10px;
+    @media (prefers-reduced-motion: reduce) {
+        .gem-page *, .gem-page *::before, .gem-page *::after {
+            animation: none !important; transition: none !important; scroll-behavior: auto !important;
         }
     }
 </style>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const slider = document.querySelector(".school-slider");
-        const prevBtn = document.querySelector(".prev-btn");
-        const nextBtn = document.querySelector(".next-btn");
+<div class="gem-page">
 
-        const scrollAmount = 320; // largeur d'une carte + gap
-
-        nextBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        });
-
-        prevBtn.addEventListener("click", () => {
-            slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-        });
-
-        // Optional: auto scroll every 5s
-        setInterval(() => {
-            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
-                slider.scrollTo({ left: 0, behavior: "smooth" });
-            } else {
-                slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-            }
-        }, 8000);
-    });
-
-
-    
-</script>
-<!-- ================= FAQ + CONTACT ================= -->
-<section class="container py-4 mb-4">
-    <div class="row g-3">
-
-        <!-- FAQ -->
-
-        <div class="col-md-5">
-            <h3 class="fw-bold mb-3">Foire aux questions (FAQ)</h3>
-
-            <div class="accordion" id="faqAccordion">
-
-                <!-- Question 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq1">
-                            Comment puis-je m'inscrire en ligne ?
-                        </button>
-                    </h2>
-                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Vous pouvez remplir notre formulaire de préinscription en ligne.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq2">
-                            Quels documents sont nécessaires ?
-                        </button>
-                    </h2>
-                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Pièce d'identité, justificatif de domicile et bulletins récents.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq3">
-                            Quel est le coût des formations ?
-                        </button>
-                    </h2>
-                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus
-                            de détails.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq4">
-                            Comment obtenir un certificat ?
-                        </button>
-                    </h2>
-                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq5">
-                            Puis-je modifier ma préinscription ?
-                        </button>
-                    </h2>
-                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#faq6">
-                            Les formations sont-elles en ligne ou en présentiel ?
-                        </button>
-                    </h2>
-                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en
-                            présentiel.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-7">
-            <div class="card shadow p-3 border-0">
-                <h5 class="fw-bold mb-2">Besoin d'informations ? Contactez-nous</h5>
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-success mb-2">{{ message }}</div>
+    <!-- ================= HERO ================= -->
+    {% if slides %}
+    <section class="container-fluid px-0">
+        <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for slide in slides %}
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                    {% if forloop.first %}class="active" aria-current="true" {% endif %}
+                    aria-label="Slide {{ forloop.counter }}"></button>
                 {% endfor %}
-                {% endif %}
-                <form method="POST" action="{% url 'home' %}">
-                    {% csrf_token %}
-                    <input type="text" class="form-control mb-2" name="nom" placeholder="Nom" required>
-                    <input type="text" class="form-control mb-2" name="prenom" placeholder="Prénom" required>
-                    <input type="email" class="form-control mb-2" name="email" placeholder="E-mail" required>
-                    <input type="tel" class="form-control mb-2" name="telephone" placeholder="Téléphone" required>
-                    <textarea class="form-control mb-2" name="message" rows="4" placeholder="Votre message..."
-                        required></textarea>
-                    <button type="submit" class="btn btn-primary w-100">Envoyer</button>
-                </form>
+            </div>
+            <div class="carousel-inner">
+                {% for slide in slides %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="6500">
+                    <img src="{{ slide.image.url }}" class="d-block w-100" alt="{{ slide.title }}">
+                    <div class="carousel-caption">
+                        <span class="hero-badge"><i class="fas fa-star"></i> Groupe Expert Métier · Abidjan</span>
+                        <h2>{{ slide.title }}</h2>
+                        <p>{{ slide.message|safe }}</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'inscription' %}" class="gem-btn">Je m'inscris <i class="fas fa-arrow-right"></i></a>
+                            <a href="{% url 'admission' %}" class="gem-btn-ghost">Conditions d'admission</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev"
+                aria-label="Précédent"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next"
+                aria-label="Suivant"><span class="carousel-control-next-icon"></span></button>
+        </div>
+    </section>
+    {% else %}
+    <section class="gem-hero-static">
+        <div class="container">
+            <span class="hero-badge"><i class="fas fa-star"></i> Groupe Expert Métier · Abidjan</span>
+            <h1>Votre avenir<br>commence ici.</h1>
+            <p>Formez-vous. Osez. Réussissez. Des formations d'excellence pour bâtir une carrière qui compte.</p>
+            <div class="hero-actions">
+                <a href="{% url 'inscription' %}" class="gem-btn">Je m'inscris <i class="fas fa-arrow-right"></i></a>
+                <a href="{% url 'admission' %}" class="gem-btn-ghost">Conditions d'admission</a>
             </div>
         </div>
-    </div>
-    <!-- MAP -->
-    <div class="mt-4">
-        <div class="map-container">
-            <iframe src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed"
-                allowfullscreen loading="lazy"></iframe>
+    </section>
+    {% endif %}
+
+    <!-- ================= BANDEAU SLOGAN ================= -->
+    <div class="gem-marquee" aria-hidden="true">
+        <div class="gem-marquee-track">
+            <span>Osez <em>l'excellence</em></span><span>Formez-vous</span><span>Innovez</span><span>Réussissez</span>
+            <span>Osez <em>l'excellence</em></span><span>Formez-vous</span><span>Innovez</span><span>Réussissez</span>
+            <span>Osez <em>l'excellence</em></span><span>Formez-vous</span><span>Innovez</span><span>Réussissez</span>
+            <span>Osez <em>l'excellence</em></span><span>Formez-vous</span><span>Innovez</span><span>Réussissez</span>
         </div>
     </div>
-</section>
 
-<!-- Swiper JS -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> -->
+    <!-- ================= CHIFFRES ================= -->
+    <section class="gem-stats">
+        <div class="container">
+            <div class="gem-stats-card" data-aos="fade-up">
+                <div class="row g-0 align-items-center">
+                    <div class="col-6 col-md-3 gem-stat"><strong data-count="10" data-prefix="+" data-suffix=" ans">+10 ans</strong><span>d'excellence académique</span></div>
+                    <div class="col-6 col-md-3 gem-stat"><strong data-count="500" data-suffix="+">500+</strong><span>étudiants formés</span></div>
+                    <div class="col-6 col-md-3 gem-stat"><strong data-count="20" data-suffix="+">20+</strong><span>événements par an</span></div>
+                    <div class="col-6 col-md-3 gem-stat"><strong data-count="15" data-suffix="+">15+</strong><span>entreprises partenaires</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- ================= À PROPOS ================= -->
+    <section class="gem-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="gem-about-visual">
+                        <div class="gem-about-img">
+                            <img src="{% static 'images/ecole/rouge2.jpeg' %}" alt="Groupe Expert Métier">
+                        </div>
+                        <div class="gem-float-card">
+                            <div class="ic"><i class="fas fa-award"></i></div>
+                            <div><b>+10 ans</b><small>d'excellence académique</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-left">
+                    <span class="gem-eyebrow">À propos</span>
+                    <h2 class="gem-title mb-3">Ici naissent les <span class="hl">experts</span> de demain.</h2>
+                    <p class="gem-lead">
+                        Le Groupe Expert Métier (GEM) est un établissement privé d’enseignement supérieur agréé. E3M
+                        forme des ingénieurs compétents et innovants, prêts à relever les défis technologiques,
+                        environnementaux et industriels de demain.
+                    </p>
+
+                    <div class="gem-mission my-4">
+                        <h5 class="fw-bold mb-1">Notre mission</h5>
+                        <p class="mb-0 text-muted">
+                            Former des leaders techniques dotés d’une expertise solide, d’un esprit critique et d’une
+                            forte capacité d’innovation.
+                        </p>
+                    </div>
+
+                    <blockquote class="gem-quote mb-4">
+                        Notre ambition est de bâtir une génération d’ingénieurs capables d’impacter durablement le
+                        monde.
+                        <cite>— Direction Générale</cite>
+                    </blockquote>
+
+                    <a href="{% url 'formations' %}" class="gem-btn">Découvrir nos formations <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ÉTABLISSEMENTS ================= -->
+    <section class="gem-section" style="background:#fff;">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="gem-eyebrow">Nos établissements</span>
+                <h2 class="gem-title">Des écoles. Une seule <span class="hl">ambition</span> : votre réussite.</h2>
+                <p class="gem-lead mx-auto mt-3">Découvrez nos établissements et trouvez la formation qui vous ressemble.</p>
+            </div>
+
+            <div class="gem-schools-wrap">
+                <button type="button" class="slider-btn prev-btn" aria-label="Établissement précédent">&#10094;</button>
+                <button type="button" class="slider-btn next-btn" aria-label="Établissement suivant">&#10095;</button>
+
+                <div class="gem-schools school-slider">
+                    {% for ecole in ecoles %}
+                    <article class="school-card">
+                        {% if ecole.image %}
+                        <div class="img-container">
+                            <img src="{{ ecole.image.url }}" alt="{{ ecole.nom }}" loading="lazy">
+                        </div>
+                        {% endif %}
+                        <div class="card-content">
+                            <h5>{{ ecole.nom }}</h5>
+                            <p>{{ ecole.description|truncatechars:580 }}</p>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+
+                <div class="slider-dots text-center mt-2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PARCOURS EN 3 ÉTAPES ================= -->
+    <section class="gem-section gem-steps">
+        <div class="container position-relative">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="gem-eyebrow">Comment ça marche</span>
+                <h2 class="gem-title">Trois étapes. <span class="hl">Un avenir</span> qui change.</h2>
+                <p class="gem-lead mx-auto mt-3">Rejoindre GEM est simple, rapide et 100 % en ligne.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="step-card">
+                        <div class="step-num">01</div>
+                        <h5>Choisissez</h5>
+                        <p>Explorez nos filières et trouvez la formation qui correspond à vos ambitions.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="120">
+                    <div class="step-card">
+                        <div class="step-num">02</div>
+                        <h5>Inscrivez-vous</h5>
+                        <p>Remplissez votre dossier en ligne en quelques minutes, sans vous déplacer.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+                    <div class="step-card">
+                        <div class="step-num">03</div>
+                        <h5>Réussissez</h5>
+                        <p>Apprenez avec des experts, rencontrez des entreprises et lancez votre carrière.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="{% url 'preinscription' %}" class="gem-btn">Démarrer ma préinscription <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= POURQUOI CHOISIR GEM ================= -->
+    <section class="gem-section">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="gem-eyebrow">Nos atouts</span>
+                <h2 class="gem-title">Pourquoi GEM ? Parce que l'ordinaire ne vous <span class="hl">suffit pas</span>.</h2>
+                <p class="gem-lead mx-auto mt-3">
+                    Une école tournée vers l’innovation, la technologie et l’avenir des ingénieurs africains.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up">
+                    <div class="choose-card">
+                        <div class="icon-box ib-1"><i class="fas fa-graduation-cap"></i></div>
+                        <h5>Formation de qualité</h5>
+                        <p class="text-muted small mb-0">Des programmes taillés pour le marché et les technologies d'aujourd'hui.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="choose-card">
+                        <div class="icon-box ib-2"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h5>Des experts à vos côtés</h5>
+                        <p class="text-muted small mb-0">Des enseignants issus du monde académique et de l'entreprise.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="choose-card">
+                        <div class="icon-box ib-3"><i class="fas fa-globe-africa"></i></div>
+                        <h5>Ouverture internationale</h5>
+                        <p class="text-muted small mb-0">Des partenariats académiques pour voir plus loin que les frontières.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="choose-card">
+                        <div class="icon-box ib-4"><i class="fas fa-briefcase"></i></div>
+                        <h5>Cap sur l'emploi</h5>
+                        <p class="text-muted small mb-0">Des formations orientées insertion professionnelle et entrepreneuriat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TÉMOIGNAGES ================= -->
+    {% if temoignages %}
+    <section class="gem-section pt-0">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="gem-eyebrow">Témoignages</span>
+                <h2 class="gem-title">Leur réussite est notre plus belle <span class="hl">fierté</span>.</h2>
+            </div>
+
+            <div class="swiper testimonial-swiper">
+                <div class="swiper-wrapper">
+                    {% for temoignage in temoignages %}
+                    <div class="swiper-slide h-auto">
+                        <div class="gem-testimonial">
+                            <img src="{% static temoignage.photo %}" alt="{{ temoignage.nom }}">
+                            <p class="fst-italic">“{{ temoignage.commentaire }}”</p>
+                            <small>{{ temoignage.nom }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ================= FAQ + CONTACT ================= -->
+    <section class="gem-section pt-0">
+        <div class="container">
+            <div class="row g-5">
+
+                <div class="col-lg-5 gem-faq" data-aos="fade-right">
+                    <span class="gem-eyebrow">FAQ</span>
+                    <h3 class="gem-title mb-4" style="font-size:clamp(1.8rem,3vw,2.3rem);">Vos questions, nos <span class="hl">réponses</span>.</h3>
+
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq1">Comment puis-je m'inscrire en ligne ?</button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Vous pouvez remplir notre formulaire de préinscription en ligne.</div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq2">Quels documents sont nécessaires ?</button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Pièce d'identité, justificatif de domicile et bulletins récents.</div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq3">Quel est le coût des formations ?</button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Les tarifs varient selon le programme. Veuillez consulter la page des formations pour plus de détails.</div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq4">Comment obtenir un certificat ?</button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Après avoir réussi votre évaluation en ligne, vous pourrez télécharger votre certificat.</div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq5">Puis-je modifier ma préinscription ?</button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">Oui, contactez notre support par e-mail ou téléphone pour mettre à jour vos informations.</div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq6">Les formations sont-elles en ligne ou en présentiel ?</button>
+                            </h2>
+                            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">La plupart des formations sont en ligne, certaines sessions pratiques peuvent être en présentiel.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="gem-contact">
+                        <span class="gem-eyebrow">Contact</span>
+                        <h4 class="mb-1">Parlons de votre avenir.</h4>
+                        <p class="text-muted mb-4">Une question ? Notre équipe vous répond rapidement.</p>
+
+                        <form method="POST" action="{% url 'home' %}">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-sm-6"><input type="text" class="form-control" name="nom" placeholder="Nom" required></div>
+                                <div class="col-sm-6"><input type="text" class="form-control" name="prenom" placeholder="Prénom" required></div>
+                                <div class="col-sm-6"><input type="email" class="form-control" name="email" placeholder="E-mail" required></div>
+                                <div class="col-sm-6"><input type="tel" class="form-control" name="telephone" placeholder="Téléphone" required></div>
+                                <div class="col-12"><textarea class="form-control" name="message" rows="4" placeholder="Votre message..." required></textarea></div>
+                                <div class="col-12">
+                                    <button type="submit" class="gem-btn w-100 justify-content-center">
+                                        Envoyer mon message <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARTE -->
+            <div class="mt-5" data-aos="fade-up">
+                <div class="map-container">
+                    <iframe title="Localisation du Groupe Expert Métier à Abidjan"
+                        src="https://www.google.com/maps?q=Groupe+Expert+Metier+Abidjan&hl=fr&z=15&output=embed"
+                        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ================= SCRIPTS =================
+     Swiper et AOS sont chargés dans base.html -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const swiper = new Swiper('.testimonial-swiper', {
-            loop: true,
-            slidesPerView: 1,
-            spaceBetween: 20,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            autoplay: {          // <-- Défilement automatique
-                delay: 5000,     // 5 secondes
-                disableOnInteraction: false
-            },
-            breakpoints: {
-                576: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                992: { slidesPerView: 3 },
-            }
+
+        /* ---------- Compteurs animés ---------- */
+        const counters = document.querySelectorAll('[data-count]');
+        const animate = el => {
+            const target = parseInt(el.dataset.count, 10);
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const duration = 1600;
+            const start = performance.now();
+            const tick = now => {
+                const p = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = prefix + Math.round(target * eased) + suffix;
+                if (p < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        };
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries, obs) => {
+                entries.forEach(e => { if (e.isIntersecting) { animate(e.target); obs.unobserve(e.target); } });
+            }, { threshold: .6 });
+            counters.forEach(c => io.observe(c));
+        }
+
+        /* ---------- Témoignages (Swiper) ---------- */
+        if (document.querySelector('.testimonial-swiper') && typeof Swiper !== 'undefined') {
+            new Swiper('.testimonial-swiper', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 20,
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                pagination: { el: '.swiper-pagination', clickable: true },
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1100: { slidesPerView: 3 }
+                }
+            });
+        }
+
+        /* ---------- Slider des écoles ---------- */
+        const slider = document.querySelector('.school-slider');
+        if (!slider) return;
+
+        const cards = slider.querySelectorAll('.school-card');
+        const nextBtn = document.querySelector('.next-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        const dotsContainer = document.querySelector('.slider-dots');
+        if (!cards.length) return;
+
+        let index = 0;
+        const dots = [];
+
+        cards.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+            dots.push(dot);
+        });
+
+        function goTo(i) {
+            index = (i + cards.length) % cards.length;
+            slider.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+            dots.forEach((d, k) => d.classList.toggle('active', k === index));
+        }
+
+        if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
+        if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
+        goTo(0);
+
+        let timer = setInterval(() => goTo(index + 1), 8000);
+        slider.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
+        slider.parentElement.addEventListener('mouseleave', () => {
+            clearInterval(timer);
+            timer = setInterval(() => goTo(index + 1), 8000);
         });
     });
 </script>

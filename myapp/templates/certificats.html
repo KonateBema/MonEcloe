@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -8,196 +9,938 @@ Certificats - {{ home_data.site_name }}
 {% block content %}
 
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
+/* ==========================================
+   VARIABLES
+========================================== */
+:root {
+    --cert-primary: #2563eb;
+    --cert-secondary: #6366f1;
+    --cert-dark: #101828;
+    --cert-muted: #667085;
+    --cert-light: #f5f8ff;
+    --cert-border: #e9eef5;
+}
+
+/* ==========================================
+   PAGE
+========================================== */
+.certification-page {
+    background: #ffffff;
+    overflow: hidden;
+}
+
+/* ==========================================
+   HERO
+========================================== */
+.hero {
+    min-height: 570px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    background:
+        linear-gradient(110deg, rgba(8, 20, 48, .94), rgba(24, 58, 112, .72)),
+        url("{% static 'images/certificat.jpg' %}") center/cover no-repeat;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,.15), transparent);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+    max-width: 850px;
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 19px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50px;
+    color: #dbeafe;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.hero-content h1 {
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 850;
+    line-height: 1.15;
+    margin-bottom: 22px;
+}
+
+.hero-content h1 span {
+    color: #60a5fa;
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: #e2e8f0;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.hero-actions {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+    padding: 14px 25px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.hero-actions .btn:hover {
+    transform: translateY(-3px);
+}
+
+/* ==========================================
+   STATISTIQUES
+========================================== */
+.stats {
+    position: relative;
+    z-index: 5;
+    margin-top: -45px;
+}
+
+.stats .stat-card {
+    background: #fff;
+    border: 1px solid var(--cert-border);
+    border-radius: 18px;
+    padding: 28px 15px;
+    height: 100%;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(16,24,40,.08);
+    transition: .3s;
+}
+
+.stats .stat-card:hover {
+    transform: translateY(-6px);
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 0 auto 14px;
+    background: #eff6ff;
+    color: var(--cert-primary);
+    font-size: 25px;
+}
+
+.stat-card h2 {
+    color: var(--cert-dark);
+    font-size: 30px;
+    font-weight: 850;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: var(--cert-muted);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ==========================================
+   SECTION CERTIFICATS
+========================================== */
+.certificates-section {
+    padding: 100px 0 85px;
+}
+
+.section-heading {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 55px;
+}
+
+.section-heading .section-label {
+    color: var(--cert-primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.section-heading h2 {
+    color: var(--cert-dark);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 850;
+    margin: 13px 0;
+}
+
+.section-heading p {
+    color: var(--cert-muted);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   CARTES
+========================================== */
+.cert-card {
+    height: 100%;
+    background: #fff;
+    border: 1px solid var(--cert-border);
+    border-radius: 19px;
+    overflow: hidden;
+    transition: all .4s ease;
+}
+
+.cert-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 22px 45px rgba(15,23,42,.12);
+    border-color: transparent;
+}
+
+.cert-image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #eaf0f8;
+}
+
+.cert-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
+}
+
+.cert-card:hover img {
+    transform: scale(1.08);
+}
+
+.cert-image-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,.28), transparent 65%);
+    pointer-events: none;
+}
+
+.cert-category {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    left: 16px;
+    background: rgba(255,255,255,.96);
+    color: var(--cert-primary);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 13px;
+    border-radius: 30px;
+    letter-spacing: .5px;
+}
+
+.cert-card .card-body {
+    padding: 24px;
+    text-align: left;
+    min-height: 265px;
+}
+
+.cert-card h5 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--cert-dark);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.cert-card .description {
+    color: var(--cert-muted);
+    font-size: 14px;
+    line-height: 1.8;
+    min-height: 55px;
+}
+
+.timer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 9px 13px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 8px 0 20px;
+}
+
+.cert-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.cert-buttons .btn {
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: .3s;
+}
+
+.btn-cert-details {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+}
+
+.btn-cert-details:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-cert-start {
+    background: linear-gradient(100deg, #2563eb, #4f46e5);
+    border: none;
+    color: white;
+}
+
+.btn-cert-start:hover {
+    background: linear-gradient(100deg, #1d4ed8, #4338ca);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   MODALES
+========================================== */
+.cert-modal .modal-content {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+}
+
+.cert-modal .modal-header {
+    background: linear-gradient(110deg, #2563eb, #6366f1);
+    padding: 22px 25px;
+    color: white;
+}
+
+.cert-modal .modal-header h5 {
+    font-weight: 800;
+}
+
+.cert-modal .modal-body {
+    padding: 30px;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.cert-modal .modal-footer {
+    padding: 18px 25px;
+    background: #f8fafc;
+}
+
+.cert-modal .modal-footer .btn {
+    border-radius: 9px;
+    padding: 11px 20px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   CTA
+========================================== */
+.cert-cta {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(110deg, #101c38, #1d4ed8);
+    padding: 85px 20px;
+    color: white;
+    text-align: center;
+}
+
+.cert-cta::before,
+.cert-cta::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 50%;
+}
+
+.cert-cta::before {
+    top: -150px;
+    left: -80px;
+}
+
+.cert-cta::after {
+    bottom: -180px;
+    right: -70px;
+}
+
+.cert-cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cert-cta h2 {
+    font-size: clamp(27px, 4vw, 40px);
+    font-weight: 850;
+}
+
+.cert-cta p {
+    color: #dbeafe;
+    font-size: 16px;
+    margin: 17px 0 28px;
+}
+
+.cert-cta .btn {
+    padding: 14px 27px;
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+.empty-cert {
+    background: #f8fafc;
+    padding: 55px 20px;
+    border-radius: 18px;
+    text-align: center;
+    color: var(--cert-muted);
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+@media(max-width:768px) {
+
     .hero {
-        background:url("{% static 'images/certificat.jpg' %}") center/cover;
-        height: 70vh;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height: 490px;
+        padding: 65px 15px;
     }
 
-    .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
+    .hero-content h1 {
+        font-size: 37px;
     }
 
-    .hero-content {
-        position: relative;
-        color: white;
-        text-align: center;
-    }
-
-    .cert-card {
-        border-radius: 20px;
-        overflow: hidden;
-        transition: 0.4s;
-    }
-
-    .cert-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .cert-card img {
-        height: 200px;
-        object-fit: cover;
+    .hero-content p {
+        font-size: 15px;
     }
 
     .stats {
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        color: white;
+        margin-top: 25px;
     }
 
-    .timer-badge {
-        font-size: 14px;
-        background: #f8f9fa;
-        padding: 6px 10px;
-        border-radius: 8px;
+    .certificates-section {
+        padding: 70px 0;
     }
+
+    .cert-card .card-body {
+        min-height: auto;
+    }
+
+    .cert-image-wrapper {
+        height: 210px;
+    }
+
+    .cert-cta {
+        padding: 65px 18px;
+    }
+}
+
+@media(max-width:480px) {
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+}
 </style>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-content">
-        <h1 class="fw-bold display-4">Certifications en ligne</h1>
-        <p class="lead">Valorisez vos compétences avec nos certificats professionnels</p>
-    </div>
-</section>
+<div class="certification-page">
 
-<!-- STATS -->
-<section class="stats text-center py-5">
-    <div class="container">
-        <div class="row">
+    <!-- ======================================
+         HERO
+    ======================================= -->
+    <section class="hero">
 
-            <div class="col-md-4">
-                <h2 class="fw-bold">+{{ certificats|length }}</h2>
-                <p>Certificats disponibles</p>
+        <div class="hero-content" data-aos="fade-up">
+
+            <div class="hero-label">
+                <i class="bi bi-patch-check-fill"></i>
+                CERTIFICATIONS PROFESSIONNELLES
             </div>
 
-            <div class="col-md-4">
-                <h2 class="fw-bold">100%</h2>
-                <p>En ligne</p>
-            </div>
+            <h1>
+                Certifications <span>en ligne</span>
+            </h1>
 
-            <div class="col-md-4">
-                <h2 class="fw-bold">+1000</h2>
-                <p>Étudiants certifiés</p>
+            <p>
+                Développez vos compétences, évaluez vos connaissances
+                et valorisez votre parcours professionnel grâce à
+                nos certifications.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="#certificats" class="btn btn-primary">
+                    <i class="bi bi-award me-2"></i>
+                    Découvrir les certificats
+                </a>
+
+                <a href="#avantages" class="btn btn-outline-light">
+                    <i class="bi bi-arrow-down-circle me-2"></i>
+                    En savoir plus
+                </a>
+
             </div>
 
         </div>
-    </div>
-</section>
 
-<!-- CERTIFICATS -->
-<section class="container py-5">
+    </section>
 
-    <div class="text-center mb-5">
-        <h2 class="fw-bold">Choisissez votre certification</h2>
-        <p class="text-muted">Passez votre examen et téléchargez votre certificat</p>
-    </div>
+    <!-- ======================================
+         STATISTIQUES
+    ======================================= -->
+    <section class="stats">
 
-    <div class="row g-4">
+        <div class="container">
 
-        {% for cert in certificats %}
+            <div class="row g-3">
 
-        <div class="col-md-4" data-aos="zoom-in">
+                <div class="col-md-4">
+                    <div class="stat-card" data-aos="fade-up">
 
-            <div class="card cert-card shadow">
+                        <div class="stat-icon">
+                            <i class="bi bi-award-fill"></i>
+                        </div>
 
-                {% if cert.image %}
-                <img src="{{ cert.image.url }}" class="w-100">
-                {% else %}
-                <img src="{% static 'images/certificat.jpg' %}" class="w-100">
-                {% endif %}
+                        <h2>+{{ certificats|length }}</h2>
+                        <p>Certificats disponibles</p>
 
-                <div class="card-body text-center d-flex flex-column">
+                    </div>
+                </div>
 
-                    <h5 class="fw-bold text-primary">{{ cert.titre }}</h5>
+                <div class="col-md-4">
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-globe"></i>
+                        </div>
+
+                        <h2>100%</h2>
+                        <p>Accessibles en ligne</p>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+
+                        <h2>24h/24</h2>
+                        <p>Disponibilité de la plateforme</p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ======================================
+         CERTIFICATS
+    ======================================= -->
+    <section class="certificates-section" id="certificats">
+
+        <div class="container">
+
+            <div class="section-heading" data-aos="fade-up">
+
+                <span class="section-label">
+                    NOTRE CATALOGUE
+                </span>
+
+                <h2>Choisissez votre certification</h2>
+
+                <p>
+                    Sélectionnez une certification, découvrez son
+                    contenu et passez votre examen directement
+                    depuis notre plateforme.
+                </p>
+
+            </div>
+
+            <div class="row g-4">
+
+                {% for cert in certificats %}
+
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in">
+
+                    <div class="cert-card">
+
+                        <div class="cert-image-wrapper">
+
+                            {% if cert.image %}
+
+                            <img
+                                src="{{ cert.image.url }}"
+                                alt="{{ cert.titre }}"
+                                loading="lazy"
+                            >
+
+                            {% else %}
+
+                            <img
+                                src="{% static 'images/certificat.jpg' %}"
+                                alt="Certification"
+                                loading="lazy"
+                            >
+
+                            {% endif %}
+
+                            <span class="cert-category">
+                                <i class="bi bi-patch-check-fill me-1"></i>
+                                CERTIFICATION
+                            </span>
+
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+
+                            <h5>{{ cert.titre }}</h5>
+
+                            <p class="description">
+                                {{ cert.description|truncatechars:100 }}
+                            </p>
+
+                            <div>
+                                <span class="timer-badge">
+                                    <i class="bi bi-stopwatch"></i>
+                                    Durée : {{ cert.duree }} minutes
+                                </span>
+                            </div>
+
+                            <div class="cert-buttons">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-cert-details"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal{{ forloop.counter }}"
+                                >
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Consulter les détails
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-cert-start"
+                                    onclick="startExam('{{ cert.id }}','{{ cert.duree }}')"
+                                >
+                                    <i class="bi bi-play-circle-fill me-2"></i>
+                                    Passer le certificat
+                                    <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ======================================
+                     MODAL DETAILS
+                ======================================= -->
+                <div
+                    class="modal fade cert-modal"
+                    id="modal{{ forloop.counter }}"
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+
+                                <div>
+                                    <small class="text-white-50">
+                                        INFORMATIONS SUR LA CERTIFICATION
+                                    </small>
+
+                                    <h5 class="mb-0 mt-1">
+                                        {{ cert.titre }}
+                                    </h5>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="btn-close btn-close-white"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Fermer"
+                                ></button>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <div class="mb-4">
+                                    <h6 class="fw-bold text-dark">
+                                        <i class="bi bi-file-text text-primary me-2"></i>
+                                        Présentation
+                                    </h6>
+
+                                    <p>{{ cert.details|default:cert.description|linebreaksbr }}</p>
+                                </div>
+
+                                <div class="p-3 rounded-3 bg-light">
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <i class="bi bi-stopwatch text-primary fs-2"></i>
+
+                                        <div>
+                                            <strong class="text-dark">
+                                                Durée de l'examen
+                                            </strong>
+
+                                            <p class="mb-0">
+                                                {{ cert.duree }} minutes
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-light"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Fermer
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-success"
+                                    onclick="startExam('{{ cert.id }}','{{ cert.duree }}')"
+                                >
+                                    <i class="bi bi-play-fill me-1"></i>
+                                    Commencer maintenant
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="col-12">
+
+                    <div class="empty-cert">
+
+                        <i class="bi bi-award display-1"></i>
+
+                        <h4 class="fw-bold mt-3">
+                            Aucune certification disponible
+                        </h4>
+
+                        <p class="mb-0">
+                            Nos certifications seront bientôt disponibles.
+                            Revenez nous voir prochainement.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ======================================
+         AVANTAGES
+    ======================================= -->
+    <section class="py-5 bg-light" id="avantages">
+
+        <div class="container">
+
+            <div class="section-heading mb-5">
+
+                <span class="section-label">
+                    NOS AVANTAGES
+                </span>
+
+                <h2>Pourquoi choisir nos certifications ?</h2>
+
+                <p>
+                    Une expérience simple, accessible et adaptée
+                    à vos objectifs de formation.
+                </p>
+
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4 text-center" data-aos="fade-up">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-laptop"></i>
+                    </div>
+
+                    <h5 class="fw-bold">100% en ligne</h5>
 
                     <p class="text-muted">
-                        {{ cert.description|truncatechars:100 }}
+                        Passez vos examens depuis votre ordinateur,
+                        tablette ou smartphone.
                     </p>
 
-                    <!-- durée -->
-                    <div class="timer-badge mb-3">
-                        ⏱ Durée : {{ cert.duree }} minutes
+                </div>
+
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-stopwatch"></i>
                     </div>
 
-                    <div class="mt-auto">
+                    <h5 class="fw-bold">Examens chronométrés</h5>
 
-                        <button class="btn btn-outline-primary w-100 mb-2" data-bs-toggle="modal"
-                            data-bs-target="#modal{{ forloop.counter }}">
-                            Détails
-                        </button>
-
-                        <button class="btn btn-success w-100" onclick="startExam('{{ cert.id }}','{{ cert.duree }}')">
-                            Passer le certificat
-                        </button>
-
-                    </div>
+                    <p class="text-muted">
+                        Évaluez vos connaissances dans un environnement
+                        organisé et structuré.
+                    </p>
 
                 </div>
+
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-patch-check"></i>
+                    </div>
+
+                    <h5 class="fw-bold">Valorisez vos compétences</h5>
+
+                    <p class="text-muted">
+                        Valorisez votre parcours grâce à vos
+                        certifications obtenues.
+                    </p>
+
+                </div>
+
             </div>
 
         </div>
 
-        <!-- MODAL -->
-        <div class="modal fade" id="modal{{ forloop.counter }}">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
+    </section>
 
-                    <div class="modal-header bg-primary text-white">
-                        <h5>{{ cert.titre }}</h5>
-                        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
+    <!-- ======================================
+         CTA
+    ======================================= -->
+    <section class="cert-cta">
 
-                    <div class="modal-body">
-                        <p>{{ cert.details }}</p>
-                    </div>
+        <div class="cert-cta-content" data-aos="zoom-in">
 
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">
-                            Fermer
-                        </button>
+            <i class="bi bi-mortarboard-fill display-2 mb-4"></i>
 
-                        <button class="btn btn-success" onclick="startExam('{{ cert.id }}','{{ cert.duree }}')">
-                            Commencer maintenant
-                        </button>
-                    </div>
+            <h2>
+                Boostez votre CV dès aujourd'hui !
+            </h2>
 
-                </div>
-            </div>
+            <p>
+                Faites reconnaître vos compétences et donnez
+                une nouvelle dimension à votre avenir professionnel.
+            </p>
+
+            <a href="#certificats" class="btn btn-light text-primary">
+                Découvrir les certifications
+                <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+
         </div>
 
-        {% endfor %}
+    </section>
 
-    </div>
-</section>
+</div>
 
-<!-- CTA -->
-<section class="text-center py-5 bg-light">
-    <h2 class="fw-bold">Boostez votre CV dès aujourd’hui 🚀</h2>
-    <p class="text-muted">Obtenez des certificats reconnus par les entreprises</p>
-    <a href="#" class="btn btn-primary btn-lg mt-3">Commencer maintenant</a>
-</section>
-
+<!-- ======================================
+     ANIMATIONS ET FONCTION EXAMEN
+====================================== -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 <script>
-    AOS.init({
-        duration: 1200,
-        once: true
-    });
 
-    function startExam(certId, duree) {
-        // Directement rediriger sans alertes
-        window.location.href = "/certificat/" + certId + "/";
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (typeof AOS !== "undefined") {
+        AOS.init({
+            duration: 900,
+            once: true,
+            offset: 80
+        });
     }
+
+});
+
+/* ======================================
+   DEMARRAGE EXAMEN
+   LOGIQUE ORIGINALE CONSERVEE
+====================================== */
+
+function startExam(certId, duree) {
+
+    window.location.href = "/certificat/" + certId + "/";
+
+}
+
 </script>
 
 {% endblock %}

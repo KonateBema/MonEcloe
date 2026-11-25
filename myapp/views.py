@@ -816,31 +816,22 @@ def cycle_ingenieur(request):
 
 def inscription_view(request):
     if request.method == "POST":
+        # request.FILES est bien transmis : photo, piece_recto et piece_verso seront enregistrées
         form = InscriptionForm(request.POST, request.FILES)
 
         if form.is_valid():
-            # ✅ Récupérer l'objet enregistré
             inscription = form.save()
-
-            # messages.success(request, "Votre inscription a été envoyée avec succès !")
-
-            # ✅ Redirection vers page succès avec ID
             return redirect('inscription_succes', pk=inscription.id)
 
-        else:
-            messages.error(request, "Veuillez corriger les erreurs du formulaire.")
+        # Les erreurs sont affichées sous chaque champ et dans l'encadré rouge du template,
+        # inutile d'ajouter un message en plus (il s'afficherait en notification verte).
     else:
         form = InscriptionForm()
-
-    # ✅ Toujours exécuté si GET ou erreur
-    derniers_inscrits = Inscription.objects.order_by('-date_inscription')[:5]
 
     context = {
         'form': form,
         'page_title': "Inscription en ligne",
-        'derniers_inscrits': derniers_inscrits,
     }
-
     return render(request, 'inscription.html', context)
 
 def inscription_succes(request, pk):

@@ -431,6 +431,20 @@ class Inscription(models.Model):
     sexe = models.CharField(max_length=1, choices=SEXE_CHOICES, default='M')
     photo = models.ImageField(upload_to='photos/')
 
+    # Pièces à fournir (pièce d'identité)
+    piece_recto = models.FileField(
+        "Pièce d'identité (recto)",
+        upload_to='inscriptions/pieces/',
+        blank=True,
+        null=True,
+    )
+    piece_verso = models.FileField(
+        "Pièce d'identité (verso)",
+        upload_to='inscriptions/pieces/',
+        blank=True,
+        null=True,
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

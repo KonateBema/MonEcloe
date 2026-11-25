@@ -5,452 +5,950 @@
 
 {% block content %}
 
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- jsPDF (utilisé par telechargerRecap) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
 <style>
-  body {
-    background: #f4f6f9;
-  }
+    .gem-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: .85rem 1.8rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 8px 20px rgba(193, 18, 31, .35);
+        transition: transform .25s ease, box-shadow .25s ease, opacity .25s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-  /* HERO */
-  .hero {
-    background: url("{% static 'images/ecole/bleuBlan.jpeg' %}") center/cover no-repeat;
-    /* background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-            url("{% static 'images/ecole/bleuBlan.jpeg' %}") center/cover no-repeat; */
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    filter: contrast(1.05) saturate(1.1);
-    /* image-rendering: auto; */
-    image-rendering: crisp-edges; /* meilleur rendu */
-  }
+    .gem-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(193, 18, 31, .42);
+    }
 
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-  }
+    .gem-btn:disabled {
+        opacity: .65;
+        pointer-events: none;
+    }
 
-  .hero-content {
-    position: relative;
-    z-index: 2;
-  }
+    .btn-soft {
+        padding: .8rem 1.5rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: var(--gem-ink);
+        background: var(--gem-bg);
+        transition: background .2s ease;
+    }
 
-  .hero h1 {
-    font-size: 42px;
-    font-weight: 700;
-  }
+    .btn-soft:hover {
+        background: #e7e9f2;
+    }
 
-  .hero p {
-    font-size: 18px;
-  }
+    /* ================= HERO ================= */
+    .ins-hero {
+        position: relative;
+        padding: 5rem 0 7rem;
+        color: #fff;
+        text-align: center;
+        background:
+            linear-gradient(rgba(10, 12, 20, .78), rgba(10, 12, 20, .7)),
+            url("{% static 'images/ecole/bleuBlan.jpeg' %}") center/cover no-repeat;
+    }
 
-  /* Form card */
-  .card-form {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    padding: 40px;
-  }
+    .ins-hero h1 {
+        font-size: clamp(2rem, 4.6vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+    }
 
-  .form-control {
-    border-radius: 10px;
-  }
+    .ins-hero p {
+        opacity: .85;
+        font-size: 1.1rem;
+        margin: 0;
+    }
 
-  .btn {
-    border-radius: 8px;
-    font-weight: 600;
-  }
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem 1rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        margin-bottom: 1.2rem;
+    }
 
-  .modal-content {
-    border-radius: 15px;
-  }
+    /* ================= STEPPER ================= */
+    .ins-steps {
+        position: sticky;
+        top: calc(var(--nav-h) + 10px);
+        z-index: 20;
+        margin-top: -2.4rem;
+    }
 
-  /* Photo preview */
-  #photoPreviewContainer {
-    width: 150px;
-    height: 200px;
-    border: 2px dashed #007bff;
-    border-radius: 5px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f9fa;
-    cursor: pointer;
-    position: relative;
-  }
+    .ins-steps .bar {
+        display: flex;
+        gap: .3rem;
+        overflow-x: auto;
+        background: rgba(255, 255, 255, .92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 999px;
+        padding: .45rem;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+        scrollbar-width: none;
+    }
 
-  #photoPreviewContainer img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+    .ins-steps .bar::-webkit-scrollbar {
+        display: none;
+    }
 
-  #photoPlaceholder {
-    position: absolute;
-    font-size: 14px;
-    text-align: center;
-  }
+    .ins-steps a {
+        flex: 1 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: .6rem 1.1rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: .88rem;
+        color: var(--gem-muted);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .25s ease;
+    }
+
+    .ins-steps a .n {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .75rem;
+        font-weight: 800;
+        background: var(--gem-bg);
+        color: var(--gem-muted);
+        transition: all .25s ease;
+    }
+
+    .ins-steps a.active {
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+    }
+
+    .ins-steps a.active .n {
+        background: rgba(255, 255, 255, .25);
+        color: #fff;
+    }
+
+    /* ================= FORM ================= */
+    .gem-form .form-block {
+        background: #fff;
+        border-radius: 24px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        scroll-margin-top: calc(var(--nav-h) + 90px);
+    }
+
+    .form-block .block-head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.6rem;
+        padding-bottom: 1.2rem;
+        border-bottom: 1px solid #eceef4;
+    }
+
+    .form-block .block-head .ico {
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-accent), #6a78d1);
+    }
+
+    .form-block .block-head h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -.01em;
+    }
+
+    .form-block .block-head small {
+        color: var(--gem-muted);
+    }
+
+    .gem-form label {
+        display: block;
+        margin-bottom: .4rem;
+        font-weight: 600;
+        font-size: .88rem;
+        color: var(--gem-ink);
+    }
+
+    /* Astérisque sur les champs obligatoires
+       (nécessite required_css_class = 'required' dans InscriptionForm, voir notes) */
+    .gem-form label.required::after {
+        content: " *";
+        color: var(--gem-primary);
+    }
+
+    .gem-form input:not([type=checkbox]):not([type=radio]),
+    .gem-form select,
+    .gem-form textarea {
+        width: 100%;
+        padding: .8rem 1rem;
+        border: 1px solid #e0e3ee;
+        border-radius: 12px;
+        background: #fafbfe;
+        font-size: .95rem;
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .gem-form input[type=file] {
+        padding: .65rem 1rem;
+        cursor: pointer;
+    }
+
+    .gem-form input:focus,
+    .gem-form select:focus,
+    .gem-form textarea:focus {
+        outline: 0;
+        background: #fff;
+        border-color: var(--gem-primary);
+        box-shadow: 0 0 0 .2rem rgba(193, 18, 31, .12);
+    }
+
+    .gem-form .field {
+        margin-bottom: 1.1rem;
+    }
+
+    .gem-form .errorlist,
+    .gem-form .js-error {
+        list-style: none;
+        padding: 0;
+        margin: .4rem 0 0;
+        font-size: .82rem;
+        font-weight: 600;
+        color: #dc3545;
+    }
+
+    .gem-form .js-error:empty {
+        display: none;
+    }
+
+    .gem-form .hint {
+        display: block;
+        margin-top: .35rem;
+        font-size: .8rem;
+        color: var(--gem-muted);
+    }
+
+    .form-alert {
+        border: 0;
+        border-radius: 16px;
+        background: rgba(220, 53, 69, .08);
+        color: #b02a37;
+        font-weight: 600;
+    }
+
+    .form-alert small {
+        display: block;
+        margin-top: .3rem;
+        font-weight: 500;
+        opacity: .85;
+    }
+
+    .pieces-sep {
+        margin: 1.8rem 0 1.4rem;
+        border-top: 1px dashed #dfe2ee;
+    }
+
+    /* ================= PHOTO ================= */
+    .photo-drop {
+        position: relative;
+        width: 170px;
+        height: 220px;
+        margin: 0 auto;
+        border: 2px dashed rgba(193, 18, 31, .45);
+        border-radius: 20px;
+        background: rgba(193, 18, 31, .03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all .25s ease;
+    }
+
+    .photo-drop:hover,
+    .photo-drop.drag {
+        background: rgba(193, 18, 31, .08);
+        border-color: var(--gem-primary);
+        transform: translateY(-2px);
+    }
+
+    .photo-drop.invalid {
+        border-style: solid;
+        border-color: #dc3545;
+        background: rgba(220, 53, 69, .06);
+        animation: shake .4s ease;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-6px);
+        }
+
+        75% {
+            transform: translateX(6px);
+        }
+    }
+
+    .photo-drop img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .photo-drop .ph {
+        padding: 1rem;
+        color: var(--gem-muted);
+        font-size: .85rem;
+        font-weight: 500;
+    }
+
+    .photo-drop .ph i {
+        display: block;
+        margin-bottom: .5rem;
+        font-size: 1.8rem;
+        color: var(--gem-primary);
+    }
+
+    .photo-remove {
+        display: none;
+        margin: .7rem auto 0;
+        border: 0;
+        padding: .3rem .9rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--gem-primary);
+        background: rgba(193, 18, 31, .08);
+    }
+
+    .photo-remove.show {
+        display: block;
+    }
+
+    .photo-meta {
+        text-align: center;
+    }
+
+    /* ================= SUBMIT ================= */
+    .submit-bar {
+        text-align: center;
+        padding: 1rem 0 3rem;
+    }
+
+    .submit-bar p {
+        color: var(--gem-muted);
+        font-size: .9rem;
+        margin-top: .8rem;
+    }
+
+    /* ================= MODAL RECAP ================= */
+    .modal-content.gem-modal {
+        border: 0;
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(20, 22, 31, .35);
+    }
+
+    .gem-modal .modal-header {
+        border: 0;
+        padding: 1.5rem 1.8rem;
+        color: #fff;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
+    }
+
+    .gem-modal .modal-header h5 {
+        margin: 0;
+        font-weight: 800;
+    }
+
+    .gem-modal .modal-body {
+        padding: 1.8rem;
+    }
+
+    .gem-modal .modal-footer {
+        border: 0;
+        padding: 0 1.8rem 1.8rem;
+    }
+
+    .recap-group+.recap-group {
+        margin-top: 1.6rem;
+    }
+
+    .recap-group h6 {
+        font-weight: 800;
+        font-size: .8rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--gem-primary);
+        margin-bottom: .8rem;
+    }
+
+    .recap-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .6rem;
+    }
+
+    .recap-item {
+        padding: .7rem .9rem;
+        border-radius: 12px;
+        background: var(--gem-bg);
+        min-width: 0;
+    }
+
+    .recap-item small {
+        display: block;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: var(--gem-muted);
+    }
+
+    .recap-item span {
+        display: block;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
+
+    .recap-item.full {
+        grid-column: 1 / -1;
+    }
+
+    @media (max-width: 575.98px) {
+        .recap-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .gem-form .form-block {
+            padding: 1.4rem;
+        }
+
+        .ins-hero {
+            padding: 4rem 0 6rem;
+        }
+    }
 </style>
 
-<div class="container py-5">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-content">
-      <h1>Inscription en ligne</h1>
-      <p>{{ home_data.site_name }}</p>
+<!-- ================= HERO ================= -->
+<section class="ins-hero">
+    <div class="container">
+        <div class="hero-tag" data-aos="fade-up"><i class="fas fa-user-plus"></i> Espace étudiant</div>
+        <h1 data-aos="fade-up" data-aos-delay="100">{{ page_title|default:"Inscription en ligne" }}</h1>
+        <p data-aos="fade-up" data-aos-delay="200">{{ home_data.site_name }}</p>
     </div>
-  </div>
+</section>
 
-  <br>
+<!-- ================= STEPPER ================= -->
+<div class="ins-steps">
+    <div class="container" style="max-width:960px;">
+        <nav class="bar" id="stepsBar">
+            <a href="#sec-perso" class="active"><span class="n">1</span> Personnel</a>
+            <a href="#sec-acad"><span class="n">2</span> Académique</a>
+            <a href="#sec-parents"><span class="n">3</span> Parents</a>
+            <a href="#sec-pieces"><span class="n">4</span> Pièces</a>
+        </nav>
+    </div>
+</div>
 
-  <!-- FORMULAIRE -->
-  <div class="card-form">
-    <form id="inscriptionForm" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
 
-      <div class="row mb-3 align-items-center">
-        <!-- Identifiant et Sexe -->
-        <div class="col-md-6">
-          <div class="mb-3">{{ form.identifiant.label_tag }} {{ form.identifiant }}</div>
-          <div class="mb-3">{{ form.sexe.label_tag }} {{ form.sexe }}</div>
+<!-- ================= FORMULAIRE ================= -->
+<div class="container py-5" style="max-width:960px;">
+
+    <form id="inscriptionForm" class="gem-form" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert form-alert mb-4">{{ form.non_field_errors }}</div>
+        {% endif %}
+        {% if form.errors %}
+        <div class="alert form-alert mb-4">
+            <i class="fas fa-circle-exclamation me-2"></i>Merci de corriger les champs signalés ci-dessous.
+            <small>Pour des raisons de sécurité, votre navigateur vide les fichiers : pensez à sélectionner à nouveau
+                votre photo et vos pièces.</small>
         </div>
+        {% endif %}
 
-        <!-- Photo -->
-        <div class="col-md-6 d-flex justify-content-end">
-          <input type="file" id="id_photo" name="photo" accept="image/*" style="display:none;">
-          <div id="photoPreviewContainer" title="Cliquez pour ajouter une photo">
-            <img id="photoPreview" src="#" alt="Aperçu photo" style="display:none;">
-            <span id="photoPlaceholder" style="color:#888;">Cliquez ici pour ajouter une photo</span>
-          </div>
+        <!-- 1. Informations personnelles -->
+        <section class="form-block" id="sec-perso" data-aos="fade-up">
+            <div class="block-head">
+                <div class="ico"><i class="fas fa-user"></i></div>
+                <div>
+                    <h2>Informations personnelles</h2>
+                    <small>Votre identité et vos coordonnées</small>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-2 align-items-center">
+                <div class="col-md-7">
+                    <div class="field">{{ form.identifiant.label_tag }} {{ form.identifiant }}{{ form.identifiant.errors }}</div>
+                    <div class="field mb-0">{{ form.sexe.label_tag }} {{ form.sexe }}{{ form.sexe.errors }}</div>
+                </div>
+
+                <div class="col-md-5">
+                    <!-- Champ photo du formulaire Django, masqué : on utilise la zone de dépôt ci-dessous -->
+                    <div class="d-none">{{ form.photo }}</div>
+
+                    <div class="photo-drop" id="photoPreviewContainer" title="Cliquez pour ajouter une photo"
+                        role="button" tabindex="0">
+                        <img id="photoPreview" src="#" alt="Aperçu photo" style="display:none;">
+                        <span id="photoPlaceholder" class="ph">
+                            <i class="fas fa-camera"></i>
+                            Cliquez ou déposez votre photo
+                        </span>
+                    </div>
+                    <div class="photo-meta">
+                        <button type="button" class="photo-remove" id="photoRemove">Retirer la photo</button>
+                        <span class="hint">Photo d'identité obligatoire · 5 Mo max</span>
+                        {{ form.photo.errors }}
+                        <div class="js-error" id="photoJsError"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 field">{{ form.nom.label_tag }} {{ form.nom }}{{ form.nom.errors }}</div>
+                <div class="col-md-6 field">{{ form.prenom.label_tag }} {{ form.prenom }}{{ form.prenom.errors }}</div>
+                <div class="col-md-6 field">{{ form.email.label_tag }} {{ form.email }}{{ form.email.errors }}</div>
+                <div class="col-md-6 field">{{ form.telephone.label_tag }} {{ form.telephone }}{{ form.telephone.errors }}</div>
+                <div class="col-md-6 field">{{ form.date_naissance.label_tag }} {{ form.date_naissance }}{{ form.date_naissance.errors }}</div>
+                <div class="col-md-6 field">{{ form.formation.label_tag }} {{ form.formation }}{{ form.formation.errors }}</div>
+                <div class="col-md-6 field mb-0">{{ form.commune.label_tag }} {{ form.commune }}{{ form.commune.errors }}</div>
+                <div class="col-md-6 field mb-0">{{ form.quartier.label_tag }} {{ form.quartier }}{{ form.quartier.errors }}</div>
+            </div>
+        </section>
+
+        <!-- 2. Informations académiques -->
+        <section class="form-block" id="sec-acad" data-aos="fade-up">
+            <div class="block-head">
+                <div class="ico"><i class="fas fa-graduation-cap"></i></div>
+                <div>
+                    <h2>Informations académiques</h2>
+                    <small>Votre parcours scolaire</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 field">{{ form.nationalite.label_tag }} {{ form.nationalite }}{{ form.nationalite.errors }}</div>
+                <div class="col-md-6 field">{{ form.etablissement_origine.label_tag }} {{ form.etablissement_origine }}{{ form.etablissement_origine.errors }}</div>
+                <div class="col-md-6 field mb-0">{{ form.diplome.label_tag }} {{ form.diplome }}{{ form.diplome.errors }}</div>
+                <div class="col-md-6 field mb-0">{{ form.annee_obtention.label_tag }} {{ form.annee_obtention }}{{ form.annee_obtention.errors }}</div>
+            </div>
+        </section>
+
+        <!-- 3. Informations parentales -->
+        <section class="form-block" id="sec-parents" data-aos="fade-up">
+            <div class="block-head">
+                <div class="ico"><i class="fas fa-people-roof"></i></div>
+                <div>
+                    <h2>Informations parentales</h2>
+                    <small>Personne à contacter</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 field">{{ form.nom_pere.label_tag }} {{ form.nom_pere }}{{ form.nom_pere.errors }}</div>
+                <div class="col-md-6 field">{{ form.telephone_pere.label_tag }} {{ form.telephone_pere }}{{ form.telephone_pere.errors }}</div>
+                <div class="col-12 field mb-0">{{ form.adresse_parents.label_tag }} {{ form.adresse_parents }}{{ form.adresse_parents.errors }}</div>
+            </div>
+        </section>
+
+        <!-- 4. Pièces à fournir -->
+        <section class="form-block" id="sec-pieces" data-aos="fade-up">
+            <div class="block-head">
+                <div class="ico"><i class="fas fa-file-arrow-up"></i></div>
+                <div>
+                    <h2>Pièces à fournir</h2>
+                    <small>Pièce d'identité recto / verso et message facultatif</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 field mb-0">
+                    {{ form.piece_recto.label_tag }} {{ form.piece_recto }}
+                    <span class="hint">JPG, PNG ou PDF · 5 Mo max</span>
+                    {{ form.piece_recto.errors }}
+                    <div class="js-error" data-for="id_piece_recto"></div>
+                </div>
+                <div class="col-md-6 field mb-0">
+                    {{ form.piece_verso.label_tag }} {{ form.piece_verso }}
+                    <span class="hint">JPG, PNG ou PDF · 5 Mo max</span>
+                    {{ form.piece_verso.errors }}
+                    <div class="js-error" data-for="id_piece_verso"></div>
+                </div>
+            </div>
+
+            <hr class="pieces-sep">
+
+            <div class="field mb-0">
+                {{ form.message.label_tag }} {{ form.message }}
+                <span class="hint">Facultatif : une précision ou une question pour l'administration.</span>
+                {{ form.message.errors }}
+            </div>
+        </section>
+
+        <div class="submit-bar">
+            <button type="button" class="gem-btn" onclick="showRecapModal(event)">
+                Voir le récapitulatif <i class="fas fa-arrow-right"></i>
+            </button>
+            <p><i class="fas fa-lock me-1"></i> Vous pourrez vérifier vos informations avant l'envoi.</p>
         </div>
-      </div>
-      <!-- Informations personnelles -->
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.nom.label_tag }} {{ form.nom }}</div>
-        <div class="col-md-6">{{ form.prenom.label_tag }} {{ form.prenom }}</div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.email.label_tag }} {{ form.email }}</div>
-        <div class="col-md-6">{{ form.telephone.label_tag }} {{ form.telephone }}</div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.date_naissance.label_tag }} {{ form.date_naissance }}</div>
-        <div class="col-md-6">{{ form.formation.label_tag }} {{ form.formation }}</div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.commune.label_tag }} {{ form.commune }}</div>
-        <div class="col-md-6">{{ form.quartier.label_tag }} {{ form.quartier }}</div>
-      </div>
-
-      <!-- Informations académiques -->
-      <hr class="my-4">
-      <h5 class="fw-bold text-primary mb-3">Informations Académiques</h5>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.nationalite.label_tag }} {{ form.nationalite }}</div>
-        <div class="col-md-6">{{ form.etablissement_origine.label_tag }} {{ form.etablissement_origine }}</div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.diplome.label_tag }} {{ form.diplome }}</div>
-        <div class="col-md-6">{{ form.annee_obtention.label_tag }} {{ form.annee_obtention }}</div>
-      </div>
-
-      <!-- Informations parentales -->
-      <hr class="my-4">
-      <h5 class="fw-bold text-primary mb-3">Informations Parentales</h5>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.nom_pere.label_tag }} {{ form.nom_pere }}</div>
-        <div class="col-md-6">{{ form.telephone_pere.label_tag }} {{ form.telephone_pere }}</div>
-      </div>
-      <div class="mb-3">{{ form.adresse_parents.label_tag }} {{ form.adresse_parents }}</div>
-
-      <!-- Pièces à fournir -->
-      <hr class="my-4">
-      <h5 class="fw-bold text-primary mb-3">Pièces à fournir</h5>
-      <div class="row mb-3">
-        <div class="col-md-6">{{ form.piece_recto.label_tag }} {{ form.piece_recto }}</div>
-        <div class="col-md-6">{{ form.piece_verso.label_tag }} {{ form.piece_verso }}</div>
-      </div>
-
-      <div class="text-center">
-        <button type="button" class="btn btn-primary px-4" onclick="showRecapModal(event)">
-          Voir le récapitulatif
-        </button>
-      </div>
     </form>
-  </div>
 </div>
 
-<!-- MODAL RECAP -->
-<div class="modal fade" id="recapModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Récapitulatif de l’inscription</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Identifiant :</strong> <span id="recapIdentifiant"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Sexe :</strong> <span id="recapSexe"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Nom :</strong> <span id="recapNom"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Prénom :</strong> <span id="recapPrenom"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Email :</strong> <span id="recapEmail"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Téléphone :</strong> <span id="recapTelephone"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Date de naissance :</strong> <span id="recapDateNaissance"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Formation :</strong> <span id="recapFormation"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Commune :</strong> <span id="recapCommune"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Quartier :</strong> <span id="recapQuartier"></span></p>
-          </div>
-        </div>
 
-        <hr>
-        <h6 class="fw-bold text-primary">Informations Académiques</h6>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Nationalité :</strong> <span id="recapNationalite"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Établissement :</strong> <span id="recapEtablissement"></span></p>
-          </div>
+<!-- ================= MODAL RECAP ================= -->
+<div class="modal fade" id="recapModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content gem-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Récapitulatif de l’inscription</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body" id="recapBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-soft" data-bs-dismiss="modal">Modifier</button>
+                <!-- <button type="button" class="btn-soft" onclick="telechargerRecap()">Télécharger PDF</button> -->
+                <button type="button" class="gem-btn" id="confirmBtn" onclick="envoyerFormulaire()">
+                    <i class="fas fa-check"></i> Confirmer l'inscription
+                </button>
+            </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Diplôme :</strong> <span id="recapDiplome"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Année :</strong> <span id="recapAnnee"></span></p>
-          </div>
-        </div>
-
-        <hr>
-        <h6 class="fw-bold text-primary">Informations Parentales</h6>
-        <div class="row">
-          <div class="col-md-6">
-            <p><strong>Nom du père :</strong> <span id="recapNomPere"></span></p>
-          </div>
-          <div class="col-md-6">
-            <p><strong>Téléphone père :</strong> <span id="recapTelephonePere"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <p><strong>Adresse :</strong> <span id="recapAdresseParents"></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <p><strong>Photo :</strong> <span id="recapPhoto"></span></p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="envoyerFormulaire()">✅ Confirmer</button>
-        <!-- <button type="button" class="btn btn-primary" onclick="telechargerRecap()">📄 Télécharger PDF</button> -->
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
     </div>
-  </div>
 </div>
+
 
 <script>
-  function showRecapModal(event) {
-    event.preventDefault();
-    // Récupération des valeurs
-    recapIdentifiant.textContent = document.getElementById("id_identifiant").value;
-    recapSexe.textContent = document.getElementById("id_sexe").value;
-    recapNom.textContent = document.getElementById("id_nom").value;
-    recapPrenom.textContent = document.getElementById("id_prenom").value;
-    recapEmail.textContent = document.getElementById("id_email").value;
-    recapTelephone.textContent = document.getElementById("id_telephone").value;
-    recapDateNaissance.textContent = document.getElementById("id_date_naissance").value;
-    recapFormation.textContent = document.getElementById("id_formation").value;
-    recapCommune.textContent = document.getElementById("id_commune").value;
-    recapQuartier.textContent = document.getElementById("id_quartier").value;
-    recapNationalite.textContent = document.getElementById("id_nationalite").value;
-    recapEtablissement.textContent = document.getElementById("id_etablissement_origine").value;
-    recapDiplome.textContent = document.getElementById("id_diplome").value;
-    recapAnnee.textContent = document.getElementById("id_annee_obtention").value;
-    recapNomPere.textContent = document.getElementById("id_nom_pere").value;
-    recapTelephonePere.textContent = document.getElementById("id_telephone_pere").value;
-    recapAdresseParents.textContent = document.getElementById("id_adresse_parents").value;
-    recapPhoto.textContent = document.getElementById("id_photo").files[0]?.name || "-";
+    /* Mêmes limites que InscriptionForm côté serveur */
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    const PIECE_EXT = [".jpg", ".jpeg", ".png", ".pdf"];
 
-    new bootstrap.Modal(document.getElementById('recapModal')).show();
-  }
+    /* ---------- Définition du récapitulatif ---------- */
+    const RECAP = [
+        {
+            titre: "Informations personnelles", items: [
+                ["Identifiant", "id_identifiant"], ["Sexe", "id_sexe"],
+                ["Nom", "id_nom"], ["Prénom", "id_prenom"],
+                ["Email", "id_email"], ["Téléphone", "id_telephone"],
+                ["Date de naissance", "id_date_naissance"], ["Formation", "id_formation"],
+                ["Commune", "id_commune"], ["Quartier", "id_quartier"],
+                ["Photo", "id_photo"]
+            ]
+        },
+        {
+            titre: "Informations académiques", items: [
+                ["Nationalité", "id_nationalite"], ["Établissement", "id_etablissement_origine"],
+                ["Diplôme", "id_diplome"], ["Année", "id_annee_obtention"]
+            ]
+        },
+        {
+            titre: "Informations parentales", items: [
+                ["Nom du père", "id_nom_pere"], ["Téléphone père", "id_telephone_pere"],
+                ["Adresse", "id_adresse_parents", true]
+            ]
+        },
+        {
+            titre: "Pièces et message", items: [
+                ["Pièce recto", "id_piece_recto"], ["Pièce verso", "id_piece_verso"],
+                ["Message", "id_message", true]
+            ]
+        }
+    ];
 
-  function envoyerFormulaire() { document.getElementById("inscriptionForm").submit(); }
-
-  function telechargerRecap() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    let y = 20;
-
-    // ================== ENTÊTE ==================
-    const logo = new Image();
-    logo.src = "{% static 'images/logo.png' %}"; // Logo école
-    logo.onload = function () {
-      const logoWidth = 40;
-      const logoHeight = 40;
-      doc.addImage(logo, "PNG", 20, y, logoWidth, logoHeight);
-
-      // Photo élève à droite
-      const photo = document.getElementById("photoPreview");
-      if (photo && photo.src) {
-        const maxWidth = 40;
-        const maxHeight = 40;
-        const imgProps = doc.getImageProperties(photo.src);
-        let photoWidth = imgProps.width;
-        let photoHeight = imgProps.height;
-
-        const ratio = Math.min(maxWidth / photoWidth, maxHeight / photoHeight, 1);
-        photoWidth *= ratio;
-        photoHeight *= ratio;
-
-        doc.addImage(photo.src, "JPEG", pageWidth - photoWidth - 20, y, photoWidth, photoHeight);
-      }
-
-      // TITRE centré
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
-      doc.text("Fiche d'Inscription", pageWidth / 2, y + 10, { align: "center" });
-      y += 50;
-
-      // ================== FONCTIONS UTILITAIRES ==================
-      function ligneDeuxColonnes(label1, val1, label2, val2) {
-        doc.setFont("helvetica", "bold");
-        doc.text(label1, 20, y);
-        doc.text(label2, 110, y);
-        y += 6;
-        doc.setFont("helvetica", "normal");
-        doc.text(val1 || "-", 20, y);
-        doc.text(val2 || "-", 110, y);
-        y += 12;
-      }
-
-      function sectionTitre(titre) {
-        doc.setDrawColor(0);
-        doc.setLineWidth(0.5);
-        doc.line(20, y, pageWidth - 20, y);
-        y += 5;
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(12);
-        doc.text(titre, 20, y);
-        y += 7;
-      }
-
-      // ================== CONTENU ==================
-      sectionTitre("Informations Personnelles");
-      ligneDeuxColonnes("Identifiant :", recapIdentifiant.textContent, "Sexe :", recapSexe.textContent);
-      ligneDeuxColonnes("Nom :", recapNom.textContent, "Prénom :", recapPrenom.textContent);
-      ligneDeuxColonnes("Email :", recapEmail.textContent, "Téléphone :", recapTelephone.textContent);
-      ligneDeuxColonnes("Date de naissance :", recapDateNaissance.textContent, "Formation :", recapFormation.textContent);
-      ligneDeuxColonnes("Commune :", recapCommune.textContent, "Quartier :", recapQuartier.textContent);
-
-      sectionTitre("Informations Académiques");
-      ligneDeuxColonnes("Nationalité :", recapNationalite.textContent, "Établissement :", recapEtablissement.textContent);
-      ligneDeuxColonnes("Diplôme :", recapDiplome.textContent, "Année :", recapAnnee.textContent);
-
-      sectionTitre("Informations Parentales");
-      ligneDeuxColonnes("Nom père :", recapNomPere.textContent, "Téléphone père :", recapTelephonePere.textContent);
-      doc.setFont("helvetica", "bold");
-      doc.text("Adresse :", 20, y);
-      doc.setFont("helvetica", "normal");
-      doc.text(recapAdresseParents.textContent, 50, y);
-      y += 15;
-
-      // ================== SIGNATURES ==================
-      y += 10; // espace après la dernière info
-
-      const signatureWidth = 70;
-
-      // Signature Élève
-      doc.line(30, y, 30 + signatureWidth, y);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text("Signature de l'étudiant", 30, y + 5);
-
-      // Signature Parent
-      doc.line(pageWidth - 30 - signatureWidth, y, pageWidth - 30, y);
-      doc.text("Signature responsable GEM", pageWidth - 30 - signatureWidth, y + 5);
-
-      y += 20;
-      // ================== PIED DE PAGE ==================
-      // ================== PIED DE PAGE ==================
-      // const date = new Date();
-      // const dateStr = date.toLocaleDateString();
-
-      // doc.setFontSize(10);
-      // doc.setFont("helvetica", "italic");
-      // doc.text(
-      //   `Fiche générée le ${dateStr} - {{ home_data.site_name }}`,
-      //   pageWidth / 2,
-      //   doc.internal.pageSize.getHeight() - 10,
-      //   { align: "center" }
-      // );
-      // ================== ENREGISTREMENT ==================
-      doc.save("inscription.pdf");
-    };
-  }
-
-  // Aperçu photo
-  const photoInput = document.getElementById("id_photo");
-  const photoPreview = document.getElementById("photoPreview");
-  const photoContainer = document.getElementById("photoPreviewContainer");
-  const photoPlaceholder = document.getElementById("photoPlaceholder");
-
-  photoContainer.addEventListener("click", () => { photoInput.click(); });
-
-  photoInput.addEventListener("change", function (event) {
-    const [file] = event.target.files;
-    if (file) {
-      photoPreview.src = URL.createObjectURL(file);
-      photoPreview.style.display = "block";
-      photoPlaceholder.style.display = "none";
-    } else {
-      photoPreview.style.display = "none";
-      photoPlaceholder.style.display = "block";
+    function fieldValue(id) {
+        const el = document.getElementById(id);
+        if (!el) return "-";
+        if (el.type === "file") return (el.files[0] && el.files[0].name) || "-";
+        if (el.tagName === "SELECT") {
+            const opt = el.options[el.selectedIndex];
+            return (opt && opt.value ? opt.text.trim() : "") || "-";
+        }
+        return el.value.trim() || "-";
     }
-  });
 
+    /* ---------- Contrôle des fichiers côté navigateur ---------- */
+    function fileError(file, extensions) {
+        if (!file) return "";
+        if (extensions && !extensions.some(e => file.name.toLowerCase().endsWith(e))) {
+            return "Format accepté : JPG, PNG ou PDF.";
+        }
+        if (file.size > MAX_FILE_SIZE) return "Le fichier ne doit pas dépasser 5 Mo.";
+        return "";
+    }
+
+    function setJsError(id, message) {
+        const el = document.querySelector('.js-error[data-for="' + id + '"]');
+        if (el) el.textContent = message;
+    }
+
+    ["id_piece_recto", "id_piece_verso"].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener("change", () => {
+            const msg = fileError(input.files[0], PIECE_EXT);
+            setJsError(id, msg);
+            if (msg) input.value = "";   // on retire le fichier refusé
+        });
+    });
+
+    function showRecapModal(event) {
+        event.preventDefault();
+        const form = document.getElementById("inscriptionForm");
+
+        // Validation native des champs requis (la photo est vérifiée à part, voir plus bas)
+        if (!form.reportValidity()) return;
+
+        // La photo est obligatoire (ImageField sans blank=True côté modèle)
+        const photoInput = document.getElementById("id_photo");
+        if (!photoInput.files[0]) {
+            const box = document.getElementById("photoPreviewContainer");
+            document.getElementById("photoJsError").textContent = "La photo est obligatoire.";
+            box.classList.remove("invalid");
+            void box.offsetWidth;            // relance l'animation
+            box.classList.add("invalid");
+            box.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+
+        const body = document.getElementById("recapBody");
+        body.replaceChildren();
+
+        RECAP.forEach(group => {
+            const wrap = document.createElement("div");
+            wrap.className = "recap-group";
+
+            const h = document.createElement("h6");
+            h.textContent = group.titre;
+            wrap.appendChild(h);
+
+            const grid = document.createElement("div");
+            grid.className = "recap-grid";
+
+            group.items.forEach(([label, id, full]) => {
+                const item = document.createElement("div");
+                item.className = "recap-item" + (full ? " full" : "");
+                const s = document.createElement("small");
+                s.textContent = label;
+                const v = document.createElement("span");
+                v.textContent = fieldValue(id);
+                item.append(s, v);
+                grid.appendChild(item);
+            });
+
+            wrap.appendChild(grid);
+            body.appendChild(wrap);
+        });
+
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("recapModal")).show();
+    }
+
+    function envoyerFormulaire() {
+        const btn = document.getElementById("confirmBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Envoi en cours...';
+        document.getElementById("inscriptionForm").submit();
+    }
+
+    /* ---------- PDF (bouton désactivé dans le modal, fonction conservée) ---------- */
+    function telechargerRecap() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        let y = 20;
+
+        function build() {
+            const photo = document.getElementById("photoPreview");
+            if (photo && photo.style.display !== "none" && photo.src) {
+                const maxW = 40, maxH = 40;
+                const ratio = Math.min(maxW / photo.naturalWidth, maxH / photo.naturalHeight);
+                const w = photo.naturalWidth * ratio, h = photo.naturalHeight * ratio;
+                doc.addImage(photo, "JPEG", pageWidth - w - 20, y, w, h);
+            }
+
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.text("Fiche d'Inscription", pageWidth / 2, y + 10, { align: "center" });
+            y += 50;
+
+            RECAP.slice(0, 3).forEach(group => {
+                doc.setDrawColor(0);
+                doc.setLineWidth(0.5);
+                doc.line(20, y, pageWidth - 20, y);
+                y += 5;
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text(group.titre, 20, y);
+                y += 8;
+
+                const items = group.items.filter(i => i[1] !== "id_photo");
+                for (let i = 0; i < items.length; i += 2) {
+                    const a = items[i], b = items[i + 1];
+                    doc.setFontSize(10);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(a[0] + " :", 20, y);
+                    if (b) doc.text(b[0] + " :", 110, y);
+                    y += 6;
+                    doc.setFont("helvetica", "normal");
+                    doc.text(fieldValue(a[1]), 20, y);
+                    if (b) doc.text(fieldValue(b[1]), 110, y);
+                    y += 11;
+                    if (y > 270) { doc.addPage(); y = 20; }
+                }
+                y += 4;
+            });
+
+            y += 10;
+            const sigW = 70;
+            doc.line(30, y, 30 + sigW, y);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            doc.text("Signature de l'étudiant", 30, y + 5);
+            doc.line(pageWidth - 30 - sigW, y, pageWidth - 30, y);
+            doc.text("Signature responsable GEM", pageWidth - 30 - sigW, y + 5);
+
+            doc.save("inscription.pdf");
+        }
+
+        const logo = new Image();
+        logo.onload = function () { doc.addImage(logo, "PNG", 20, y, 40, 40); build(); };
+        logo.onerror = build;   // on génère quand même le PDF si le logo est introuvable
+        logo.src = "{% static 'images/logo.png' %}";
+    }
+
+    /* ---------- Photo : champ Django masqué + zone de dépôt ---------- */
+    (function () {
+        const input = document.getElementById("id_photo");
+        const preview = document.getElementById("photoPreview");
+        const box = document.getElementById("photoPreviewContainer");
+        const placeholder = document.getElementById("photoPlaceholder");
+        const removeBtn = document.getElementById("photoRemove");
+        const errBox = document.getElementById("photoJsError");
+
+        // Le champ est masqué : on retire "required" pour éviter l'erreur navigateur
+        // « champ invalide non focusable » (le contrôle est fait dans showRecapModal)
+        input.required = false;
+        input.accept = "image/*";
+
+        function show(file) {
+            box.classList.remove("invalid");
+            errBox.textContent = "";
+            if (file) {
+                if (preview.dataset.url) URL.revokeObjectURL(preview.dataset.url);
+                const url = URL.createObjectURL(file);
+                preview.dataset.url = url;
+                preview.src = url;
+                preview.style.display = "block";
+                placeholder.style.display = "none";
+                removeBtn.classList.add("show");
+            } else {
+                preview.style.display = "none";
+                placeholder.style.display = "";
+                removeBtn.classList.remove("show");
+            }
+        }
+
+        function accept(file) {
+            if (!file) return false;
+            if (!file.type.startsWith("image/")) {
+                errBox.textContent = "Le fichier doit être une image.";
+                return false;
+            }
+            const msg = fileError(file, null);
+            if (msg) { errBox.textContent = msg; return false; }
+            return true;
+        }
+
+        box.addEventListener("click", () => input.click());
+        box.addEventListener("keydown", e => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
+        });
+
+        input.addEventListener("change", e => {
+            const file = e.target.files[0];
+            if (file && !accept(file)) { input.value = ""; show(null); errBox.textContent = errBox.textContent; return; }
+            show(file);
+        });
+
+        removeBtn.addEventListener("click", () => { input.value = ""; show(null); });
+
+        // Glisser-déposer
+        ["dragenter", "dragover"].forEach(ev => box.addEventListener(ev, e => {
+            e.preventDefault(); box.classList.add("drag");
+        }));
+        ["dragleave", "drop"].forEach(ev => box.addEventListener(ev, e => {
+            e.preventDefault(); box.classList.remove("drag");
+        }));
+        box.addEventListener("drop", e => {
+            const file = e.dataTransfer.files[0];
+            if (file && accept(file)) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                show(file);
+            }
+        });
+    })();
+
+    /* ---------- Étape active selon le scroll ---------- */
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll("#stepsBar a");
+        const sections = Array.from(links).map(a => document.querySelector(a.getAttribute("href")));
+
+        if (!("IntersectionObserver" in window)) return;
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + e.target.id));
+                }
+            });
+        }, { rootMargin: "-30% 0px -60% 0px" });
+
+        sections.forEach(s => s && io.observe(s));
+    });
 </script>
 
 {% endblock %}

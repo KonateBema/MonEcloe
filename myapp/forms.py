@@ -148,27 +148,60 @@ class PreinscriptionForm(forms.ModelForm):
         }
 
 class InscriptionForm(forms.ModelForm):
+    # Taille maximale des fichiers envoyés (5 Mo)
+    MAX_FILE_SIZE = 5 * 1024 * 1024
+    PIECE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.pdf')
+
     class Meta:
         model = Inscription
-        fields = '__all__'  # ou liste complète des champs
+        fields = [
+            'identifiant', 'sexe', 'photo',
+            'nom', 'prenom', 'email', 'telephone',
+            'date_naissance', 'formation', 'commune', 'quartier', 'message',
+            'nationalite', 'etablissement_origine', 'diplome', 'annee_obtention',
+            'nom_pere', 'telephone_pere', 'adresse_parents',
+            'piece_recto', 'piece_verso',
+        ]
         widgets = {
-            'nom': forms.TextInput(attrs={'class':'form-control'}),
-            'prenom': forms.TextInput(attrs={'class':'form-control'}),
-            'email': forms.EmailInput(attrs={'class':'form-control'}),
-            'telephone': forms.TextInput(attrs={'class':'form-control'}),
-            'date_naissance': forms.DateInput(attrs={'type':'date','class':'form-control'}),
-            'formation': forms.TextInput(attrs={'class':'form-control'}),
-            'commune': forms.TextInput(attrs={'class':'form-control'}),
-            'quartier': forms.TextInput(attrs={'class':'form-control'}),
-            'message': forms.Textarea(attrs={'class':'form-control','rows':4}),
-            'nationalite': forms.TextInput(attrs={'class':'form-control'}),
-            'etablissement_origine': forms.TextInput(attrs={'class':'form-control'}),
-            'diplome': forms.TextInput(attrs={'class':'form-control'}),
-            'annee_obtention': forms.NumberInput(attrs={'class':'form-control'}),
-            'nom_pere': forms.TextInput(attrs={'class':'form-control'}),
-            'telephone_pere': forms.TextInput(attrs={'class':'form-control'}),
-            'adresse_parents': forms.Textarea(attrs={'class':'form-control','rows':3}),
-            'photo': forms.ClearableFileInput(attrs={'class':'form-control'}),
-            'identifiant': forms.TextInput(attrs={'class':'form-control'}),
-            'sexe': forms.Select(attrs={'class':'form-select'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_naissance': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'formation': forms.TextInput(attrs={'class': 'form-control'}),
+            'commune': forms.TextInput(attrs={'class': 'form-control'}),
+            'quartier': forms.TextInput(attrs={'class': 'form-control'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
+            'etablissement_origine': forms.TextInput(attrs={'class': 'form-control'}),
+            'diplome': forms.TextInput(attrs={'class': 'form-control'}),
+            'annee_obtention': forms.NumberInput(attrs={'class': 'form-control'}),
+            'nom_pere': forms.TextInput(attrs={'class': 'form-control'}),
+            'telephone_pere': forms.TextInput(attrs={'class': 'form-control'}),
+            'adresse_parents': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'identifiant': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexe': forms.Select(attrs={'class': 'form-select'}),
+            # Pièces à fournir
+            'piece_recto': forms.ClearableFileInput(
+                attrs={'class': 'form-control', 'accept': 'image/*,.pdf'}),
+            'piece_verso': forms.ClearableFileInput(
+                attrs={'class': 'form-control', 'accept': 'image/*,.pdf'}),
         }
+
+    def _validate_piece(self, field_name):
+        fichier = self.cleaned_data.get(field_name)
+        # Pas de nouveau fichier envoyé : rien à vérifier
+        if not fichier or not hasattr(fichier, 'size'):
+            return fichier
+        if not fichier.name.lower().endswith(self.PIECE_EXTENSIONS):
+            raise forms.ValidationError("Format accepté : JPG, PNG ou PDF.")
+        if fichier.size > self.MAX_FILE_SIZE:
+            raise forms.ValidationError("Le fichier ne doit pas dépasser 5 Mo.")
+        return fichier
+
+    def clean_piece_recto(self):
+        return self._validate_piece('piece_recto')
+
+    def clean_piece_verso(self):
+        return self._validate_piece('piece_verso')

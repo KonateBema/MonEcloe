@@ -9,107 +9,181 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Font Awesome (utilisé par la page d'accueil) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- AOS (animations au scroll) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <!-- Lightbox CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
+        /* ===================== Tokens ===================== */
+        :root {
+            --gem-primary: #c1121f;
+            --gem-primary-dark: #8b0d16;
+            --gem-accent: #4b5cb8;
+            --gem-ink: #14161f;
+            --gem-muted: #6b7280;
+            --gem-bg: #f6f7fb;
+            --nav-h: 76px;
+        }
+
         /* ===================== Global ===================== */
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Roboto', sans-serif;
+        html {
             scroll-behavior: smooth;
-            padding-top: 90px;
+        }
+
+        body {
+            background-color: var(--gem-bg);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--gem-ink);
+            padding-top: var(--nav-h);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: rgba(193, 18, 31, .2);
         }
 
         /* ===================== Navbar ===================== */
         .navbar {
-            background: linear-gradient(135deg, #0d6efd, #6610f2);
-            /* dégradé coloré */
-            color: white;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            padding: 0.8rem 1rem;
+            min-height: var(--nav-h);
+            background: rgba(255, 255, 255, .82);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border-bottom: 1px solid rgba(20, 22, 31, .06);
+            transition: box-shadow .3s ease, background .3s ease;
+            padding: .5rem 0;
         }
 
         .navbar.scrolled {
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, .95);
+            box-shadow: 0 8px 30px rgba(20, 22, 31, .08);
         }
 
-        /* Liens de navigation */
+        .navbar-brand img {
+            height: 48px;
+            width: auto;
+            transition: transform .3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.04);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--gem-ink);
+        }
+
         .navbar-nav .nav-link {
             position: relative;
-            transition: color 0.3s ease, transform 0.3s ease;
             font-weight: 500;
-            color: white;
+            font-size: .93rem;
+            color: var(--gem-ink);
+            padding: .5rem .2rem;
+            transition: color .25s ease;
         }
 
-        .navbar-nav .nav-link:hover {
-            color: #ffc107;
-            /* survol jaune/orange */
-            transform: translateY(-2px);
-        }
-
-        .navbar-nav .nav-link.active {
-            color: #ffc107 !important;
-        }
-
-        .navbar-nav .nav-link.active::after {
+        .navbar-nav .nav-link::after {
             content: "";
             position: absolute;
             left: 0;
-            bottom: -6px;
+            bottom: 0;
             width: 100%;
-            height: 3px;
-            background: #ffc107;
-            border-radius: 3px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--gem-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s ease;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--gem-primary);
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        .navbar-nav .dropdown-toggle::after {
+            display: none;
+        }
+
+        .navbar-toggler {
+            border: 0;
+            box-shadow: none !important;
         }
 
         /* ===================== Dropdown ===================== */
         .navbar .dropdown-menu {
-            background-color: #ffffff;
-            border-radius: 8px;
-            min-width: 180px;
-            padding: 0.5rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
+            border: 0;
+            border-radius: 16px;
+            min-width: 200px;
+            padding: .5rem;
+            margin-top: .6rem;
+            box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
         }
 
         .navbar .dropdown-menu .dropdown-item {
-            color: #333;
-            padding: 0.5rem 1.2rem;
-            transition: all 0.2s ease;
+            border-radius: 10px;
+            padding: .6rem 1rem;
+            font-weight: 500;
+            font-size: .92rem;
+            transition: background .2s ease, color .2s ease;
         }
 
         .navbar .dropdown-menu .dropdown-item:hover,
         .navbar .dropdown-menu .dropdown-item:focus {
-            background-color: #e8e8e8;
-            color: #0d6efd;
+            background: rgba(193, 18, 31, .07);
+            color: var(--gem-primary);
         }
 
         .navbar .dropdown-menu .dropdown-item.active {
-            background-color: #cfcfcf;
-            color: #0d6efd;
+            background: var(--gem-primary);
+            color: #fff;
         }
 
-        .navbar .nav-item.dropdown:hover>.dropdown-menu {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-            margin-top: 0;
+        @media (min-width: 992px) {
+            .navbar .dropdown-menu {
+                display: block;
+                visibility: hidden;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all .25s ease;
+            }
+
+            .navbar .nav-item.dropdown:hover>.dropdown-menu {
+                visibility: visible;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: #fff;
+                border-radius: 16px;
+                margin-top: .6rem;
+                padding: 1rem 1.2rem;
+                box-shadow: 0 20px 50px rgba(20, 22, 31, .12);
+            }
+
+            .navbar-nav .nav-link::after {
+                display: none;
+            }
         }
 
         /* ===================== Carousel ===================== */
@@ -122,16 +196,263 @@
         }
 
         @keyframes zoomEffect {
-            0% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
 
             50% {
                 transform: scale(1.1);
             }
+        }
 
-            100% {
-                transform: scale(1);
+        /* ===================== Partenaires ===================== */
+        .partners-section {
+            background: #fff;
+            overflow: hidden;
+            padding: 4.5rem 0;
+        }
+
+        .gem-eyebrow {
+            display: inline-block;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gem-primary);
+            background: rgba(193, 18, 31, .08);
+            padding: .35rem .9rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        .partners-section h2 {
+            font-weight: 800;
+            letter-spacing: -.02em;
+            font-size: clamp(1.7rem, 3vw, 2.3rem);
+        }
+
+        .logo-slider {
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+        }
+
+        .logo-track {
+            display: flex;
+            align-items: center;
+            gap: 70px;
+            width: max-content;
+            animation: scrollLogos 30s linear infinite;
+        }
+
+        .logo-slider:hover .logo-track {
+            animation-play-state: paused;
+        }
+
+        .logo-track img {
+            height: 56px;
+            width: auto;
+            opacity: .65;
+            filter: grayscale(100%);
+            transition: all .3s ease;
+        }
+
+        .logo-track img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        @keyframes scrollLogos {
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ===================== Footer ===================== */
+        .footer {
+            position: relative;
+            background: linear-gradient(160deg, #14161f 0%, #1d2030 60%, #2a1218 100%);
+            color: rgba(255, 255, 255, .78);
+            padding: 4rem 0 1.5rem;
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 12%;
+            right: 12%;
+            height: 3px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, transparent, var(--gem-primary), transparent);
+        }
+
+        .footer h6 {
+            color: #fff;
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 1.1rem;
+        }
+
+        .footer p,
+        .footer li,
+        .footer a {
+            font-size: .92rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, .78);
+            text-decoration: none;
+            transition: color .2s ease, padding-left .2s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: #fff;
+            padding-left: 6px;
+        }
+
+        .footer .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+            margin-bottom: .8rem;
+        }
+
+        .footer .contact-item i {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+        }
+
+        .footer .social a {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+            transition: transform .25s ease, background .25s ease;
+        }
+
+        .footer .social a:hover {
+            transform: translateY(-4px);
+            background: var(--gem-primary);
+        }
+
+        .footer .social a.wa:hover {
+            background: #25D366;
+        }
+
+        .footer hr {
+            border-color: rgba(255, 255, 255, .12);
+            margin: 2.5rem 0 1.2rem;
+            opacity: 1;
+        }
+
+        .footer .copyright {
+            font-size: .85rem;
+            color: rgba(255, 255, 255, .55);
+        }
+
+        /* ===================== Bouton WhatsApp flottant ===================== */
+        .wa-float {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1040;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #25D366;
+            color: #fff;
+            font-size: 1.7rem;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, .45);
+            transition: transform .25s ease;
+        }
+
+        .wa-float:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* ===================== Messages (toast) ===================== */
+        .gem-toast-wrap {
+            position: fixed;
+            top: calc(var(--nav-h) + 12px);
+            right: 16px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            max-width: min(380px, calc(100vw - 32px));
+        }
+
+        .gem-toast {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            background: #fff;
+            border-left: 5px solid #198754;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            color: var(--gem-ink);
+            box-shadow: 0 20px 50px rgba(20, 22, 31, .18);
+            animation: toastIn .4s ease both;
+        }
+
+        .gem-toast i {
+            color: #198754;
+            font-size: 1.3rem;
+        }
+
+        .gem-toast.hide {
+            animation: toastOut .4s ease both;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .logo-track,
+            .slide-animated-img {
+                animation: none;
             }
         }
     </style>
@@ -139,27 +460,22 @@
 
 <body>
 
-    <script>
-        window.addEventListener("scroll", function () {
-            document.querySelector(".navbar")
-                .classList.toggle("scrolled", window.scrollY > 50);
-        });
-    </script>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container-fluid px-3">
+        <div class="container">
             <a class="navbar-brand" href="/">
                 {% if home_data.logo %}
-                <img src="{{ home_data.logo.url }}" height="55">
+                <img src="{{ home_data.logo.url }}" alt="{{ home_data.site_name }}">
                 {% else %}
                 {{ home_data.site_name }}
                 {% endif %}
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
-                <ul class="navbar-nav gap-lg-4">
+                <ul class="navbar-nav align-items-lg-center gap-lg-4">
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-bold{% endif %}"
                             href="{% url 'home' %}">Accueil</a>
@@ -185,15 +501,15 @@
                             href="{% url 'evenements' %}">Événements et galerie</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'inscription preinscription' %}active fw-bold{% endif %}"
+                        <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'inscription' or request.resolver_match.url_name == 'preinscription' %}active fw-bold{% endif %}"
                             href="#" id="etudiantsDropdown" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Espace Étudiant
+                            Espace Étudiant <i class="bi bi-chevron-down small"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="etudiantsDropdown">
-                            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'inscription' %}active fw-bold{% endif %}"
+                            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'inscription' %}active{% endif %}"
                                     href="{% url 'inscription' %}">Inscription</a></li>
-                            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'preinscription' %}active fw-bold{% endif %}"
+                            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'preinscription' %}active{% endif %}"
                                     href="{% url 'preinscription' %}">Préinscription</a></li>
                         </ul>
                     </li>
@@ -212,231 +528,132 @@
 
 
     <!-- PARTENAIRES / ENTREPRISES -->
-
-    <section class="partners-section py-5 bg-light">
-
+    <section class="partners-section">
         <div class="container">
-
             <div class="text-center mb-5">
-                <h2 class="fw-bold text-primary">
-                    Nos partenaires & entreprises
-                </h2>
-
-                <p class="text-muted">
+                <span class="gem-eyebrow">Ils nous font confiance</span>
+                <h2>Nos partenaires &amp; entreprises</h2>
+                <p class="text-muted mx-auto" style="max-width:640px;">
                     Ces entreprises accompagnent nos étudiants dans leur formation et leur insertion professionnelle
                 </p>
             </div>
             <div class="logo-slider">
                 <div class="logo-track">
-                    <img src="{% static 'images/partners/p1o.png' %}">
-                    <img src="{% static 'images/partners/p2mt.png' %}">
-                    <img src="{% static 'images/partners/p3nsia.png' %}">
-                    <img src="{% static 'images/partners/p4sgbci.png' %}">
-                    <img src="{% static 'images/partners/p5antl.png' %}">
-                    <img src="{% static 'images/partners/p6star.jpg' %}">
+                    <img src="{% static 'images/partners/p1o.png' %}" alt="Partenaire">
+                    <img src="{% static 'images/partners/p2mt.png' %}" alt="Partenaire">
+                    <img src="{% static 'images/partners/p3nsia.png' %}" alt="Partenaire">
+                    <img src="{% static 'images/partners/p4sgbci.png' %}" alt="Partenaire">
+                    <img src="{% static 'images/partners/p5antl.png' %}" alt="Partenaire">
+                    <img src="{% static 'images/partners/p6star.jpg' %}" alt="Partenaire">
                     <!-- duplication pour effet infini -->
-                    <img src="{% static 'images/partners/p1o.png' %}">
-                    <img src="{% static 'images/partners/p2mt.png' %}">
-                    <img src="{% static 'images/partners/p3nsia.png' %}">
-                    <img src="{% static 'images/partners/p4sgbci.png' %}">
-                    <img src="{% static 'images/partners/p5antl.png' %}">
-                    <img src="{% static 'images/partners/p6star.jpg' %}">
+                    <img src="{% static 'images/partners/p1o.png' %}" alt="" aria-hidden="true">
+                    <img src="{% static 'images/partners/p2mt.png' %}" alt="" aria-hidden="true">
+                    <img src="{% static 'images/partners/p3nsia.png' %}" alt="" aria-hidden="true">
+                    <img src="{% static 'images/partners/p4sgbci.png' %}" alt="" aria-hidden="true">
+                    <img src="{% static 'images/partners/p5antl.png' %}" alt="" aria-hidden="true">
+                    <img src="{% static 'images/partners/p6star.jpg' %}" alt="" aria-hidden="true">
                 </div>
             </div>
         </div>
     </section>
+
     <!-- FOOTER -->
-    <footer class="footer bg-dark text-white pt-3 pb-2">
+    <footer class="footer">
         <div class="container">
-            <div class="row">
-                <!-- Section A propos -->
-                <div class="col-md-4 mb-3 text-center text-md-start">
+            <div class="row g-5">
+
+                <div class="col-lg-4 text-center text-lg-start">
                     {% if home_data.logo %}
-                    <img src="{{ home_data.logo.url }}" alt="Logo" height="40" class="mb-1">
+                    <img src="{{ home_data.logo.url }}" alt="Logo" height="48" class="mb-3"
+                        style="background:#fff;border-radius:12px;padding:6px 10px;">
                     {% endif %}
-                    <p class="small mb-0">{{ home_data.footer_message|safe }}</p>
+                    <p class="mb-0">{{ home_data.footer_message|safe }}</p>
                 </div>
 
-                <!-- Liens utiles -->
-                <div class="col-md-4 mb-3 text-center">
-                    <h6 class="fw-bold mb-2">Liens utiles</h6>
-                    <ul class="list-unstyled mb-0 d-flex flex-wrap justify-content-center gap-3">
-                        <li><a href="{% url 'home' %}" class="text-white text-decoration-none small">Accueil</a></li>
-                        <li><a href="{% url 'formations' %}"
-                                class="text-white text-decoration-none small">Formations</a></li>
-                        <li><a href="{% url 'vie_associative' %}" class="text-white text-decoration-none small">Vie
-                                étudiante</a></li>
-                        <li><a href="{% url 'evenements' %}"
-                                class="text-white text-decoration-none small">Événements</a></li>
-                        <li><a href="{% url 'certificats' %}"
-                                class="text-white text-decoration-none small">Certificats</a></li>
+                <div class="col-sm-6 col-lg-4 text-center text-sm-start text-lg-center">
+                    <h6>Liens utiles</h6>
+                    <ul class="list-unstyled footer-links mb-0">
+                        <li class="mb-2"><a href="{% url 'home' %}">Accueil</a></li>
+                        <li class="mb-2"><a href="{% url 'formations' %}">Formations</a></li>
+                        <li class="mb-2"><a href="{% url 'vie_associative' %}">Vie étudiante</a></li>
+                        <li class="mb-2"><a href="{% url 'evenements' %}">Événements</a></li>
+                        <li class="mb-2"><a href="{% url 'certificats' %}">Certificats</a></li>
                     </ul>
                 </div>
 
-                <!-- Contact & réseaux sociaux -->
-                <div class="col-md-4 mb-3 text-center text-md-end">
-                    <h6 class="fw-bold mb-2">Contactez-nous</h6>
-                    <p class="small mb-1"><i class="bi bi-envelope-fill me-2"></i>0150536686 / 2722204432</p>
-                    <p class="small mb-2"><i class="bi bi-telephone-fill me-2"></i>groupeexpertmetier@gmail.com</p>
-                    <div class="d-flex justify-content-center justify-content-md-end gap-1">
-                        <a href="https://www.facebook.com/share/p/14YeWXSMCHP/"
-                            class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
-                                class="bi bi-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
-                                class="bi bi-instagram"></i></a>
-                        <a href="https://wa.me/2250150536686" target="_blank" class="btn btn-sm rounded-circle"
-                            style="background-color:#25D366; color:white;"><i class="bi bi-whatsapp"></i></a>
+                <div class="col-sm-6 col-lg-4">
+                    <h6>Contactez-nous</h6>
+                    <div class="contact-item">
+                        <i class="bi bi-telephone-fill"></i>
+                        <span>0150536686 / 2722204432</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-envelope-fill"></i>
+                        <a href="mailto:groupeexpertmetier@gmail.com">groupeexpertmetier@gmail.com</a>
+                    </div>
+                    <div class="social d-flex gap-2 mt-3">
+                        <a href="https://www.facebook.com/share/p/14YeWXSMCHP/" target="_blank" rel="noopener"
+                            aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/2250150536686" target="_blank" rel="noopener" class="wa"
+                            aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     </div>
                 </div>
 
             </div>
 
-            <hr class="border-light my-2">
+            <hr>
 
-            <div class="text-center small mb-0">
+            <div class="text-center copyright">
                 &copy; {{ home_data.site_name }} - Tous droits réservés
             </div>
         </div>
     </footer>
 
-    <style>
-        .footer {
-            background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-            color: white;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .footer h6 {
-            font-size: 0.9rem;
-        }
-
-        .footer p,
-        .footer li a {
-            font-size: 0.8rem;
-        }
-
-        /* ===================== PARTNERS ===================== */
-
-        .partners-section {
-            overflow: hidden;
-        }
-
-        .logo-slider {
-            overflow: hidden;
-            position: relative;
-        }
-
-        .logo-track {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            animation: scrollLogos 25s linear infinite;
-        }
-
-        .logo-track img {
-            height: 60px;
-            opacity: 0.7;
-            transition: 0.3s;
-            filter: grayscale(100%);
-        }
-
-        .logo-track img:hover {
-            opacity: 1;
-            filter: grayscale(0%);
-            transform: scale(1.1);
-        }
-
-        /* animation */
-
-        @keyframes scrollLogos {
-
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-
-        }
-    </style>
+    <!-- Bouton WhatsApp flottant -->
+    <a href="https://wa.me/2250150536686" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
 
     <!-- Messages -->
     {% if messages %}
-    <div id="centerMessageOverlay">
-        <div class="center-message-box">
-            {% for message in messages %}
-            <div class="message-content">✅ {{ message }}</div>
-            {% endfor %}
-        </div>
+    <div class="gem-toast-wrap" id="gemToasts">
+        {% for message in messages %}
+        <div class="gem-toast"><i class="bi bi-check-circle-fill"></i><span>{{ message }}</span></div>
+        {% endfor %}
     </div>
+    {% endif %}
 
-    <style>
-        #centerMessageOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .center-message-box {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            font-size: 18px;
-            font-weight: 600;
-            color: #198754;
-            text-align: center;
-            animation: scaleIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0.8);
-            }
-
-            to {
-                transform: scale(1);
-            }
-        }
-    </style>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
     <script>
-        setTimeout(function () {
-            const overlay = document.getElementById("centerMessageOverlay");
-            if (overlay) overlay.style.display = "none";
-        }, 6000);
+        document.addEventListener("DOMContentLoaded", function () {
+            // Animations au scroll
+            if (typeof AOS !== "undefined") {
+                AOS.init({ duration: 700, once: true, offset: 60 });
+            }
+
+            // Ombre de la navbar au scroll
+            const nav = document.querySelector(".navbar");
+            const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 20);
+            window.addEventListener("scroll", onScroll, { passive: true });
+            onScroll();
+
+            // Fermeture automatique des messages
+            const toasts = document.getElementById("gemToasts");
+            if (toasts) {
+                setTimeout(() => {
+                    toasts.querySelectorAll(".gem-toast").forEach(t => t.classList.add("hide"));
+                    setTimeout(() => toasts.remove(), 450);
+                }, 6000);
+            }
+        });
     </script>
-    {% endif %}
 
 </body>
 

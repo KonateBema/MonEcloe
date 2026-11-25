@@ -7,310 +7,603 @@ Vie Associative - {{ home_data.site_name }}
 
 {% block content %}
 
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
 <style>
-  /* ================= HERO ================= */
-  .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("{% static 'images/ecole/groupprof111.jpeg' %}") center/cover no-repeat;
-
-    height: 75vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    animation: none;
-    /* important */
-    /* animation: heroZoom 20s ease-in-out infinite; */
-  }
-
-  @keyframes heroZoom {
-    0% {
-      background-size: 100%;
+    .gem-section {
+        padding: 5rem 0;
     }
 
-    50% {
-      background-size: 110%;
+    .gem-title {
+        font-weight: 800;
+        letter-spacing: -.02em;
+        font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+        line-height: 1.15;
     }
 
-    100% {
-      background-size: 100%;
+    .gem-lead {
+        color: var(--gem-muted);
+        font-size: 1.05rem;
     }
-  }
 
-  /* ================= CARDS ================= */
+    .gem-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .85rem 1.8rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-primary-dark));
+        box-shadow: 0 8px 20px rgba(193, 18, 31, .35);
+        transition: transform .25s ease, box-shadow .25s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-  .association-card {
-    border-radius: 20px;
-    overflow: hidden;
-    border: none;
-    transition: all 0.4s ease;
-  }
+    .gem-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(193, 18, 31, .42);
+    }
 
-  .association-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  }
+    /* ================= HERO ================= */
+    .vie-hero {
+        position: relative;
+        min-height: 72vh;
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background:
+            linear-gradient(100deg, rgba(10, 12, 20, .85) 0%, rgba(10, 12, 20, .55) 55%, rgba(10, 12, 20, .25) 100%),
+            url("{% static 'images/ecole/groupprof111.jpeg' %}") center/cover no-repeat;
+    }
 
-  .association-card img {
-    height: 230px;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
+    .vie-hero h1 {
+        font-size: clamp(2.2rem, 5.5vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1.05;
+    }
 
-  .association-card:hover img {
-    transform: scale(1.1);
-  }
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem 1rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        margin-bottom: 1.2rem;
+    }
 
-  /* ================= STATS ================= */
+    .hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        margin: 1.4rem 0 2rem;
+    }
 
-  .stats {
-    background: linear-gradient(90deg, #0d6efd, #6610f2);
-    color: white;
-  }
+    .hero-pills span {
+        padding: .45rem 1rem;
+        border-radius: 999px;
+        font-size: .88rem;
+        font-weight: 500;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .2);
+    }
 
-  .stat-number {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
+    /* ================= STATS ================= */
+    .gem-stats {
+        margin-top: -3.2rem;
+        position: relative;
+        z-index: 5;
+    }
 
-  /* ================= CTA ================= */
+    .gem-stats-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+        padding: 1.6rem 1rem;
+    }
 
-  .cta-section {
-    background: linear-gradient(90deg, #6610f2, #0d6efd);
-    color: white;
-  }
+    .gem-stat {
+        text-align: center;
+        padding: .5rem 1rem;
+    }
+
+    .gem-stat+.gem-stat {
+        border-left: 1px solid #eceef4;
+    }
+
+    .gem-stat strong {
+        display: block;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        background: linear-gradient(135deg, var(--gem-primary), var(--gem-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .gem-stat span {
+        color: var(--gem-muted);
+        font-size: .92rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .gem-stat+.gem-stat {
+            border-left: 0;
+            border-top: 1px solid #eceef4;
+            margin-top: .6rem;
+            padding-top: 1rem;
+        }
+    }
+
+    /* ================= ASSOCIATIONS ================= */
+    .association-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .4s ease;
+    }
+
+    .association-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 24px 55px rgba(20, 22, 31, .18);
+    }
+
+    .association-card .thumb {
+        position: relative;
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .association-card .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .8s ease;
+    }
+
+    .association-card:hover .thumb img {
+        transform: scale(1.1);
+    }
+
+    .association-card .thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 50%, rgba(10, 12, 20, .45));
+    }
+
+    .association-card .body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .association-card h5 {
+        font-weight: 700;
+        margin-bottom: .6rem;
+    }
+
+    .association-card p {
+        flex: 1;
+        color: var(--gem-muted);
+        font-size: .93rem;
+    }
+
+    .cta {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .55rem 1.3rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        font-size: .9rem;
+        color: var(--gem-primary);
+        background: rgba(193, 18, 31, .08);
+        transition: all .25s ease;
+    }
+
+    .cta:hover {
+        color: #fff;
+        background: var(--gem-primary);
+    }
+
+    .cta i {
+        transition: transform .25s ease;
+    }
+
+    .cta:hover i {
+        transform: translateX(4px);
+    }
+
+    /* ================= MODAL ================= */
+    .modal-content.gem-modal {
+        border: 0;
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(20, 22, 31, .35);
+    }
+
+    .gem-modal .modal-header {
+        border: 0;
+        padding: 1.6rem 1.8rem;
+        color: #fff;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
+    }
+
+    .gem-modal .modal-header h5 {
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .gem-modal .modal-body {
+        padding: 1.8rem;
+    }
+
+    .gem-modal .info-row {
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        padding: .9rem 1rem;
+        border-radius: 14px;
+        background: var(--gem-bg);
+        margin-top: .7rem;
+    }
+
+    .gem-modal .info-row i {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--gem-accent), #6a78d1);
+    }
+
+    .gem-modal .info-row small {
+        display: block;
+        color: var(--gem-muted);
+        font-size: .75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .gem-modal .modal-footer {
+        border: 0;
+        padding: 0 1.8rem 1.8rem;
+    }
+
+    .btn-soft {
+        padding: .75rem 1.5rem;
+        border-radius: 999px;
+        border: 0;
+        font-weight: 600;
+        color: var(--gem-ink);
+        background: var(--gem-bg);
+        transition: background .2s ease;
+    }
+
+    .btn-soft:hover {
+        background: #e7e9f2;
+    }
+
+    /* ================= EVENEMENTS ================= */
+    .event-card {
+        height: 100%;
+        background: #fff;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .08);
+        transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .16);
+    }
+
+    .event-card .thumb {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .event-card .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .8s ease;
+    }
+
+    .event-card:hover .thumb img {
+        transform: scale(1.08);
+    }
+
+    .event-card .body {
+        padding: 1.4rem;
+    }
+
+    .event-date {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .3rem .8rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 700;
+        color: var(--gem-primary);
+        background: rgba(193, 18, 31, .08);
+        margin-bottom: .7rem;
+    }
+
+    .event-card h5 {
+        font-weight: 700;
+    }
+
+    .event-card p {
+        color: var(--gem-muted);
+        font-size: .92rem;
+        margin: 0;
+    }
+
+    .empty-state {
+        padding: 3rem 1rem;
+        border-radius: 22px;
+        background: #fff;
+        color: var(--gem-muted);
+        box-shadow: 0 10px 30px rgba(20, 22, 31, .06);
+    }
+
+    /* ================= CTA ================= */
+    .cta-band {
+        border-radius: 28px;
+        padding: 3rem 2rem;
+        color: #fff;
+        text-align: center;
+        background: linear-gradient(135deg, #14161f, #2a1218 70%, #4a0d14);
+        box-shadow: 0 20px 50px rgba(20, 22, 31, .2);
+    }
+
+    .cta-band h3 {
+        font-weight: 800;
+        letter-spacing: -.02em;
+    }
+
+    .cta-band p {
+        opacity: .8;
+    }
+
+    @media (max-width: 768px) {
+        .gem-section {
+            padding: 3.5rem 0;
+        }
+
+        .vie-hero {
+            min-height: 60vh;
+        }
+    }
 </style>
 
 
 <!-- ================= HERO ================= -->
-
-<section class="hero">
-  <div>
-    <h1 class="display-3 fw-bold" data-aos="fade-up">
-      Vie étudiante
-    </h1>
-    <p class="lead" data-aos="fade-up" data-aos-delay="200">
-      Développez vos talents • Exprimez votre passion • Rejoignez une communauté
-    </p>
-  </div>
+<section class="vie-hero">
+    <div class="container">
+        <div class="hero-tag" data-aos="fade-up"><i class="fas fa-users"></i> Communauté étudiante</div>
+        <h1 data-aos="fade-up" data-aos-delay="100">Vie étudiante</h1>
+        <div class="hero-pills" data-aos="fade-up" data-aos-delay="200">
+            <span><i class="fas fa-bolt me-1"></i> Développez vos talents</span>
+            <span><i class="fas fa-heart me-1"></i> Exprimez votre passion</span>
+            <span><i class="fas fa-people-group me-1"></i> Rejoignez une communauté</span>
+        </div>
+        <a href="#associations" class="gem-btn" data-aos="zoom-in" data-aos-delay="300">
+            Découvrir les clubs <i class="fas fa-arrow-down"></i>
+        </a>
+    </div>
 </section>
 
 
-<!-- ================= RETOUR ================= -->
-
-<!-- <div class="container text-center my-4">
-  <a href="{% url 'home' %}" class="btn btn-outline-dark btn-lg rounded-pill px-4">
-    ← Retour à l’accueil
-  </a>
-</div>
- -->
-
 <!-- ================= STATS ================= -->
-
-<section class="stats text-center py-5">
-  <div class="container">
-    <div class="row">
-
-      <div class="col-md-4">
-        <div class="stat-number" id="countAssociations">
-          {{ associations|length }}
+<section class="gem-stats">
+    <div class="container">
+        <div class="gem-stats-card">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-4 gem-stat">
+                    <strong data-count="{{ associations|length }}">{{ associations|length }}</strong>
+                    <span>Associations</span>
+                </div>
+                <div class="col-md-4 gem-stat">
+                    <strong data-count="500" data-suffix="+">500+</strong>
+                    <span>Étudiants actifs</span>
+                </div>
+                <div class="col-md-4 gem-stat">
+                    <strong data-count="20" data-suffix="+">20+</strong>
+                    <span>Événements / an</span>
+                </div>
+            </div>
         </div>
-        <p>Associations</p>
-      </div>
-
-      <div class="col-md-4">
-        <div class="stat-number" id="countStudents">
-          500
-        </div>
-        <p>Étudiants actifs</p>
-      </div>
-
-      <div class="col-md-4">
-        <div class="stat-number" id="countEvents">
-          20
-        </div>
-        <p>Événements/an</p>
-      </div>
-
     </div>
-  </div>
 </section>
 
 
 <!-- ================= ASSOCIATIONS ================= -->
+<section class="gem-section" id="associations" style="scroll-margin-top:90px;">
+    <div class="container">
 
-<section class="container py-5">
-
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">Nos Clubs & Associations</h2>
-    <p class="text-muted">Découvrez des communautés dynamiques et engagées</p>
-  </div>
-
-  <div class="row g-4">
-
-    {% for association in associations %}
-    <div class="col-md-4" data-aos="zoom-in">
-      <div class="card association-card shadow">
-
-        {% if association.image %}
-        <img src="{{ association.image.url }}" class="w-100">
-        {% else %}
-        <img src="{% static 'images/club.jpg' %}" class="w-100">
-        {% endif %}
-
-        <div class="card-body text-center d-flex flex-column">
-          <h5 class="fw-bold text-primary">
-            {{ association.nom }}
-          </h5>
-
-          <p class="text-muted">
-            {{ association.description|truncatechars:120 }}
-          </p>
-
-          <button class="btn btn-outline-primary rounded-pill mt-auto" data-bs-toggle="modal"
-            data-bs-target="#modal{{ forloop.counter }}">
-            Découvrir
-          </button>
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Clubs &amp; associations</span>
+            <h2 class="gem-title">Nos clubs &amp; associations</h2>
+            <p class="gem-lead mx-auto" style="max-width:600px;">
+                Découvrez des communautés dynamiques et engagées
+            </p>
         </div>
-      </div>
-    </div>
 
-
-    <!-- ================= MODAL ================= -->
-
-    <div class="modal fade" id="modal{{ forloop.counter }}">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-
-          <div class="modal-header bg-primary text-white">
-            <h5 class="fw-bold">{{ association.nom }}</h5>
-            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-
-          <div class="modal-body">
-            <p>{{ association.details }}</p>
-
-            <hr>
-
-            <p><strong>Responsable :</strong> {{ association.responsable }}</p>
-            <p><strong>Contact :</strong> {{ association.contact }}</p>
-          </div>
-
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Fermer
-            </button>
-
-            <!-- <a href="{% url 'preinscription' %}?association={{ association.id }}"
-               class="btn btn-success rounded-pill">
-               Rejoindre
-            </a> -->
-            <a href="{% url 'inscription_association' association.id %}" class="btn btn-success rounded-pill">
-              Rejoindre
-            </a>
-
-          </div>
-
+        <div class="row g-4">
+            {% for association in associations %}
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 60 %}">
+                <article class="association-card">
+                    <div class="thumb">
+                        {% if association.image %}
+                        <img src="{{ association.image.url }}" alt="{{ association.nom }}" loading="lazy">
+                        {% else %}
+                        <img src="{% static 'images/club.jpg' %}" alt="{{ association.nom }}" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <div class="body">
+                        <h5>{{ association.nom }}</h5>
+                        <p>{{ association.description|truncatechars:120 }}</p>
+                        <button type="button" class="cta" data-bs-toggle="modal"
+                            data-bs-target="#modal{{ forloop.counter }}">
+                            Découvrir <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="empty-state">Aucune association disponible pour le moment.</div>
+            </div>
+            {% endfor %}
         </div>
-      </div>
     </div>
-
-    {% endfor %}
-
-  </div>
-
 </section>
+
+<!-- ================= MODALS (hors de la grille) ================= -->
+{% for association in associations %}
+<div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content gem-modal">
+
+            <div class="modal-header">
+                <h5>{{ association.nom }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Fermer"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="mb-3">{{ association.details|linebreaksbr }}</p>
+
+                <div class="info-row">
+                    <i class="fas fa-user-tie"></i>
+                    <div><small>Responsable</small>{{ association.responsable }}</div>
+                </div>
+                <div class="info-row">
+                    <i class="fas fa-address-book"></i>
+                    <div><small>Contact</small>{{ association.contact }}</div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-soft" data-bs-dismiss="modal">Fermer</button>
+                <a href="{% url 'inscription_association' association.id %}" class="gem-btn">
+                    Rejoindre <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
 
 
 <!-- ================= EVENEMENTS ================= -->
+<section class="gem-section" style="background:#fff;">
+    <div class="container">
 
-<section class="bg-light py-5">
-  <div class="container text-center">
-
-    <h2 class="fw-bold mb-4">Événements à venir</h2>
-
-    <div class="row g-4">
-
-      {% for event in evenements %}
-      <div class="col-md-4">
-        <div class="card shadow border-0">
-
-          {% if event.image %}
-          <img src="{{ event.image.url }}" class="card-img-top" style="height:200px;object-fit:cover;">
-          {% endif %}
-
-          <div class="card-body">
-            <h5>{{ event.titre }}</h5>
-            <small class="text-primary">
-              {{ event.date_event }}
-            </small>
-            <p class="mt-2 text-muted">
-              {{ event.description|truncatechars:80 }}
-            </p>
-          </div>
-
+        <div class="text-center mb-5">
+            <span class="gem-eyebrow">Agenda</span>
+            <h2 class="gem-title">Événements à venir</h2>
         </div>
-      </div>
-      {% empty %}
-      <p>Aucun événement disponible</p>
-      {% endfor %}
 
+        <div class="row g-4">
+            {% for event in evenements %}
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 60 %}">
+                <article class="event-card">
+                    {% if event.image %}
+                    <div class="thumb">
+                        <img src="{{ event.image.url }}" alt="{{ event.titre }}" loading="lazy">
+                    </div>
+                    {% endif %}
+                    <div class="body">
+                        <span class="event-date"><i class="far fa-calendar"></i> {{ event.date_event }}</span>
+                        <h5>{{ event.titre }}</h5>
+                        <p>{{ event.description|truncatechars:80 }}</p>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="empty-state">Aucun événement disponible</div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-  </div>
 </section>
 
 
 <!-- ================= CTA ================= -->
-
-<section class="cta-section text-center py-5" style="background: transparent;">
-  <h2 class="fw-bold" style="color: #0d6efd;">
-    Envie de rejoindre une association ?
-  </h2>
-  <a href="{% url 'preinscription' %}" class="btn btn-lg rounded-pill mt-3 px-4"
-    style="background-color: #0d6efd; color: #f0f0f0; border: none;">
-    S'inscrire maintenant
-  </a>
+<section class="container py-5 my-4">
+    <div class="cta-band" data-aos="zoom-in">
+        <h3 class="mb-2">Envie de rejoindre une association ?</h3>
+        <p class="mb-4">Inscrivez-vous et lancez-vous dans la vie du campus.</p>
+        <a href="{% url 'preinscription' %}" class="gem-btn">S'inscrire maintenant <i
+                class="fas fa-arrow-right"></i></a>
+    </div>
 </section>
 
 
-<!-- ================= SCRIPTS ================= -->
-
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
+<!-- AOS est chargé et initialisé dans base.html -->
 <script>
-  AOS.init();
+    /* Compteurs animés : se lancent quand la section devient visible */
+    document.addEventListener("DOMContentLoaded", function () {
+        const counters = document.querySelectorAll("[data-count]");
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Animation compteur */
-  function animateValue(id, start, end, duration) {
-    let range = end - start;
-    let current = start;
-    let increment = end > start ? 1 : -1;
-    let stepTime = Math.abs(Math.floor(duration / range));
-    let obj = document.getElementById(id);
+        function run(el) {
+            const end = parseInt(el.dataset.count, 10) || 0;
+            const suffix = el.dataset.suffix || "";
+            if (reduce || end === 0) { el.textContent = end + suffix; return; }
 
-    let timer = setInterval(function () {
-      current += increment;
-      obj.innerHTML = current;
-      if (current == end) {
-        clearInterval(timer);
-      }
-    }, stepTime);
-  }
+            const duration = 1400;
+            const start = performance.now();
 
-  document.addEventListener("DOMContentLoaded", function () {
-    animateValue("countAssociations", 0, {{ associations| length }}, 1000);
-  animateValue("countStudents", 0, 500, 1200);
-  animateValue("countEvents", 0, 20, 1000);
-});
+            function frame(now) {
+                const t = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - t, 3);          // easeOutCubic
+                el.textContent = Math.round(end * eased) + suffix;
+                if (t < 1) requestAnimationFrame(frame);
+            }
+            requestAnimationFrame(frame);
+        }
+
+        if (!("IntersectionObserver" in window)) { counters.forEach(run); return; }
+
+        const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { run(e.target); obs.unobserve(e.target); }
+            });
+        }, { threshold: .4 });
+
+        counters.forEach(c => io.observe(c));
+    });
 </script>
 
 {% endblock %}
